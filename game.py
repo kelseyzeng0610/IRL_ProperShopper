@@ -795,6 +795,7 @@ class Game:
                 "sprite_path": player.sprite_path,
                 "direction": DIRECTION_TO_INT[player.direction],
                 "curr_cart": self.get_cart_index(player.curr_cart),
+                "curr_basket": self.get_basket_index(player.curr_basket),
                 "shopping_list": player.shopping_list,
                 "list_quant": player.list_quant,
                 "holding_food": player.holding_food,
@@ -889,6 +890,9 @@ class Game:
 
     def get_cart_index(self, cart):
         return index_or_minus_one(cart, self.carts)
+
+    def get_basket_index(self, basket):
+        return index_or_minus_one(basket, self.baskets)
 
     def check_register_zones(self, register):
         x_margin = 0.5
