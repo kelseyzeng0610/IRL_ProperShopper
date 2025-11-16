@@ -1,7 +1,5 @@
 import numpy as np
-
-def roundToPointTwoFive(number):
-    return np.round(number * 4) / 4
+from irl_agent import phi
 
 class ExpertAgent:
     # here Are some default parameters, you can use different ones
@@ -85,14 +83,7 @@ class ExpertAgent:
 
 
     def trans(self, state):
-        [playerX, playerY] = state["observation"]["players"][0]["position"]        
-        goalX, goalY = self.goals[self.currentGoalIdx]['position'][0], self.goals[self.currentGoalIdx]['position'][1]
-        vector = (goalX - playerX, goalY - playerY)
-        # hasItem = 'sausage' in state['observation']['baskets'][0]['contents']
-        hasItem = False
-
-        return (roundToPointTwoFive(vector[0]), roundToPointTwoFive(vector[1]), hasItem)
-        
+        return phi(state)
 
     # The main q-table update step. 
     def learning(self, action, rwd, game_state, next_game_state, forbiddenActions=[]):
@@ -118,8 +109,8 @@ class ExpertAgent:
         nextAction, _, qtablevalues = self.maxQTableValue(stateRepr, forbiddenActions)
 
         # decay our epsilon
-        decayed = self.epsilon * self.decay
-        self.epsilon = max(decayed, self.mini_epsilon)
+        # decayed = self.epsilon * self.decay
+        # self.epsilon = max(decayed, self.mini_epsilon)
         return nextAction
     
     def achievedGoal(self):
