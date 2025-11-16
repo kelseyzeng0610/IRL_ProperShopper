@@ -58,47 +58,23 @@ def getDelta(action):
     else:
         raise Exception("Can't compute delta for undefined direction")
 
-# Instead of using the game socket to find out what happens when executing action a in state s, 
-# we can try to guess it ourselves - when we load our trajectories we have a bunch of state-action-newstate 
-# pairs. so we can build a cache of state-action : newstate. So when we later want to know what happens when
-# we execute action a in state s, we can check if we've actually done that already in the expert trajectory.
-# if so, great we can just use the same output state that the expert saw. 
-# If we haven't seen that, then we need to figure something else out. 
+# This is a very simple model of how the environment changes with actions, that doesn't take into account 
+# the obstacles or layout of the store
 def updateGameState(phi_state, action):
-    # phi_tuple = tuple(phi_state)
-    # if (phi_tuple, action) in cache:
-    #     # randomly sample an option
-    #     randomIdx = np.random.choice(len(cache[(phi_tuple, action)]))
-    #     choice = cache[(phi_tuple, action)][randomIdx]
-    #     return choice
-    # # We have not observed action a in state s, so we can't just lookup the next state.
-    # elif phi_state[2] != action:
     direction_one_hot = [0] * 4
     direction_one_hot[action] = 1
     in_area_flag = phi_state[-1]
     direction_phi = phi_state[2:6]
     if direction_phi != direction_one_hot:
-        # We do know that if the action is not in the same direction as the current state, the agent will rotate.
+        # if the action is not in the same direction as the current state, rotate.
         return [phi_state[0], phi_state[1]] + direction_one_hot + [in_area_flag] # same position, new direction
     else:
-        # The thing we don't know is what happens if the action is in the same direction as we're facing - we will move in that direction but by how much?
+        # else move by step size in the direction of action
         deltaX, deltaY = getDelta(action)
         newX, newY = phi_state[0] + deltaX, phi_state[1] + deltaY
         new_in_area = inTargetArea(newX, newY)
         new_phi = [newX, newY] + direction_one_hot + [new_in_area]
         return new_phi
-
-# def updateGameState(sock_game, currentState, action):
-#     actionStr = INT_TO_DIRECTION_STR[action]
-#     sock_game.send(str.encode("0 " + actionStr))
-#     next_state = recv_socket_data(sock_game)
-#     next_state = json.loads(next_state)
-
-#     sock_game.send(str.encode("0 REVERT"))
-#     reverted_state = recv_socket_data(sock_game)
-#     reverted_state = json.loads(reverted_state)
-
-#     return phi(next_state)
 
 
 
@@ -107,73 +83,98 @@ def loadTrajectories(fileName):
     with open(fileName, 'rb') as f:
         data = pickle.load(f)
 
-    # build a cache of observed state-action pairs to lookup new states later
-    cache = {}
     for trajectory in data:
         for step in trajectory:
             s, a, sprime = step[0], step[1], step[2]
-            # if (s, a) not in cache:
-            #     cache[(s, a)] = []
-            # if sprime not in cache[(s, a)]:
-            #     cache[(s, a)].append(sprime)
-            cache[(s,a)] = sprime
-    return data, cache
+    return data
 
-
-def jsonSerializeTrajectory(trajectory):
+def jsonSerializeTrajectoryStep(trajectory):
     # Trajectory is (s, a, s')
     s, a, sprime = trajectory[0], trajectory[1], trajectory[2]
 
-    # s and s' are (x, y, direction) ie (float, float, int) [float(t[0]), float(t[1]), int(t[2])]
-    jsonS = [float(s[0]), float(s[1]), int(s[2])]
-    jsonSPrime = [float(sprime[0]), float(sprime[1]), int(sprime[2])]
+    jsonS = [float(s[0]), float(s[1]), int(s[2]), int(s[3]), int(s[4]), int(s[5]), int(s[6])]
+    jsonSPrime = [float(sprime[0]), float(sprime[1]), int(sprime[2]), int(sprime[3]), int(sprime[4]), int(sprime[5]), int(sprime[6])]
     jsonAction = int(a)
     return [
         jsonS,
         jsonAction,
         jsonSPrime,
     ]
+
 def writeSampleTrajectory(trajectory, fileName="generated-actions.json"):
-    # data = []
-    # for t in trajectory:
-    #     action = t[1]
-    #     actions.append(action)
-    # write the actions taken to a file
-    # with open(fileName, 'w') as f:
-    #     for action in actions:
-    #         actionName = INT_TO_DIRECTION_STR[action]
-    #         f.write(actionName + "\n")
-    trajectories = [trajectory]
     with open(fileName, "w") as f:
-        json.dump([[jsonSerializeTrajectory(t) for t in traj] for traj in trajectories], f, indent=2)
+        json.dump([jsonSerializeTrajectoryStep(step) for step in trajectory], f, indent=2)
+
+def writeLearnedTheta(theta, fileName="theta-out.pkl"):
+    with open(fileName, 'wb') as f:
+        pickle.dump(theta, f)
+
+def loadLearnedTheta(fileName="theta-out.pkl"):
+    with open(fileName, 'rb') as f:
+        theta = pickle.load(f)
+        return theta
+    
+def plotGeneratedTrajectory(sampleTrajectory, expertTrajectories):
+    sampleX, sampleY = [], []
+    for step in sampleTrajectory:
+        initialState = step[0]
+        x, y, = initialState[0], initialState[1]
+        sampleX.append(x)
+        sampleY.append(y)
+    plt.plot(sampleX, sampleY, "o-", color='blue', label='Learned')
+    
+    for expertTrajectory in expertTrajectories:
+        expertX, expertY = [], []
+        for step in expertTrajectory:
+            state = step[0]
+            x, y, = state[0], state[1]
+            expertX.append(x)
+            expertY.append(y)
+        plt.plot(expertX, expertY, 's-', color='red', label='Expert')
+
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.grid(True)
+    plt.legend()
+    plt.show()
 
 
 ACTIONS = ['NORTH', 'SOUTH', 'EAST', 'WEST']
 
+learningMode = False
+
 if __name__ == "__main__":
-    action_commands = ['NORTH', 'SOUTH', 'EAST', 'WEST']
-    action_space = len(action_commands)
-
+    action_space = len(ACTIONS)
     initial_phi_state = [1.25, 15.5, 0, 0, 1, 0, 0]
-    expertTrajectories, _ = loadTrajectories("trajectories.pkl") # load the pkl file
-    np.random.seed(42)
-    theta_random = np.random.uniform(low=0.0, high=0.1, size=len(initial_phi_state))
+    expertTrajectories = loadTrajectories("trajectories.pkl") # load the pkl file
 
-    def probeNextState(phi_state, action):
-        # return updateGameState(sock_game, phi_state, action)
-        return updateGameState(phi_state, action)
+    if learningMode:
+        np.random.seed(42)
+        theta_random = np.random.uniform(low=0.0, high=0.1, size=len(initial_phi_state))
 
-    learner = MaxEntropyIRL(
-        theta=theta_random,
-        actions=np.arange(len(ACTIONS)),
-        probeNextState=probeNextState,
-        initialState=initial_phi_state,
-        gameOver=gameOver,
-        phi=phi,
-    )
-    theta_hat, grad_norms, theta_iterations = learner.learn(expertTrajectories, num_iterations=500, alpha=0.025, num_samples=50)
-    print("\n\n Predicted Theta:\n\n", theta_hat)
-    sampleTrajectory = learner.stochastic_trajectory(maxLength=200)
-    writeSampleTrajectory(sampleTrajectory)
-    plot_grad_norms(grad_norms)
+        learner = MaxEntropyIRL(
+            theta=theta_random,
+            actions=np.arange(len(ACTIONS)),
+            probeNextState=updateGameState,
+            initialState=initial_phi_state,
+            gameOver=gameOver,
+            phi=phi,
+        )
+        theta_hat, grad_norms, theta_iterations = learner.learn(expertTrajectories, num_iterations=500, alpha=0.025, num_samples=50)
+        print("\n\n Predicted Theta:\n\n", theta_hat)
+        writeLearnedTheta(theta_hat)
+        plot_grad_norms(grad_norms)
+    else:
+        learnedTheta = loadLearnedTheta()
+        learner = MaxEntropyIRL(
+            theta=learnedTheta,
+            actions=np.arange(len(ACTIONS)),
+            probeNextState=updateGameState,
+            initialState=initial_phi_state,
+            gameOver=gameOver,
+            phi=phi,
+        )
+        sampleTrajectory = learner.stochastic_trajectory(maxLength=100)
+        writeSampleTrajectory(sampleTrajectory)
+        plotGeneratedTrajectory(sampleTrajectory, expertTrajectories[:1])
 

@@ -84,14 +84,6 @@ class ExpertAgent:
 
     def trans(self, state):
         return phi(state)
-        # [playerX, playerY] = state["observation"]["players"][0]["position"]        
-        # goalX, goalY = self.goals[self.currentGoalIdx]['position'][0], self.goals[self.currentGoalIdx]['position'][1]
-        # vector = (goalX - playerX, goalY - playerY)
-        # # hasItem = 'sausage' in state['observation']['baskets'][0]['contents']
-        # hasItem = False
-
-        # return (roundToPointTwoFive(vector[0]), roundToPointTwoFive(vector[1]), hasItem)
-        
 
     # The main q-table update step. 
     def learning(self, action, rwd, game_state, next_game_state, forbiddenActions=[]):
