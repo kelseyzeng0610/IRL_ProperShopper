@@ -3,8 +3,8 @@
     {
       "index": 0,
       "position": [
-        1.2,
-        15.6
+        1.25,
+        15.5
       ],
       "width": 0.6,
       "height": 0.4,
@@ -13,7 +13,7 @@
       "curr_cart": -1,
       "curr_basket": -1,
       "shopping_list": [
-        "fresh fish"
+        "sausage"
       ],
       "list_quant": [
         1

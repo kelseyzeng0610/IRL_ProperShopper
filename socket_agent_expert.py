@@ -41,6 +41,12 @@ INT_TO_DIRECTION = {
     2: Direction.EAST, 
     3: Direction.WEST
 }
+DIRECTION_TO_INT = {
+    Direction.NORTH: 0,
+    Direction.SOUTH: 1,
+    Direction.EAST: 2,
+    Direction.WEST: 3,
+}
 
 REWARD_DIST_THRESHOLD = 0.5
 
@@ -125,9 +131,8 @@ def preloadQTable(filePath):
                 klist = json.loads(k)
                 x = np.float64(klist[0])
                 y = np.float64(klist[1])
-                hasItem = bool(klist[2])
-
-                keyTuple = (x, y, hasItem)
+                direction = [np.int64(klist[i]) for i in range(2, len(klist))]
+                keyTuple = tuple([x, y] + direction)
                 qtable[keyTuple] = np.asarray(v)
             qtables[goalName] = qtable
 
@@ -135,15 +140,30 @@ def preloadQTable(filePath):
 
 # dumps a provided q table to a file. we have to serialize both the key tuples and the value ndarrays before we can write to json.
 def writeQTableToFile(savedQTable, filePath):
-    jsonifiedTable = {goal_location: {json.dumps(k): savedQTable[goal_location][k].tolist() for k in savedQTable[goal_location]} for goal_location in savedQTable}
+    jsonifiedTable = {goal_location: {json.dumps((k[0], k[1], int(k[2]), int(k[3]), int(k[4]), int(k[5]), int(k[6]))): savedQTable[goal_location][k].tolist() for k in savedQTable[goal_location]} for goal_location in savedQTable}
     with open(filePath, 'w') as file:
         json.dump(jsonifiedTable, file)
+
+
+def jsonSerializeTrajectoryStep(step):
+    # Trajectory is (s, a, s')
+    s, a, sprime = step[0], step[1], step[2]
+
+    jsonS = [float(s[0]), float(s[1]), int(s[2]), int(s[3]), int(s[4]), int(s[5]), int(s[6])]
+    jsonSPrime = [float(sprime[0]), float(sprime[1]), int(sprime[2]), int(sprime[3]), int(sprime[4]), int(sprime[5]), int(sprime[6])]
+    jsonAction = int(a)
+    return [
+        jsonS,
+        jsonAction,
+        jsonSPrime,
+    ]
+
 
 def writeTrajectoriesToFile(trajectories, filePath):
     with open(filePath, 'wb') as f:
         pickle.dump(trajectories, f)
     with open("trajectories.json", "w") as f:
-        json.dump([[list(t) for t in traj] for traj in trajectories], f, indent=2)
+        json.dump([[jsonSerializeTrajectoryStep(step) for step in traj] for traj in trajectories], f, indent=2)
 
 # this is a function that returns True/False of whether we are in the "walkway"
 # I have defined this as being between 4 and 4.7 in the agent's x-position
@@ -618,7 +638,7 @@ if __name__ == "__main__":
     # To train an agent on new shelves, simply replace the shelf names in the array below. Note that they must appear in this array
     # exactly as they appear in the state object of the game. Case matters.
 
-    agent = ExpertAgent(action_space, epsilon=0.2)
+    agent = ExpertAgent(action_space, epsilon=0.1)
 
 ####################
     #Once you have your agent trained, or you want to continue training from a previous training session, you can load the qtable from a json file
@@ -632,16 +652,17 @@ if __name__ == "__main__":
     sock_game.connect((HOST, PORT))
 
     allGoalTypes = ['CART_RETURN', 'BASKET_RETURN', 'INTERACT', 'WALKWAY', 'REGISTER', 'EXIT', 'AISLE', 'SHELF_NAV', 'TOGGLE_CART', 'PICKUP_ITEM', 'COUNTER_NAV', 'PICKUP_COUNTER', 'EAST_WALKWAY', 'LEAVE_COUNTERS', 'PAY']
-    # savedQTables = {t: {} for t in allGoalTypes} # initially our q-table is blank
-    savedQTables = preloadQTable("training-output.json") # Can also resume training from a partially trained output and continue fine-tuning it
 
-    numTrajectories = 10
-    episode_length = 1000 # Increase max episode length since sequences can be long
+    numTrajectories, numTrainingEpisodes = 5, 40
+    episode_length = 200 # Increase max episode length since sequences can be long
     success = 0
 
     trajectories = []
     generateTrajectories = True
-    for i in range(numTrajectories):
+
+    savedQTables = preloadQTable("training-output.json") if generateTrajectories else {t: {} for t in allGoalTypes}
+    n = numTrajectories if generateTrajectories else numTrainingEpisodes
+    for i in range(n):
         sock_game.send(str.encode("0 RESET"))  # reset the game
         state = recv_socket_data(sock_game)
         state = json.loads(state)
@@ -664,12 +685,14 @@ if __name__ == "__main__":
             cnt += 1
             action, action_index = getAction(agent, state, action_commands)
             phi_state = agent.trans(state)
-            trajectory.append(phi_state)
 
             sock_game.send(str.encode(action))  # send action to env
 
             next_state = recv_socket_data(sock_game)  # get observation from env
             next_state = json.loads(next_state)
+            next_phi_state = agent.trans(next_state)
+
+            trajectory.append((phi_state, action_index, next_phi_state))
 
             if not generateTrajectories:
                 # Define the reward based on the state and next_state
@@ -699,13 +722,13 @@ if __name__ == "__main__":
                 print("too many moves this loop. ending now")
                 break
 
-    # At the end of training, write our saved q table to an output file
-    with open("training-output.json", "w") as file:
-        writeQTableToFile(savedQTables, "training-output.json")
-        if generateTrajectories:
-            writeTrajectoriesToFile(trajectories, "trajectories.pkl")
-            print("\n\n===== Wrote trajectories to trajectories.pkl =====\n\n")
-        else:
+    if generateTrajectories:
+        writeTrajectoriesToFile(trajectories, "trajectories.pkl")
+        print("\n\n===== Wrote trajectories to trajectories.pkl =====\n\n")
+    else:
+        # At the end of training, write our saved q table to an output file
+        with open("training-output.json", "w") as file:
+            writeQTableToFile(savedQTables, "training-output.json")
             print("\n\n===== Wrote final Q Table to 'training-output.json' =====\n\n")
 
     # Close socket connection
