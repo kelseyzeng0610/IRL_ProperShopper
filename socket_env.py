@@ -14,7 +14,7 @@ import pygame
 action_file = "actions.txt"
 agent_completion_file = "agent_completion.txt"
 
-ACTION_COMMANDS = ['NOP', 'NORTH', 'SOUTH', 'EAST', 'WEST', 'INTERACT', 'TOGGLE_CART', 'CANCEL', 'SELECT','RESET']
+ACTION_COMMANDS = ['NOP', 'NORTH', 'SOUTH', 'EAST', 'WEST', 'INTERACT', 'TOGGLE_CART', 'CANCEL', 'SELECT','RESET', 'REVERT']
 
 def serialize_data(data):
     if isinstance(data, set):
@@ -278,7 +278,17 @@ if __name__ == "__main__":
         action='store_true',
     )
 
+    parser.add_argument(
+        '--player_speed',
+        type=float,
+        help="player movement speed",
+        default=0.15
+    )
+
     args = parser.parse_args()
+
+    print("Player speed")
+    print(args.player_speed)
 
     # np.random.seed(0)
 
@@ -296,7 +306,8 @@ if __name__ == "__main__":
                          record_path=args.record_path,
                          stay_alive=args.stay_alive,
                          mode=args.mode,
-                         stochastic= args.stochastic
+                         stochastic= args.stochastic,
+                         player_speed=args.player_speed
                          )
 
     norms = [CartTheftNorm(),
