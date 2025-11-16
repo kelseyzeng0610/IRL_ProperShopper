@@ -12,6 +12,7 @@ class PlayerAction(IntEnum):
     CANCEL = 7,
     PICKUP = 8,
     RESET = 9,
+    REVERT = 10,
 
 PlayerActionTable = {
     "NOP" : PlayerAction.NOP,
@@ -24,4 +25,5 @@ PlayerActionTable = {
     "CANCEL" : PlayerAction.CANCEL,
     "PICKUP" : PlayerAction.PICKUP,
     "RESET" : PlayerAction.RESET,
+    "REVERT": PlayerAction.REVERT
 }
