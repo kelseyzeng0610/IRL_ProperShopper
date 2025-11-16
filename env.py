@@ -3,6 +3,7 @@ import random
 import gymnasium as gym
 from enums.player_action import PlayerAction, PlayerActionTable
 from game import Game
+import json
 
 MOVEMENT_ACTIONS = [PlayerAction.NORTH, PlayerAction.SOUTH, PlayerAction.EAST, PlayerAction.WEST]
 
@@ -44,6 +45,7 @@ class SupermarketEnv(gym.Env):
         self.random_start = random_start
 
         self.action_probability = {}
+        self.observations = []
         
         if (stochastic): # storing probability of action success rate
             filename = 'stochastic_probability.txt'
@@ -82,13 +84,19 @@ class SupermarketEnv(gym.Env):
                 self.unwrapped.game.pickup(i, arg)
             elif player_action == PlayerAction.RESET:
                 self.reset()
+            elif player_action == PlayerAction.REVERT:
+                self.observations.pop()
+                prevObs = self.observations[-1]
+                self.reset(obs=prevObs, clearObservations=False)
         observation = self.unwrapped.game.observation()
+        if player_action != PlayerAction.REVERT:
+            self.observations.append(json.loads(json.dumps(observation)))
         self.unwrapped.step_count += 1
         if not self.unwrapped.game.running:
             done = True
         return observation, 0., done, None, None
 
-    def reset(self,seed = None, options = None, obs=None, mode = 0):
+    def reset(self,seed = None, options = None, obs=None, mode = 0, clearObservations=True):
         self.unwrapped.game= Game(self.unwrapped.num_players, self.player_speed,
                          keyboard_input=self.keyboard_input,
                          render_messages=self.render_messages,
@@ -100,6 +108,8 @@ class SupermarketEnv(gym.Env):
                          record_path=self.record_path,
                          stay_alive=self.stay_alive)
         self.unwrapped.game.set_up(mode=self.mode)
+        if clearObservations:
+            self.observations = []
         if obs is not None:
             self.unwrapped.game.set_observation(obs)
         ########################

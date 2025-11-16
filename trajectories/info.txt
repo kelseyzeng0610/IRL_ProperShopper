@@ -1,0 +1,3 @@
+Log of what trajectories the files in this folder represent.
+
+1. trajectories-1.pkl - generated from the expert agent on a task that navigates from the entrance to the sausage shelf. Does not interact with anything.

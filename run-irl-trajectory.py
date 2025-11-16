@@ -1,0 +1,96 @@
+import socket
+from utils import recv_socket_data
+import json
+from max_entropy_irl import writeProgressBar
+from irl_agent import loadTrajectories, INT_TO_DIRECTION_STR, phi, roundToPointTwoFive
+
+
+# def openGeneratedTrajectory(fileName):
+#     with open(fileName, 'r') as f:
+#         data = f.readlines()
+#     data = [l.strip() for l in data]
+#     return data
+
+# def debugExpertTrajectory():
+#     expertTrajectories, _ = loadTrajectories("trajectories.pkl")
+#     t = expertTrajectories[0]
+#     actions = [INT_TO_DIRECTION_STR[step[1]] for step in t]
+#     return actions
+
+def openGeneratedTrajectory(fileName):
+    data = []
+    with open(fileName, 'r') as f:
+        data = json.load(f)
+
+    start, actions, end = [], [], []
+    traj = data[0]
+    for step in traj:
+        start.append(step[0])
+        actions.append(INT_TO_DIRECTION_STR[step[1]])
+        end.append(step[2])
+
+    return start, actions, end
+
+if __name__ == "__main__":
+    # Connect to Supermarket
+    HOST = '127.0.0.1'
+    PORT = 9000
+    sock_game = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock_game.connect((HOST, PORT))
+    sock_game.send(str.encode("0 RESET"))  # reset the game
+    state = recv_socket_data(sock_game)
+    state = json.loads(state)
+
+    # start, actions, end = openGeneratedTrajectory("generated-actions.json")
+    # for i in range(len(actions)):
+    #     action = actions[i]
+    #     model_state = start[i] # TODO: get the model's transition predicted next state
+    #     real_state = (
+    #         roundToPointTwoFive(state['observation']['players'][0]['position'][0]),
+    #         roundToPointTwoFive(state['observation']['players'][0]['position'][1]),
+    #         state['observation']['players'][0]['direction'],
+    #     )
+
+    #     socketAction = "0 " + action
+    #     sock_game.send(str.encode(socketAction))  # send action to env
+    #     next_state = recv_socket_data(sock_game)  # get observation from env
+    #     next_state = json.loads(next_state)
+
+    #     model_next_state = end[i]
+    #     real_next_state = (
+    #         roundToPointTwoFive(next_state['observation']['players'][0]['position'][0]),
+    #         roundToPointTwoFive(next_state['observation']['players'][0]['position'][1]),
+    #         next_state['observation']['players'][0]['direction'],
+    #     )
+
+    #     print("Iteration:", i)
+    #     print("  Model start", model_state, ", Actual:", real_state)
+    #     print("  Action:", action)
+    #     print("  Model end:", model_next_state, ", Actual:", real_next_state)
+
+    #     state = next_state
+    #     writeProgressBar(i, len(actions))
+    # actions = ["EAST", "EAST", "EAST", "REVERT", "NORTH", "REVERT"]
+    actions = [
+        "0 EAST",
+        "0 NORTH",
+        "0 REVERT",
+        "0 SOUTH",
+        "0 REVERT",
+        "0 WEST",
+        "0 REVERT",
+        "0 EAST",
+        "0 EAST",
+        "0 EAST",
+        "0 NORTH",
+        "0 NORTH",
+        "0 REVERT"
+        # "SET {\"players\": [{\"index\": 0, \"position\": [9, 19], \"width\": 0.6, \"height\": 0.4, \"sprite_path\": null, \"direction\": 0, \"curr_cart\": -1, \"shopping_list\": [\"lettuce\", \"yellow bell pepper\", \"swiss cheese\"], \"list_quant\": [1, 1, 1], \"holding_food\": null, \"bought_holding_food\": false, \"budget\": 100, \"bagged_items\": [], \"bagged_quant\": []}], \"carts\": [], \"baskets\": [], \"registers\": [{\"height\": 2.5, \"width\": 2.25, \"position\": [1, 4.5], \"num_items\": 0, \"foods\": [], \"food_quantities\": [], \"food_images\": [], \"capacity\": 12, \"image\": \"images/Registers/registersA.png\", \"curr_player\": null}, {\"height\": 2.5, \"width\": 2.25, \"position\": [1, 9.5], \"num_items\": 0, \"foods\": [], \"food_quantities\": [], \"food_images\": [], \"capacity\": 12, \"image\": \"images/Registers/registersB.png\", \"curr_player\": null}], \"shelves\": [{\"height\": 1, \"width\": 2, \"position\": [5.5, 1.5], \"food\": \"milk\", \"price\": 2, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/milk.png\", \"shelf_image\": \"images/Shelves/fridge.png\", \"food_name\": \"milk\"}, {\"height\": 1, \"width\": 2, \"position\": [7.5, 1.5], \"food\": \"milk\", \"price\": 2, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/milk.png\", \"shelf_image\": \"images/Shelves/fridge.png\", \"food_name\": \"milk\"}, {\"height\": 1, \"width\": 2, \"position\": [9.5, 1.5], \"food\": \"chocolate milk\", \"price\": 2, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/milk_chocolate.png\", \"shelf_image\": \"images/Shelves/fridge.png\", \"food_name\": \"chocolate milk\"}, {\"height\": 1, \"width\": 2, \"position\": [11.5, 1.5], \"food\": \"chocolate milk\", \"price\": 2, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/milk_chocolate.png\", \"shelf_image\": \"images/Shelves/fridge.png\", \"food_name\": \"chocolate milk\"}, {\"height\": 1, \"width\": 2, \"position\": [13.5, 1.5], \"food\": \"strawberry milk\", \"price\": 2, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/milk_strawberry.png\", \"shelf_image\": \"images/Shelves/fridge.png\", \"food_name\": \"strawberry milk\"}, {\"height\": 1, \"width\": 2, \"position\": [5.5, 5.5], \"food\": \"apples\", \"price\": 5, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/apples.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"apples\"}, {\"height\": 1, \"width\": 2, \"position\": [7.5, 5.5], \"food\": \"oranges\", \"price\": 5, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/oranges.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"oranges\"}, {\"height\": 1, \"width\": 2, \"position\": [9.5, 5.5], \"food\": \"banana\", \"price\": 1, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/banana.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"banana\"}, {\"height\": 1, \"width\": 2, \"position\": [11.5, 5.5], \"food\": \"strawberry\", \"price\": 1, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/strawberry.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"strawberry\"}, {\"height\": 1, \"width\": 2, \"position\": [13.5, 5.5], \"food\": \"raspberry\", \"price\": 1, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/raspberry.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"raspberry\"}, {\"height\": 1, \"width\": 2, \"position\": [5.5, 9.5], \"food\": \"sausage\", \"price\": 4, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/sausage.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"sausage\"}, {\"height\": 1, \"width\": 2, \"position\": [7.5, 9.5], \"food\": \"steak\", \"price\": 5, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/meat_01.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"steak\"}, {\"height\": 1, \"width\": 2, \"position\": [9.5, 9.5], \"food\": \"steak\", \"price\": 5, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/meat_02.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"steak\"}, {\"height\": 1, \"width\": 2, \"position\": [11.5, 9.5], \"food\": \"chicken\", \"price\": 6, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/meat_03.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"chicken\"}, {\"height\": 1, \"width\": 2, \"position\": [13.5, 9.5], \"food\": \"ham\", \"price\": 6, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/ham.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"ham\"}, {\"height\": 1, \"width\": 2, \"position\": [5.5, 13.5], \"food\": \"brie cheese\", \"price\": 5, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/cheese_01.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"brie cheese\"}, {\"height\": 1, \"width\": 2, \"position\": [7.5, 13.5], \"food\": \"swiss cheese\", \"price\": 5, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/cheese_02.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"swiss cheese\"}, {\"height\": 1, \"width\": 2, \"position\": [9.5, 13.5], \"food\": \"cheese wheel\", \"price\": 15, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/cheese_03.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"cheese wheel\"}, {\"height\": 1, \"width\": 2, \"position\": [11.5, 13.5], \"food\": \"cheese wheel\", \"price\": 15, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/cheese_03.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"cheese wheel\"}, {\"height\": 1, \"width\": 2, \"position\": [13.5, 13.5], \"food\": \"cheese wheel\", \"price\": 15, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/cheese_03.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"cheese wheel\"}, {\"height\": 1, \"width\": 2, \"position\": [5.5, 17.5], \"food\": \"garlic\", \"price\": 2, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/garlic.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"garlic\"}, {\"height\": 1, \"width\": 2, \"position\": [7.5, 17.5], \"food\": \"leek\", \"price\": 1, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/leek_onion.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"leek\"}, {\"height\": 1, \"width\": 2, \"position\": [9.5, 17.5], \"food\": \"red bell pepper\", \"price\": 2, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/bell_pepper_red.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"red bell pepper\"}, {\"height\": 1, \"width\": 2, \"position\": [11.5, 17.5], \"food\": \"carrot\", \"price\": 1, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/carrot.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"carrot\"}, {\"height\": 1, \"width\": 2, \"position\": [13.5, 17.5], \"food\": \"lettuce\", \"price\": 2, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/lettuce.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"lettuce\"}, {\"height\": 1, \"width\": 2, \"position\": [5.5, 21.5], \"food\": \"avocado\", \"price\": 2, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/avocado.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"avocado\"}, {\"height\": 1, \"width\": 2, \"position\": [7.5, 21.5], \"food\": \"broccoli\", \"price\": 1, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/broccoli.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"broccoli\"}, {\"height\": 1, \"width\": 2, \"position\": [9.5, 21.5], \"food\": \"cucumber\", \"price\": 2, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/cucumber.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"cucumber\"}, {\"height\": 1, \"width\": 2, \"position\": [11.5, 21.5], \"food\": \"yellow bell pepper\", \"price\": 2, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/bell_pepper_yellow.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"yellow bell pepper\"}, {\"height\": 1, \"width\": 2, \"position\": [13.5, 21.5], \"food\": \"onion\", \"price\": 2, \"capacity\": 12, \"quantity\": 12, \"food_image\": \"images/food/onion.png\", \"shelf_image\": \"images/Shelves/shelf.png\", \"food_name\": \"onion\"}], \"cartReturns\": [{\"height\": 6, \"width\": 0.7, \"position\": [1, 18.5], \"quantity\": 6}, {\"height\": 6, \"width\": 0.7, \"position\": [2, 18.5], \"quantity\": 6}], \"basketReturns\": [{\"height\": 0.2, \"width\": 0.3, \"position\": [3.5, 18.5], \"quantity\": 12}], \"counters\": [{\"height\": 2.25, \"width\": 1.5, \"position\": [18.25, 4.75], \"food\": \"prepared foods\", \"price\": 15}, {\"height\": 2.25, \"width\": 1.5, \"position\": [18.25, 10.75], \"food\": \"fresh fish\", \"price\": 12}, {\"height\": 2.25, \"width\": 1.5, \"position\": [18.25, 10.75], \"food\": \"fresh fish\", \"price\": 12}]}"
+    ]
+    for action in actions:
+        sock_game.send(str.encode(action))
+        next_state = recv_socket_data(sock_game)
+        next_state = json.loads(next_state)
+
+        state = next_state
+
