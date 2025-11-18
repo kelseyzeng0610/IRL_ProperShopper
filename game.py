@@ -190,12 +190,17 @@ class Game:
             ],
         [   ['apples', 'oranges', 'cheese wheel', 'leek', 'red bell pepper', 'avocado', 'raspberry'],
             ['apples', 'milk', 'fresh fish', 'brie cheese', 'prepared foods', 'avocado', 'raspberry']
-            ]
+            ],
+           [ # Mode 3: HIRL Phase 1 - 4 item list
+            ['milk', 'apples', 'brie cheese', 'sausage'],
+            ['milk', 'apples', 'brie cheese', 'sausage']
+        ],
         ]
         self.preset_quantities = [
             [[1], [2]],
             [[1, 1, 1, 1], [1, 2, 1, 2, 1]],
-            [[1, 1, 1, 1, 1, 1, 1], [1, 2, 1, 2, 1, 3, 1]]
+            [[1, 1, 1, 1, 1, 1, 1], [1, 2, 1, 2, 1, 3, 1]],
+            [[1, 1, 1, 1], [1, 1, 1, 1]]
         ]
                                      
 
@@ -340,8 +345,8 @@ class Game:
                 player = Player(i + 1.2, 15.6, Direction.EAST, i, self.render_number, sprite_path)
                 if self.random_start:
                     self.randomize_position(player)
-                    
-                if mode != 0 and self.num_players == 2:
+
+                if mode != 0 and self.num_players >= 1:
                     print("**********************setting shopping list******************************")
                     print(self.preset_shopping_list[mode][i], self.preset_quantities[mode][i])
                     print("**********************setting shopping list******************************")

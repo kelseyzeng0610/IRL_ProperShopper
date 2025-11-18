@@ -43,230 +43,157 @@ class StateFeatureExtractor:
 
     def _extract_handcrafted(self, obs):
         """
-        Extract task-relevant features (RECOMMENDED)
+        Extract task-relevant features (10 features total)
 
-        Features capture:
-        - (position)
-        - (direction)
-        - (holding)
-        - (progress)
-        - (next_location)
+        FINAL DESIGN (10 features):
+        - 5 navigation features (Euclidean distances)
+        - 3 progress features (task completion + purchase tracking)
+        - 2 state features (current conditions)
         """
         # Handle both formats: direct obs or wrapped in 'observation' key
         if 'observation' in obs:
+            state_dict = obs
             game_obs = obs['observation']
         else:
+            state_dict = {'observation': obs}
             game_obs = obs
 
         player = game_obs['players'][0]
+        shopping_list = player['shopping_list']
+
+        # Get container contents
+        cart_contents, cart_purchased, basket_contents, basket_purchased = self._get_container_contents(player, game_obs)
+        all_contents = cart_contents + basket_contents
+        all_purchased = cart_purchased + basket_purchased
+
+        # Count progress
+        num_collected = len(all_contents)
+        num_purchased = len(all_purchased)
+        total_items = len(shopping_list)
 
         features = []
 
-        # ===== POSITION FEATURES (2) =====
-        features.extend(player['position'])  # x, y position
+        # ========== NAVIGATION FEATURES (5 features) ==========
 
-        # ===== DIRECTION FEATURE  =====
-        direction_onehot = [0, 0, 0, 0]
-        direction_onehot[player['direction']] = 1
-        features.extend(direction_onehot)
+        # 1. Distance to container (basket or cart based on list size)
+        if total_items <= 6:
+            # Use basket
+            rel_pos = rel_pos_basket_return(state_dict)
+        else:
+            # Use cart
+            rel_pos = rel_pos_cart_return(state_dict)
+        distance_to_container = np.sqrt(rel_pos[0]**2 + rel_pos[1]**2)
+        features.append(self._normalize_distance(distance_to_container))
 
-        # ===== INVENTORY FEATURES =====
-        # Has cart/basket? (2)
-        has_cart = 1 if player['curr_cart'] != -1 else 0
-        features.append(has_cart)
+        # 2. Distance to next item to collect 
+        distance_to_next_item = 0.0
+        for item in shopping_list:
+            if item not in all_contents:
+                try:
+                    if item in ['prepared foods', 'fresh fish']:
+                        rel_pos = rel_pos_counter(state_dict, item)
+                    else:
+                        rel_pos = rel_pos_shelf(state_dict, item)
+                    distance_to_next_item = np.sqrt(rel_pos[0]**2 + rel_pos[1]**2)
+                except:
+                    distance_to_next_item = 0.0
+                break  
+        features.append(self._normalize_distance(distance_to_next_item))
 
-        has_basket = 1 if self._has_basket(player, game_obs) else 0
-        features.append(has_basket)
+        # 3. Distance to checkout 
+        rel_pos = rel_pos_register(state_dict)
+        distance_to_checkout = np.sqrt(rel_pos[0]**2 + rel_pos[1]**2)
+        features.append(self._normalize_distance(distance_to_checkout))
 
-        # Holding food? (1)
-        features.append(1 if player['holding_food'] else 0)
+        # 4. Distance to exit 
+        rel_pos = rel_pos_exit(state_dict)
+        distance_to_exit = np.sqrt(rel_pos[0]**2 + rel_pos[1]**2)
+        features.append(self._normalize_distance(distance_to_exit))
 
-        # Number of items in container (1)
-        num_items_in_container = self._count_items_in_container(player, game_obs)
-        features.append(num_items_in_container)
-
-        # ===== TASK PROGRESS FEATURES =====
-        # Shopping list size (1)
-        shopping_list_size = len(player['shopping_list'])
-        features.append(shopping_list_size)
-
-        # Items collected so far (1)
-        items_collected = num_items_in_container
-        features.append(items_collected)
-
-        # Items remaining (1)
-        total_items_needed = sum(player['list_quant'])
-        items_remaining = total_items_needed - items_collected
-        features.append(items_remaining)
-
-        # Completion rate (1)
-        completion = items_collected / total_items_needed if total_items_needed > 0 else 1.0
-        features.append(completion)
-
-        # ===== SPATIAL FEATURES (distances to key locations) =====
-        # Wrap in expected format for utils functions
-        state_dict = {'observation': game_obs}
-
-        # Distance to cart/basket return (2)
-        dist_to_cart_return = rel_pos_cart_return(state_dict)
-        features.append(dist_to_cart_return[0])  # x distance
-        features.append(dist_to_cart_return[1])  # y distance
-
-        # Distance to nearest needed shelf (2)
-        dist_to_shelf = self._distance_to_needed_shelf(player, game_obs)
-        features.append(dist_to_shelf[0])
-        features.append(dist_to_shelf[1])
-
-        # Distance to register (2)
-        dist_to_register = rel_pos_register(state_dict)
-        features.append(dist_to_register[0])
-        features.append(dist_to_register[1])
-
-        # Distance to exit (2)
-        dist_to_exit = rel_pos_exit(state_dict)
-        features.append(dist_to_exit[0])
-        features.append(dist_to_exit[1])
-
-        # Distance to walkway (1)
+        # 5. Distance to walkway 
         rel_pos = rel_pos_walkway(state_dict)
-        dist_to_walkway = np.sqrt(rel_pos[0]**2 + rel_pos[1]**2)
-        features.append(dist_to_walkway)
+        distance_to_walkway = np.sqrt(rel_pos[0]**2 + rel_pos[1]**2)
+        features.append(self._normalize_distance(distance_to_walkway))
 
-        # ===== CHECKOUT STATUS =====
-        # Items purchased? (1)
-        items_purchased = self._count_purchased_items(player, game_obs)
-        features.append(items_purchased)
+        # ========== PROGRESS FEATURES (3 features) ==========
 
-        # All items purchased? (1)
-        all_purchased = 1 if items_purchased >= total_items_needed else 0
-        features.append(all_purchased)
+        # 6. Collection progress ratio
+        features.append(num_collected / total_items if total_items > 0 else 0.0)
 
-        # Total: 25 features
+        # 7. Has container: 0=none, 0.5=basket, 1.0=cart
+        has_basket = len(basket_contents) > 0 or len(basket_purchased) > 0
+        has_cart = player['curr_cart'] != -1
+        if has_cart:
+            features.append(1.0)  # Cart
+        elif has_basket:
+            features.append(0.5)  # Basket
+        else:
+            features.append(0.0)  # No container
 
+        # 8. Items purchased (binary - detects checkout transition)
+        features.append(1.0 if num_purchased > 0 else 0.0)
+
+        # ========== STATE FEATURES (2 features) ==========
+
+        # 9. Holding item (currently carrying food)
+        features.append(1.0 if player.get('holding_food') is not None else 0.0)
+
+        # 10. At interaction location (shelf/counter/register)
+        at_interaction = 0.0
+        if distance_to_next_item < 0.5:  # Close to item shelf
+            at_interaction = 1.0
+        elif distance_to_checkout < 0.5:  # Close to register
+            at_interaction = 1.0
+        elif distance_to_container < 0.5:  # Close to container return
+            at_interaction = 1.0
+        features.append(at_interaction)
+
+        # Total: 10 features
         return np.array(features, dtype=np.float32)
 
-    def _has_basket(self, player, obs):
-        """Check if player has a basket"""
-        for basket in obs['baskets']:
-            if basket['owner'] == player['index']:
-                return True
-        return False
+    def _get_container_contents(self, player, obs):
+        """Get all container contents"""
+        cart_contents = []
+        cart_purchased = []
+        basket_contents = []
+        basket_purchased = []
 
-    def _count_items_in_container(self, player, obs):
-        """Count total items in player's cart/basket (purchased + unpurchased)"""
-        count = 0
-
-        # Check carts
+        # Check cart
         if player['curr_cart'] != -1:
             cart = obs['carts'][player['curr_cart']]
-            count += sum(cart['contents_quant'])
-            count += sum(cart['purchased_quant'])
+            cart_contents = cart.get('contents', [])
+            cart_purchased = cart.get('purchased_contents', [])
 
         # Check baskets
         for basket in obs['baskets']:
-            if basket['owner'] == player['index']:
-                count += sum(basket['contents_quant'])
-                count += sum(basket['purchased_quant'])
+            if basket.get('owner', -1) == player['index']:
+                basket_contents.extend(basket.get('contents', []))
+                basket_purchased.extend(basket.get('purchased_contents', []))
 
-        return count
+        return cart_contents, cart_purchased, basket_contents, basket_purchased
 
-    def _count_purchased_items(self, player, obs):
-        """Count only purchased items"""
-        count = 0
-
-        if player['curr_cart'] != -1:
-            cart = obs['carts'][player['curr_cart']]
-            count += sum(cart['purchased_quant'])
-
-        for basket in obs['baskets']:
-            if basket['owner'] == player['index']:
-                count += sum(basket['purchased_quant'])
-
-        return count
-
-    def _distance_to_needed_shelf(self, player, obs):
-        """Distance to nearest shelf with item on shopping list"""
-        # Find items still needed
-        inventory = self._get_inventory_dict(player, obs)
-
-        needed_items = []
-        for i, food in enumerate(player['shopping_list']):
-            needed_qty = player['list_quant'][i]
-            current_qty = inventory.get(food, 0)
-            if current_qty < needed_qty:
-                needed_items.append(food)
-
-        if not needed_items:
-            return (0.0, 0.0)  
-
-        # Find nearest shelf with needed item
-        min_dist = float('inf')
-        min_rel_pos = (0.0, 0.0)
-
-        state_dict = {'observation': obs}
-
-        for food in needed_items:
-            try:
-                if food in ['prepared foods', 'fresh fish']:
-                    rel_pos = rel_pos_counter(state_dict, food)
-                else:
-                    rel_pos = rel_pos_shelf(state_dict, food)
-
-                dist = np.sqrt(rel_pos[0]**2 + rel_pos[1]**2)
-                if dist < min_dist:
-                    min_dist = dist
-                    min_rel_pos = rel_pos
-            except:
-                continue
-
-        return min_rel_pos
-
-    def _get_inventory_dict(self, player, obs):
-        """Get dictionary of items in inventory"""
-        inventory = defaultdict(int)
-
-        if player['holding_food']:
-            inventory[player['holding_food']] += 1
-
-        if player['curr_cart'] != -1:
-            cart = obs['carts'][player['curr_cart']]
-            for i, food in enumerate(cart['contents']):
-                inventory[food] += cart['contents_quant'][i]
-            for i, food in enumerate(cart['purchased_contents']):
-                inventory[food] += cart['purchased_quant'][i]
-
-        for basket in obs['baskets']:
-            if basket['owner'] == player['index']:
-                for i, food in enumerate(basket['contents']):
-                    inventory[food] += basket['contents_quant'][i]
-                for i, food in enumerate(basket['purchased_contents']):
-                    inventory[food] += basket['purchased_quant'][i]
-
-        return inventory
+    def _normalize_distance(self, dist, max_dist=35.0):
+        """Normalize distance to [0, 1] range"""
+        return min(dist / max_dist, 1.0)
 
     def get_feature_dim(self):
         """Return dimensionality of feature vector"""
         if self.feature_type == 'handcrafted':
-            return 25
+            return 10
         else:
             raise NotImplementedError()
 
     def get_feature_names(self):
         """Return names of features for debugging"""
         return [
-            'pos_x', 'pos_y',
-            'dir_north', 'dir_south', 'dir_east', 'dir_west',
-            'has_cart', 'has_basket', 'holding_food',
-            'items_in_container', 'shopping_list_size',
-            'items_collected', 'items_remaining', 'completion_rate',
-            'dist_cart_return_x', 'dist_cart_return_y',
-            'dist_shelf_x', 'dist_shelf_y',
-            'dist_register_x', 'dist_register_y',
-            'dist_exit_x', 'dist_exit_y',
-            'dist_walkway',
-            'items_purchased', 'all_purchased'
+            'distance_to_container',
+            'distance_to_next_item',
+            'distance_to_checkout',
+            'distance_to_exit',
+            'distance_to_walkway',
+            'collection_progress_ratio',
+            'has_container',
+            'items_purchased',
+            'holding_item',
+            'at_interaction_location'
         ]
-
-
-
-   
