@@ -6,3 +6,4 @@ numpy==2.2.1
 pygame==2.6.1
 typing_extensions==4.12.2
 matplotlib
+scikit-learn
