@@ -162,7 +162,7 @@ def augmentTrajectories(trajectories, subgoals):
         augmented.append(stepsWithProgress)
     return augmented
 
-def trainSingleMaxEntForFullTask(expertTrajectories, subgoals):
+def trainSingleMaxEntForFullTask(expertTrajectories, subgoals, theta=None):
     augmentedTrajectories = augmentTrajectories(expertTrajectories, subgoals)
     def getNextState(state, action):
         # state here has the progress vector
@@ -188,37 +188,36 @@ def trainSingleMaxEntForFullTask(expertTrajectories, subgoals):
         targetProgress = state[2:]
         return np.all(targetProgress == 1)
     
+    theta_hat, learner = None, None
     initialProgress = np.zeros(len(subgoals), dtype=int)
     initialState = np.concatenate([np.asarray([0,0]), initialProgress])
     phi = getphi(subgoals)
-    theta_random = np.random.uniform(low=0.0, high=0.1, size=len(phi(initialState)))
-    learner = MaxEntropyIRL(
-        theta=theta_random,
-        actions=np.arange(4),
-        probeNextState=getNextState,
-        initialState=initialState,
-        gameOver=gameOver,
-        phi=phi,
-    )
-    theta_hat, grad_norms = learner.learn(augmentedTrajectories, num_iterations=200, alpha=0.05, num_samples=50)
-    with open("hirl-full-params.pkl", "wb") as f:
-        pickle.dump(theta_hat, f)
-    print("For full task, predicted theta:", theta_hat)
-    plt.plot(grad_norms)
-    plt.title("Gradient Norms Over Iterations")
-    plt.xlabel("Iteration")
-    plt.ylabel("Gradient Norm")
-    plt.grid(True)
-    plt.show()
+    if theta is None:
+        theta_random = np.random.uniform(low=0.0, high=0.1, size=len(phi(initialState)))
+        learner = MaxEntropyIRL(
+            theta=theta_random,
+            actions=np.arange(4),
+            probeNextState=getNextState,
+            initialState=initialState,
+            gameOver=gameOver,
+            phi=phi,
+        )
+        theta_hat, grad_norms = learner.learn(augmentedTrajectories, num_iterations=200, alpha=0.05, num_samples=50)
+    else:
+        learner = MaxEntropyIRL(
+            theta=theta,
+            actions=np.arange(4),
+            probeNextState=getNextState,
+            initialState=initialState,
+            gameOver=gameOver,
+            phi=phi,
+        )
+        return theta, learner
+
     
-    sampleTrajectory = learner.stochastic_trajectory(maxLength=100)
-    x, y = [step[0] for step in sampleTrajectory], [step[1] for step in sampleTrajectory]
-    print("Sampled trajectory for full task:", sampleTrajectory)
-    plt.plot(x, y, 'o-', color='green', label='Full Task')
-    plt.grid(True)
-    plt.legend()
-    plt.title("Sample Trajectory with single MaxEnt IRL Agent for Full Task")
-    plt.show()
+    return theta_hat, learner
+    
+    
 
 if __name__ == "__main__":
     # Example - a 5x5 grid where you start at 0,0 and the goal is to navigate to 4,0, then 2,4
@@ -236,9 +235,28 @@ if __name__ == "__main__":
 
     # subgoals = np.array([[4,0], [2,4]])
     fullHIRL = True
+    preLearned = True
+
+    def sampleAndPlotFullHIRL(learner):
+        sampleTrajectory = learner.stochastic_trajectory(maxLength=50)
+        x, y = [step[0] for step in sampleTrajectory], [step[1] for step in sampleTrajectory]
+        plt.plot(x, y, 'o-', color='green', label='Full Task')
+        plt.grid(True)
+        plt.legend()
+        plt.title("Sample Trajectory with single MaxEnt IRL Agent for Full Task")
+        plt.show()
+
 
     if fullHIRL:
-        trainSingleMaxEntForFullTask(expertTrajectories, subgoals)
+        if preLearned: 
+            with open("hirl-full-params.pkl", "rb") as f:
+                theta_hat = pickle.load(f)
+            print("Loaded pre-learned parameters for full HIRL:", theta_hat)
+            _, learner = trainSingleMaxEntForFullTask(expertTrajectories, subgoals, theta=theta_hat)
+        else:
+            theta_hat, learner = trainSingleMaxEntForFullTask(expertTrajectories, subgoals)
+            print("Learned parameters for full HIRL:", theta_hat)
+        sampleAndPlotFullHIRL(learner)
     else:
         trainMaxEntBySubtask(expertTrajectories, subgoals)
 
