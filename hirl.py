@@ -2,6 +2,7 @@ import numpy as np
 from max_entropy_irl import MaxEntropyIRL
 from sklearn.mixture import BayesianGaussianMixture
 import matplotlib.pyplot as plt
+import pickle
 
 class HIRLSegmenter:
     def __init__(self):
@@ -64,21 +65,15 @@ class HIRLSegmenter:
         # subgoals = np.asarray(subgoals)
         # return subgoals
 
-if __name__ == "__main__":
-    # Example - a 5x5 grid where you start at 0,0 and the goal is to navigate to 4,0, then 2,4
-    # So it's a compound goal that cannot be learned with just a standard IRL max entropy model like we did before
+actionMap = {
+    0: lambda x: np.asarray([x[0], x[1]-1]),
+    1: lambda x: np.asarray([x[0], x[1]+1]),
+    2: lambda x: np.asarray([x[0]-1, x[1]]),
+    3: lambda x: np.asarray([x[0]+1, x[1]])
+}
 
-    expertTrajectories = np.asarray([
-        [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (3, 0), (2, 0), (2, 1), (2, 2), (2, 3), (2, 4)],
-        [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4), (3, 4), (2, 4)],
-        [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (4, 1), (3, 1), (3, 2), (2, 2), (2, 3), (2, 4)],
-    ])
-
-    segmenter = HIRLSegmenter()
-    subgoals = segmenter.subgoals(expertTrajectories)
-    subgoals = np.vstack([subgoals, np.asarray([2,4])])
-
-    # subgoals = np.array([[4,0], [2,4]])
+def trainMaxEntBySubtask(expertTrajectories, subgoals):
+    # split the trajectories by segment so each IRL agent can learn a single segment
     segmentedTrajectories = []
     for trajectory in expertTrajectories:
         segments = []
@@ -101,13 +96,7 @@ if __name__ == "__main__":
         assert len(traj) == numSegments
 
     trajectoriesBySegment = [[segmentedTrajectories[j][i] for j in range(len(segmentedTrajectories))] for i in range(numSegments)]
-        
-    actionMap = {
-        0: lambda x: np.asarray([x[0], x[1]-1]),
-        1: lambda x: np.asarray([x[0], x[1]+1]),
-        2: lambda x: np.asarray([x[0]-1, x[1]]),
-        3: lambda x: np.asarray([x[0]+1, x[1]])
-    }
+
     def getNextState(state, action):
         return actionMap[action](state)
 
@@ -115,7 +104,6 @@ if __name__ == "__main__":
     # For each segment, train a MaxEntropyIRL to learn that segment
     for i in range(numSegments):
         expertSegments = trajectoriesBySegment[i]
-        # expertSegments = [[(s, None, None) for s in expertseg] for expertseg in expertSegments]
         subgoalLocation = subgoals[i]
 
         initialLocation = (0, 0) if i == 0 else subgoals[i-1]
@@ -141,7 +129,7 @@ if __name__ == "__main__":
             gameOver=getReachedSubgoal(subgoalLocation),
             phi=phi,
         )
-        theta_hat, grad_norms = learner.learn(expertSegments, num_iterations=200, alpha=0.05, num_samples=50)
+        theta_hat, _ = learner.learn(expertSegments, num_iterations=200, alpha=0.05, num_samples=50)
         print("For segment", i, "predicted theta:", theta_hat)
         sampleTrajectory = learner.stochastic_trajectory(maxLength=40)
         trajectoriesToPlot.append(sampleTrajectory)
@@ -155,6 +143,106 @@ if __name__ == "__main__":
     plt.grid(True)
     plt.legend()
     plt.show()
+
+def augmentTrajectories(trajectories, subgoals):
+    # add a progress vector to the trajectories
+    numSubgoals = len(subgoals)
+    augmented = []
+    for trajectory in trajectories:
+        seenSubgoals = np.zeros(numSubgoals, dtype=int)
+        stepsWithProgress = []
+        for step in trajectory:
+            position = np.asarray(step)
+            for subgoalIdx, subgoal in enumerate(subgoals):
+                if np.allclose(position, subgoal):
+                    # we reached one of the subgoals
+                    seenSubgoals[subgoalIdx] = 1
+            stateWithProgress = np.concatenate([position, seenSubgoals])
+            stepsWithProgress.append(stateWithProgress)
+        augmented.append(stepsWithProgress)
+    return augmented
+
+def trainSingleMaxEntForFullTask(expertTrajectories, subgoals):
+    augmentedTrajectories = augmentTrajectories(expertTrajectories, subgoals)
+    def getNextState(state, action):
+        # state here has the progress vector
+        currentPosition, progress = np.asarray(state[:2]), np.asarray(state[2:]).copy()
+        nextPosition = actionMap[action](currentPosition)
+        for subgoalIdx, subgoal in enumerate(subgoals):
+            if np.allclose(subgoal, nextPosition):
+                progress[subgoalIdx] = 1
+        
+        return np.concatenate([nextPosition, progress])
+    
+    def getphi(subgoals):
+        def phi(state):
+            pos = state[:2]
+            progress = state[2:]
+            distances = np.abs(subgoals - pos).flatten()
+            mask = np.repeat(1-progress, 2)
+            feat = np.concatenate([distances*mask, progress])
+            return feat
+        return phi
+    
+    def gameOver(state):
+        targetProgress = state[2:]
+        return np.all(targetProgress == 1)
+    
+    initialProgress = np.zeros(len(subgoals), dtype=int)
+    initialState = np.concatenate([np.asarray([0,0]), initialProgress])
+    phi = getphi(subgoals)
+    theta_random = np.random.uniform(low=0.0, high=0.1, size=len(phi(initialState)))
+    learner = MaxEntropyIRL(
+        theta=theta_random,
+        actions=np.arange(4),
+        probeNextState=getNextState,
+        initialState=initialState,
+        gameOver=gameOver,
+        phi=phi,
+    )
+    theta_hat, grad_norms = learner.learn(augmentedTrajectories, num_iterations=200, alpha=0.05, num_samples=50)
+    with open("hirl-full-params.pkl", "wb") as f:
+        pickle.dump(theta_hat, f)
+    print("For full task, predicted theta:", theta_hat)
+    plt.plot(grad_norms)
+    plt.title("Gradient Norms Over Iterations")
+    plt.xlabel("Iteration")
+    plt.ylabel("Gradient Norm")
+    plt.grid(True)
+    plt.show()
+    
+    sampleTrajectory = learner.stochastic_trajectory(maxLength=100)
+    x, y = [step[0] for step in sampleTrajectory], [step[1] for step in sampleTrajectory]
+    print("Sampled trajectory for full task:", sampleTrajectory)
+    plt.plot(x, y, 'o-', color='green', label='Full Task')
+    plt.grid(True)
+    plt.legend()
+    plt.title("Sample Trajectory with single MaxEnt IRL Agent for Full Task")
+    plt.show()
+
+if __name__ == "__main__":
+    # Example - a 5x5 grid where you start at 0,0 and the goal is to navigate to 4,0, then 2,4
+    # So it's a compound goal that cannot be learned with just a standard IRL max entropy model like we did before
+
+    expertTrajectories = np.asarray([
+        [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (3, 0), (2, 0), (2, 1), (2, 2), (2, 3), (2, 4)],
+        [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (4, 1), (4, 2), (4, 3), (4, 4), (3, 4), (2, 4)],
+        [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (4, 1), (3, 1), (3, 2), (2, 2), (2, 3), (2, 4)],
+    ])
+
+    segmenter = HIRLSegmenter()
+    subgoals = segmenter.subgoals(expertTrajectories)
+    subgoals = np.vstack([subgoals, np.asarray([2,4])]) # add the final goal
+
+    # subgoals = np.array([[4,0], [2,4]])
+    fullHIRL = True
+
+    if fullHIRL:
+        trainSingleMaxEntForFullTask(expertTrajectories, subgoals)
+    else:
+        trainMaxEntBySubtask(expertTrajectories, subgoals)
+
+    
 
 
 
