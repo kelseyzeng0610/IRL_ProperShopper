@@ -14,7 +14,9 @@ class HIRLSegmenter:
             trajectory = expertTrajectories[trajIdx]
             for i in range(len(trajectory) - windowSize + 1):
                 window = np.asarray(trajectory[i : i+windowSize])
-                window = window.flatten()
+                # Use deltas (velocities) instead of absolute positions
+                # allows finding changes in direction
+                window = np.diff(window, axis=0).flatten()
                 windows.append(window)
         windows = np.asarray(windows)
 
@@ -44,26 +46,40 @@ class HIRLSegmenter:
     def subgoals(self, expertTrajectories, windowSize=2):
         labels = self.labels(expertTrajectories, windowSize)
         transitions = self.transitions(expertTrajectories, labels, windowSize)
-        transitions = np.unique(transitions, axis=0)
+        # transitions = np.unique(transitions, axis=0)
 
         if len(transitions) == 1:
             return transitions
-        
-        raise Exception("not implemented for more than one transition point")
+
         # otherwise we have multiple subgoals
-        # nComponents = min(5, len(transitions))
-        # subgoalsBGM = BayesianGaussianMixture(
-        #     n_components=nComponents,
-        #     random_state=42
-        # )
-        # subgoalsBGM.fit(transitions)
-        # subgoalLabels = subgoalsBGM.predict(transitions)
-        # subgoals = []
-        # for cluster in np.unique(subgoalLabels):
-        #     points = transitions[subgoalLabels == cluster]
-        #     subgoals.append(points.mean(axis=0))
-        # subgoals = np.asarray(subgoals)
-        # return subgoals
+        nComponents = min(5, len(transitions))
+        subgoalsBGM = BayesianGaussianMixture(
+            n_components=nComponents,
+            random_state=42
+        )
+        subgoalsBGM.fit(transitions)
+        subgoalLabels = subgoalsBGM.predict(transitions)
+        subgoals = []
+        for cluster in np.unique(subgoalLabels):
+            points = transitions[subgoalLabels == cluster]
+            subgoals.append(points.mean(axis=0))
+        subgoals = np.asarray(subgoals)
+        
+        # Sort subgoals by when they appear in the trajectory on average
+        # can do this by finding the average index of the transition points in each cluster
+        # The transitions array is ordered by trajectory then by time.
+        # so the order in transitions is roughly in order
+        cluster_avg_indices = []
+        unique_labels = np.unique(subgoalLabels)
+        for cluster in unique_labels:
+            indices = np.where(subgoalLabels == cluster)[0]
+            cluster_avg_indices.append(np.mean(indices))
+            
+        # sort subgoals based on these average indices
+        sorted_indices = np.argsort(cluster_avg_indices)
+        subgoals = subgoals[sorted_indices]
+        
+        return subgoals
 
 actionMap = {
     0: lambda x: np.asarray([x[0], x[1]-1]),
