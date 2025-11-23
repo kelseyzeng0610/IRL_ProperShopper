@@ -1,4 +1,5 @@
 import numpy as np
+from irl_agent import get_xy
 
 def roundToPointTwoFive(number):
     return np.round(number * 4) / 4
@@ -85,13 +86,7 @@ class ExpertAgent:
 
 
     def trans(self, state):
-        [playerX, playerY] = state["observation"]["players"][0]["position"]        
-        goalX, goalY = self.goals[self.currentGoalIdx]['position'][0], self.goals[self.currentGoalIdx]['position'][1]
-        vector = (goalX - playerX, goalY - playerY)
-        # hasItem = 'sausage' in state['observation']['baskets'][0]['contents']
-        hasItem = False
-
-        return (roundToPointTwoFive(vector[0]), roundToPointTwoFive(vector[1]), hasItem)
+        return get_xy(state)
         
 
     # The main q-table update step. 
@@ -118,8 +113,8 @@ class ExpertAgent:
         nextAction, _, qtablevalues = self.maxQTableValue(stateRepr, forbiddenActions)
 
         # decay our epsilon
-        decayed = self.epsilon * self.decay
-        self.epsilon = max(decayed, self.mini_epsilon)
+        # decayed = self.epsilon * self.decay
+        # self.epsilon = max(decayed, self.mini_epsilon)
         return nextAction
     
     def achievedGoal(self):
