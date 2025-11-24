@@ -125,9 +125,9 @@ def preloadQTable(filePath):
                 klist = json.loads(k)
                 x = np.float64(klist[0])
                 y = np.float64(klist[1])
-                hasItem = bool(klist[2])
+                # hasItem = bool(klist[2])
 
-                keyTuple = (x, y, hasItem)
+                keyTuple = (x, y)
                 qtable[keyTuple] = np.asarray(v)
             qtables[goalName] = qtable
 
@@ -632,16 +632,18 @@ if __name__ == "__main__":
     sock_game.connect((HOST, PORT))
 
     allGoalTypes = ['CART_RETURN', 'BASKET_RETURN', 'INTERACT', 'WALKWAY', 'REGISTER', 'EXIT', 'AISLE', 'SHELF_NAV', 'TOGGLE_CART', 'PICKUP_ITEM', 'COUNTER_NAV', 'PICKUP_COUNTER', 'EAST_WALKWAY', 'LEAVE_COUNTERS', 'PAY']
-    # savedQTables = {t: {} for t in allGoalTypes} # initially our q-table is blank
-    savedQTables = preloadQTable("training-output.json") # Can also resume training from a partially trained output and continue fine-tuning it
 
-    numTrajectories = 10
-    episode_length = 1000 # Increase max episode length since sequences can be long
+    numTrajectories = 5
+    numTrainingEpisodes = 50
+    episode_length = 500 # Increase max episode length since sequences can be long
     success = 0
 
     trajectories = []
     generateTrajectories = True
-    for i in range(numTrajectories):
+
+    savedQTables = preloadQTable("training-output.json") if generateTrajectories else {t: {} for t in allGoalTypes} # initially our q-table is blank
+    n = numTrajectories if generateTrajectories else numTrainingEpisodes
+    for i in range(n):
         sock_game.send(str.encode("0 RESET"))  # reset the game
         state = recv_socket_data(sock_game)
         state = json.loads(state)
@@ -664,7 +666,8 @@ if __name__ == "__main__":
             cnt += 1
             action, action_index = getAction(agent, state, action_commands)
             phi_state = agent.trans(state)
-            trajectory.append(phi_state)
+            if generateTrajectories and (len(trajectory) == 0 or trajectory[-1] != phi_state):
+                trajectory.append(phi_state)
 
             sock_game.send(str.encode(action))  # send action to env
 
@@ -687,7 +690,8 @@ if __name__ == "__main__":
                 if current_goal_idx == len(goals):
                     # We finished all goals
                     print("******", i+1, "COMPLETED ALL GOALS ********")
-                    trajectories.append(trajectory)
+                    if generateTrajectories:
+                        trajectories.append(trajectory)
                     savedQTables = agent.qtables
                     break
                 
@@ -701,11 +705,11 @@ if __name__ == "__main__":
 
     # At the end of training, write our saved q table to an output file
     with open("training-output.json", "w") as file:
-        writeQTableToFile(savedQTables, "training-output.json")
         if generateTrajectories:
             writeTrajectoriesToFile(trajectories, "trajectories.pkl")
             print("\n\n===== Wrote trajectories to trajectories.pkl =====\n\n")
         else:
+            writeQTableToFile(savedQTables, "training-output.json")
             print("\n\n===== Wrote final Q Table to 'training-output.json' =====\n\n")
 
     # Close socket connection

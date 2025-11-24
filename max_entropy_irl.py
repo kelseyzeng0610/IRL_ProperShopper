@@ -41,6 +41,48 @@ class MaxEntropyIRL:
             currentState = nextState
 
         return trajectory
+
+    def greedy_trajectory(self, maxLength=None, epsilon=0.1):
+        currentState = self.initialState
+        trajectory = [currentState]
+        visited_positions = {}  # Track visit counts per position
+        
+        while not self.gameOver(currentState) and (maxLength is None or len(trajectory) < maxLength):
+            q_values = []
+            next_states = []
+            for a in self.actions:
+                ns = np.asarray(self.probeNextState(currentState, a))
+                next_states.append(ns)
+                q_values.append(self.reward(ns))
+
+            q_values = np.array(q_values)
+            
+            # Penalize revisiting positions too many times
+            for i, ns in enumerate(next_states):
+                pos_key = tuple(ns[:2])  # Only use x,y position
+                visit_count = visited_positions.get(pos_key, 0)
+                if visit_count > 0:
+                    # Add penalty that grows with visit count
+                    q_values[i] -= 0.5 * visit_count
+            
+            # Epsilon-greedy: sometimes take random action to escape local optima
+            if np.random.random() < epsilon:
+                bestIdx = np.random.choice(len(next_states))
+            else:
+                # Add small noise to break ties consistently  
+                q_values = q_values + np.random.normal(0, 1e-5, len(q_values))
+                bestIdx = np.argmax(q_values)
+            
+            nextState = next_states[bestIdx]
+            
+            # Track visit count
+            pos_key = tuple(nextState[:2])
+            visited_positions[pos_key] = visited_positions.get(pos_key, 0) + 1
+            
+            trajectory.append(nextState)
+            currentState = nextState
+
+        return trajectory
     
     def feature_count(self, trajectory):
         features = [self.phi(step) for step in trajectory]
