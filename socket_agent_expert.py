@@ -666,7 +666,7 @@ if __name__ == "__main__":
             cnt += 1
             action, action_index = getAction(agent, state, action_commands)
             phi_state = agent.trans(state)
-            if generateTrajectories:
+            if generateTrajectories and (len(trajectory) == 0 or trajectory[-1] != phi_state):
                 trajectory.append(phi_state)
 
             sock_game.send(str.encode(action))  # send action to env

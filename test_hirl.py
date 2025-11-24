@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from hirl import HIRLSegmenter
+import pickle
 
 def visualize():
     print("Generating complex trajectories...")
