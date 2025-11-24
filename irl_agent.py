@@ -66,7 +66,7 @@ shoppingActionMap = {
 }
 
 
-def augmentTrajectoriesShopping(trajectories, subgoals, tol=0.5):
+def augmentTrajectoriesShopping(trajectories, subgoals, tol=0.2):
     numSubgoals = len(subgoals)
     augmented = []
     for trajectory in trajectories:
@@ -83,22 +83,46 @@ def augmentTrajectoriesShopping(trajectories, subgoals, tol=0.5):
     return augmented
 
 
-def makeLearnerShopping(theta, subgoals, initialXY, tol=0.5):
+def makeLearnerShopping(theta, subgoals, initialXY, tol=0.2):
     def getNextState(state, action):
         currentPosition, progress = np.asarray(state[:2]), np.asarray(state[2:]).copy()
         nextPosition = shoppingActionMap[action](currentPosition)
+        
+        # Check if we reached any subgoal, but only mark it complete if it's the next one in sequence
         for subgoalIdx, subgoal in enumerate(subgoals):
             if np.allclose(subgoal, nextPosition, atol=tol):
-                progress[subgoalIdx] = 1
+                # Only mark this subgoal complete if all previous subgoals are already complete
+                if subgoalIdx == 0 or np.all(progress[:subgoalIdx] == 1):
+                    progress[subgoalIdx] = 1
+        
         return np.concatenate([nextPosition, progress])
     
     def getphi(subgoals):
         def phi(state):
             pos = state[:2]
             progress = state[2:]
-            distances = np.abs(subgoals - pos).flatten()
-            mask = np.repeat(1 - progress, 2)
-            feat = np.concatenate([distances * mask, progress])
+            
+            # Find the next subgoal in sequence (first unvisited one)
+            nextSubgoalIdx = None
+            for i, visited in enumerate(progress):
+                if visited == 0:
+                    nextSubgoalIdx = i
+                    break
+            
+            if nextSubgoalIdx is None:
+                # All subgoals visited - return zeros
+                return np.zeros(2 + len(subgoals))
+            
+            # Distance to the next subgoal only (x, y)
+            nextSubgoal = subgoals[nextSubgoalIdx]
+            distToNext = np.abs(nextSubgoal - pos)
+            
+            # One-hot encoding of which subgoal is currently being targeted
+            oneHot = np.zeros(len(subgoals))
+            oneHot[nextSubgoalIdx] = 1
+            
+            # Features: [dist_x, dist_y, one_hot_0, one_hot_1, ..., one_hot_N]
+            feat = np.concatenate([distToNext, oneHot])
             return feat
         return phi
     
@@ -121,9 +145,9 @@ def makeLearnerShopping(theta, subgoals, initialXY, tol=0.5):
     return learner
 
 
-def trainShoppingHIRL(expertTrajectories, subgoals, initialXY, tol=0.5, num_iterations=200):
+def trainShoppingHIRL(expertTrajectories, subgoals, initialXY, tol=0.2, num_iterations=200):
     augmentedTrajectories = augmentTrajectoriesShopping(expertTrajectories, subgoals, tol=tol)
-    theta_random = np.random.uniform(low=0.0, high=0.1, size=3 * len(subgoals)) # 2 coordinates + 1 progress flag per subgoal
+    theta_random = np.random.uniform(low=0.0, high=0.1, size=2 + len(subgoals)) # 2 coordinates for distance to next subgoal + one-hot for progress
     
     learner = makeLearnerShopping(theta_random, subgoals, initialXY, tol=tol)
     theta_hat, _ = learner.learn(augmentedTrajectories, num_iterations=num_iterations, alpha=0.05, num_samples=50)
@@ -140,8 +164,17 @@ def plotShoppingTrajectory(learner, subgoals, expertTrajectories):
                 label='Expert Trajectory' if i == 0 else "")
     
     # Generate and plot learned trajectory
-    sampleTrajectory = learner.stochastic_trajectory(maxLength=100)
-    print(sampleTrajectory)
+    sampleTrajectory = learner.greedy_trajectory(maxLength=200, epsilon=0.05)
+    
+    # Save trajectory (convert numpy arrays to lists for JSON serialization)
+    trajectory_to_save = [step.tolist() for step in sampleTrajectory]
+    with open("generated_trajectory.json", "w") as f:
+        json.dump(trajectory_to_save, f, indent=2)
+    print(f"Saved generated trajectory to generated_trajectory.json")
+    
+    print(f"Generated a trajectory of length {len(sampleTrajectory)}:")
+    
+    print(f"\nFinal state: {sampleTrajectory[-1]}")
     x, y = [step[0] for step in sampleTrajectory], [step[1] for step in sampleTrajectory]
     plt.plot(x, y, 'o-', color='green', linewidth=2, markersize=4, label='Generated Trajectory')
     
@@ -180,7 +213,7 @@ def plotShoppingTrajectory(learner, subgoals, expertTrajectories):
     plt.show()
 
 
-learnMode = True
+learnMode = False
 
 if __name__ == "__main__":
     noise = 0.05
@@ -193,11 +226,11 @@ if __name__ == "__main__":
 
     finalGoalLocation = np.asarray([5.75, 11])
     subgoals = np.vstack([np.round(subgoals * 4) / 4, finalGoalLocation])
-    print("Subgoals:", subgoals)
+    # print("Subgoals:", subgoals)
     # plotSubgoals(expertTrajectories, subgoals)
 
-    # Tolerance for shopping environment (0.25 step size, so use 0.5 for reachability)
-    tol = 0.5
+    # Tolerance: 0.3 puts us within one step of the subgoal (0.25 step size)
+    tol = 0.3
 
     if learnMode:
         theta_hat = trainShoppingHIRL(
