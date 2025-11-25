@@ -9,23 +9,27 @@ def get_xy(gameState):
     playerPos = gameState["observation"]["players"][0]["position"]
     return (playerPos[0], playerPos[1])
 
-def addNoiseToTrajectory(trajectory, noiseLevel=0.05):
+def addNoiseToTrajectory(trajectory, noiseLevel=0.05, maskShape=None):
     noisy = []
     for step in trajectory:
-        noise = np.random.uniform(-noiseLevel, noiseLevel, size=2)
+        if maskShape is not None:
+            assert len(maskShape) == len(step), "Mask shape must match step dimension"
+            noise = np.array([0.0 if maskShape[i] else np.random.uniform(-noiseLevel, noiseLevel) for i in range(len(step))])
+        else:
+            noise = np.random.uniform(-noiseLevel, noiseLevel, size=step.shape)
         noisyStep = step + noise
         noisy.append(noisyStep)
     
     return np.asarray(noisy)
 
-def load_expert_trajectories(noise=0.05):
-    with open("trajectories.pkl", "rb") as f:
+def load_expert_trajectories(fileName, noise=0.05, maskShape=None):
+    with open(fileName, "rb") as f:
         data = pickle.load(f)
     
     # Problem: because of the rounding in the shopping environment and because our state doesn't
     # take orientation into account, our trajectories are often exactly the same
     # To resolve this, add random noise to each point in the trajectory
-    return [addNoiseToTrajectory(traj, noiseLevel=noise) for traj in data]
+    return [addNoiseToTrajectory(traj, noiseLevel=noise, maskShape=maskShape) for traj in data]
 
 
 def plotSubgoals(expertTrajectories, subgoals):
@@ -217,7 +221,7 @@ learnMode = False
 
 if __name__ == "__main__":
     noise = 0.05
-    expertTrajectories = load_expert_trajectories(noise=noise)
+    expertTrajectories = load_expert_trajectories("trajectories.pkl", noise=noise)
 
     segmenter = HIRLSegmenter()
     subgoals = segmenter.subgoals(expertTrajectories)

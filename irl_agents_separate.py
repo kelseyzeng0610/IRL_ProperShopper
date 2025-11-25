@@ -102,7 +102,10 @@ def generatePerSubgoalTrajectory(learned_agents, maxLength=200, epsilon=0.05):
 
 if __name__ == "__main__":
     noise = 0.05
-    expertTrajectories = load_expert_trajectories(noise=noise)
+    # Mask the shape so only x,y get noise
+    # TODO: to train on the cart, switch the file path below
+    # will also need to adjust start state and final state, and set the third value of maskShape to True so we don't add noise to the cart flag
+    expertTrajectories = load_expert_trajectories("trajectories.pkl", noise=noise, maskShape=[False, False])
 
     segmenter = HIRLSegmenter()
     subgoals = np.unique(segmenter.subgoals(expertTrajectories), axis=0)

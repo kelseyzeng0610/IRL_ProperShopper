@@ -122,13 +122,16 @@ def preloadQTable(filePath):
         for goalName in jsonifiedQTable:
             qtable = {}
             for k, v in jsonifiedQTable[goalName].items(): 
-                klist = json.loads(k)
-                x = np.float64(klist[0])
-                y = np.float64(klist[1])
-                # hasItem = bool(klist[2])
-
-                keyTuple = (x, y)
-                qtable[keyTuple] = np.asarray(v)
+                if goalName == "INTERACT":
+                    qtable[int(k)] = np.asarray(v)
+                elif goalName in ["WALKWAY", "AISLE", "SHELF_NAV", "COUNTER_NAV", "EAST_WALKWAY", "LEAVE_COUNTERS"]:
+                    qtable[np.float64(k)] = np.asarray(v)
+                else:
+                    klist = json.loads(k)
+                    x = np.float64(klist[0])
+                    y = np.float64(klist[1])
+                    keyTuple = (x, y)
+                    qtable[keyTuple] = np.asarray(v)
             qtables[goalName] = qtable
 
         return qtables
@@ -322,7 +325,7 @@ def buildGoals(state):
     shoppingList = [{'item': 'sausage', 'quantity': 1}]
     print("--- Shopping List ---\n", [item['item'] for item in shoppingList])
     
-    goals = []
+    goals = [cart_return, pickupCart]
     totalQuant = np.sum([item['quantity'] for item in shoppingList])
 
     # basketMode = totalQuant < 6
@@ -610,8 +613,14 @@ def getAction(agent, state, action_commands):
 
     return action, action_index
 
+def get_trajectory_recording_state(gameState):
+    playerX, playerY = gameState['observation']['players'][0]['position']
+    hasCart = gameState['observation']['players'][0]['curr_cart'] >= 0
+
+    return np.asarray([np.round(playerX, 2), np.round(playerY, 2), int(hasCart)])
+
 if __name__ == "__main__":
-    action_commands = ['NORTH', 'SOUTH', 'EAST', 'WEST']
+    action_commands = ['NORTH', 'SOUTH', 'EAST', 'WEST', 'INTERACT']
     # Initialize Q-learning agent
     action_space = len(action_commands)
 
@@ -665,8 +674,8 @@ if __name__ == "__main__":
         while not state['gameOver']:
             cnt += 1
             action, action_index = getAction(agent, state, action_commands)
-            phi_state = agent.trans(state)
-            if generateTrajectories and (len(trajectory) == 0 or trajectory[-1] != phi_state):
+            phi_state = get_trajectory_recording_state(state)
+            if generateTrajectories and (len(trajectory) == 0 or not np.allclose(trajectory[-1], phi_state)):
                 trajectory.append(phi_state)
 
             sock_game.send(str.encode(action))  # send action to env
