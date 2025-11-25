@@ -86,7 +86,25 @@ class ExpertAgent:
 
 
     def trans(self, state):
-        return get_xy(state)
+        # return get_xy(state)
+        [playerX, playerY] = state["observation"]["players"][0]["position"]
+        currentGoalType = self.goals[self.currentGoalIdx]['type']
+
+        # for some goals we represent the state as just the direction, because here the goal is simply to perform an action regardless of our position
+        if currentGoalType in ["INTERACT", "TOGGLE_CART", "PICKUP_ITEM"]:
+            return state['observation']['players'][0]['direction']
+        
+        goalX, goalY = self.goals[self.currentGoalIdx]['position'][0], self.goals[self.currentGoalIdx]['position'][1]
+        vector = (goalX - playerX, goalY - playerY)
+
+        # For some goals we only care about moving in one direction, so to speed up learning / generalize between situations, just pick the x value or y value of the relative vector
+        # Example: in an aisle, moving to a shelf in only the x direction. regardless of our y position we can treat these states the same
+        if currentGoalType in ["WALKWAY", "SHELF_NAV", "EAST_WALKWAY"]:
+            return roundToPointTwoFive(vector[0])
+        elif currentGoalType in ["AISLE", "LEAVE_COUNTERS", "COUNTER_NAV"]:
+            return roundToPointTwoFive(vector[1])
+        
+        return (roundToPointTwoFive(vector[0]), roundToPointTwoFive(vector[1]))
         
 
     # The main q-table update step. 
