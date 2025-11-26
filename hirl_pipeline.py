@@ -17,10 +17,10 @@ from feature_extraction import StateFeatureExtractor
 class HIRLPipeline:
     """Simplified pipeline for feature extraction and format verification"""
     
-    def __init__(self, feature_dim=10):
+    def __init__(self, feature_dim=9):
         """
         Args:
-            feature_dim: Dimensionality of state features (should be 10)
+            feature_dim: Dimensionality of state features (should be 9)
         """
         self.feature_dim = feature_dim
         self.feature_extractor = StateFeatureExtractor()
@@ -210,7 +210,7 @@ def main():
         return
     
     # Run pipeline
-    pipeline = HIRLPipeline(feature_dim=10)
+    pipeline = HIRLPipeline(feature_dim=9)
     
     pipeline.run_pipeline(
         data_path=args.data_path,

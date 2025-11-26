@@ -65,9 +65,13 @@ def collect_demonstrations(num_episodes=100, save_dir="./demonstrations", host='
                 print("  Environment closed")
                 break
 
+
+            output['observation']['players'][0]['shopping_list'] = ['milk']
+            output['observation']['players'][0]['list_quant'] = [1]
+
             shopping_list = output['observation']['players'][0]['shopping_list']
             list_quant = output['observation']['players'][0]['list_quant']
-            print(f"  Shopping list: {list(zip(shopping_list, list_quant))}")
+            print(f"  Shopping list (manually set): {list(zip(shopping_list, list_quant))}")
 
             # Start recording
             recorder.start_episode(output)
@@ -80,6 +84,12 @@ def collect_demonstrations(num_episodes=100, save_dir="./demonstrations", host='
                 """Wrapper to step and record"""
                 nonlocal timestep
                 result = step(sock, action_str)
+                
+                # Manually set shopping list in every step to maintain consistency
+                if result and 'observation' in result:
+                    result['observation']['players'][0]['shopping_list'] = ['milk']
+                    result['observation']['players'][0]['list_quant'] = [1]
+                
                 recorder.record_step(action_str, result, timestep)
                 timestep += 1
                 return result
