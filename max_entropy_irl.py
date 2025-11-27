@@ -42,10 +42,11 @@ class MaxEntropyIRL:
 
         return trajectory
 
-    def greedy_trajectory(self, maxLength=None, epsilon=0.1):
+    def greedy_trajectory(self, maxLength=None, epsilon=0.1, recordActions=False):
         currentState = self.initialState
         trajectory = [currentState]
         visited_positions = {}  # Track visit counts per position
+        actions = []
         
         while not self.gameOver(currentState) and (maxLength is None or len(trajectory) < maxLength):
             q_values = []
@@ -74,6 +75,8 @@ class MaxEntropyIRL:
                 bestIdx = np.argmax(q_values)
             
             nextState = next_states[bestIdx]
+            if recordActions:
+                actions.append(self.actions[bestIdx])
             
             # Track visit count
             pos_key = tuple(nextState[:2])
@@ -82,7 +85,7 @@ class MaxEntropyIRL:
             trajectory.append(nextState)
             currentState = nextState
 
-        return trajectory
+        return trajectory, actions
     
     def feature_count(self, trajectory):
         features = [self.phi(step) for step in trajectory]

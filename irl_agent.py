@@ -63,10 +63,10 @@ def plotSubgoals(expertTrajectories, subgoals):
 
 
 shoppingActionMap = {
-    0: lambda x: np.asarray([x[0], x[1] - 0.25]),
-    1: lambda x: np.asarray([x[0], x[1] + 0.25]),
-    2: lambda x: np.asarray([x[0] - 0.25, x[1]]),
-    3: lambda x: np.asarray([x[0] + 0.25, x[1]]),
+    0: lambda x: np.asarray([x[0], x[1] - 0.25]), # NORTH goes to lower y
+    1: lambda x: np.asarray([x[0], x[1] + 0.25]), # SOUTH goes to higher y
+    2: lambda x: np.asarray([x[0] + 0.25, x[1]]), # EAST goes to higher x
+    3: lambda x: np.asarray([x[0] - 0.25, x[1]]), # WEST goes to lower x
 }
 
 

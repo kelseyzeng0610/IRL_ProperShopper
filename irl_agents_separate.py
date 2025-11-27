@@ -76,6 +76,7 @@ def trainPerSubgoalMaxEnt(expertTrajectories, subgoals, initialXY, tol=0.3, num_
 
 def generatePerSubgoalTrajectory(learned_agents, maxLength=200, epsilon=0.05):
     full_trajectory = []
+    full_actions = []
     
     for i, agent_data in enumerate(learned_agents):
         if agent_data is None:
@@ -89,7 +90,7 @@ def generatePerSubgoalTrajectory(learned_agents, maxLength=200, epsilon=0.05):
             learner.initialState = full_trajectory[-1]
         
         # Generate segment trajectory
-        segment = learner.greedy_trajectory(maxLength=maxLength, epsilon=epsilon)
+        segment, actions = learner.greedy_trajectory(maxLength=maxLength, epsilon=epsilon, recordActions=True)
         
         # Add to full trajectory (skip first point if not the first segment to avoid duplication)
         if len(full_trajectory) > 0:
@@ -97,9 +98,11 @@ def generatePerSubgoalTrajectory(learned_agents, maxLength=200, epsilon=0.05):
         else:
             full_trajectory.extend(segment)
         
+        full_actions.extend(actions)
+        
         print(f"Subgoal {i+1}: Generated segment with {len(segment)} steps, reached {segment[-1]}")
     
-    return full_trajectory
+    return full_trajectory, full_actions
 
 if __name__ == "__main__":
     # Set random seed for reproducibility
@@ -143,7 +146,7 @@ if __name__ == "__main__":
     print("GENERATING TRAJECTORY WITH PER-SUBGOAL AGENTS")
     print("="*60)
     
-    per_subgoal_trajectory = generatePerSubgoalTrajectory(learned_agents, maxLength=100, epsilon=0.05)
+    per_subgoal_trajectory, per_subgoal_actions = generatePerSubgoalTrajectory(learned_agents, maxLength=100, epsilon=0.05)
     
     # Save trajectory
     trajectory_to_save = [step.tolist() for step in per_subgoal_trajectory]
@@ -151,6 +154,11 @@ if __name__ == "__main__":
         json.dump(trajectory_to_save, f, indent=2)
     print(f"\nSaved per-subgoal trajectory to generated_trajectory_per_subgoal.json")
     print(f"Total trajectory length: {len(per_subgoal_trajectory)}")
+
+    # Save actions
+    with open("generated_actions_per_subgoal.json", "w") as f:
+        json.dump(np.asarray(per_subgoal_actions).tolist(), f, indent=2)
+    print(f"Saved per-subgoal actions to generated_actions_per_subgoal.json")
     
     # Visualize
     plt.figure(figsize=(10, 8))
