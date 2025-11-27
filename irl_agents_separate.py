@@ -18,8 +18,9 @@ def segmentTrajectoriesBySubgoal(expertTrajectories, subgoals, tol=0.3):
             current_segment.append(step)
             
             # Check if we reached the current subgoal
+            subgoalLocation = subgoals[current_subgoal_idx]
             if current_subgoal_idx < len(subgoals):
-                if np.allclose(step, subgoals[current_subgoal_idx], atol=tol):
+                if np.allclose(step, subgoalLocation, atol=tol):
                     # Save this segment
                     segments_by_subgoal[current_subgoal_idx].append(current_segment)
                     current_segment = [step]  # Start next segment from this subgoal
@@ -101,6 +102,9 @@ def generatePerSubgoalTrajectory(learned_agents, maxLength=200, epsilon=0.05):
     return full_trajectory
 
 if __name__ == "__main__":
+    # Set random seed for reproducibility
+    np.random.seed(142)
+    
     noise = 0.05
     # Mask the shape so only x,y get noise
     # TODO: to train on the cart, switch the file path below
@@ -108,12 +112,18 @@ if __name__ == "__main__":
     expertTrajectories = load_expert_trajectories("trajectories.pkl", noise=noise, maskShape=[False, False])
 
     segmenter = HIRLSegmenter()
-    subgoals = np.unique(segmenter.subgoals(expertTrajectories), axis=0)
+    subgoals = segmenter.subgoals(expertTrajectories)
+    
+    # Round subgoals and remove duplicates while preserving order
+    subgoals = np.round(subgoals * 4) / 4
+    # Use unique with return_index to preserve order
+    _, unique_indices = np.unique(subgoals, axis=0, return_index=True)
+    subgoals = subgoals[np.sort(unique_indices)]  # Sort indices to preserve temporal order
 
     startState = np.asarray([1.25, 15.5])
 
     finalGoalLocation = np.asarray([5.75, 11])
-    subgoals = np.vstack([np.round(subgoals * 4) / 4, finalGoalLocation])
+    subgoals = np.vstack([subgoals, finalGoalLocation])
     print("Subgoals:", subgoals)
 
     print("\n" + "="*60)
