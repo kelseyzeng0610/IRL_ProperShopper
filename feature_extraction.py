@@ -77,17 +77,7 @@ class StateFeatureExtractor:
 
         # ========== NAVIGATION FEATURES (5 features) ==========
 
-        # 1. Distance to container (basket or cart based on list size)
-        if total_items <= 6:
-            # Use basket
-            rel_pos = rel_pos_basket_return(state_dict)
-        else:
-            # Use cart
-            rel_pos = rel_pos_cart_return(state_dict)
-        distance_to_cart = np.sqrt(rel_pos[0]**2 + rel_pos[1]**2)
-        features.append(self._normalize_distance(distance_to_cart))
-
-         # 1. x coordinate (normalized)
+        # 1. x coordinate (normalized)
         # Map width approx 20
         features.append(position[0] / 20.0)
 
@@ -95,7 +85,17 @@ class StateFeatureExtractor:
         # Map height approx 25
         features.append(position[1] / 25.0)
 
-        # 4. Distance to target item
+        # 3. Distance to basket return
+        rel_pos_basket = rel_pos_basket_return(state_dict)
+        distance_to_basket = np.sqrt(rel_pos_basket[0]**2 + rel_pos_basket[1]**2)
+        features.append(self._normalize_distance(distance_to_basket))
+
+        # 4. Distance to cart return
+        rel_pos_cart = rel_pos_cart_return(state_dict)
+        distance_to_cart = np.sqrt(rel_pos_cart[0]**2 + rel_pos_cart[1]**2)
+        features.append(self._normalize_distance(distance_to_cart))
+
+        # 5. Distance to target item
         distance_to_item = 0.0
         # Find first uncollected item
         target_item = None
@@ -115,21 +115,30 @@ class StateFeatureExtractor:
                 distance_to_item = 0.0
         features.append(self._normalize_distance(distance_to_item))
 
-        # 5. Distance to register
+        # 6. Distance to register
         rel_pos = rel_pos_register(state_dict)
         distance_to_register = np.sqrt(rel_pos[0]**2 + rel_pos[1]**2)
         features.append(self._normalize_distance(distance_to_register))
 
-        # 6. Distance to exit
+        # 7. Distance to exit
         rel_pos = rel_pos_exit(state_dict)
         distance_to_exit = np.sqrt(rel_pos[0]**2 + rel_pos[1]**2)
         features.append(self._normalize_distance(distance_to_exit))
 
-        # 7. Has cart
+        # 8. Has basket
+        # Check baskets
+        has_basket = False
+        for basket in game_obs['baskets']:
+            if basket.get('owner', -1) == player['index']:
+                has_basket = True
+                break
+        features.append(1.0 if has_basket else 0.0)
+
+        # 9. Has cart
         has_cart = player['curr_cart'] != -1
         features.append(1.0 if has_cart else 0.0)
 
-        # 8. Has item (collected but not necessarily purchased)
+        # 10. Has item (collected but not necessarily purchased)
         # Check if we have any item from the list
         has_item = 0.0
         for item in shopping_list:
@@ -138,7 +147,7 @@ class StateFeatureExtractor:
                 break
         features.append(has_item)
 
-        # 9. Item purchased
+        # 11. Item purchased
         is_purchased = 0.0
         for item in shopping_list:
             if item in all_purchased:
@@ -176,7 +185,7 @@ class StateFeatureExtractor:
     def get_feature_dim(self):
         """Return dimensionality of feature vector"""
         if self.feature_type == 'handcrafted':
-            return 9
+            return 11
         else:
             raise NotImplementedError()
 
@@ -185,10 +194,12 @@ class StateFeatureExtractor:
         return [
             'x_norm',
             'y_norm',
+            'distance_to_basket',
             'distance_to_cart',
             'distance_to_item',
             'distance_to_register',
             'distance_to_exit',
+            'has_basket',
             'has_cart',
             'has_item',
             'item_purchased'

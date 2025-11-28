@@ -4,6 +4,9 @@ from sklearn.mixture import BayesianGaussianMixture
 import matplotlib.pyplot as plt
 import pickle
 
+MAP_WIDTH = 20
+MAP_HEIGHT = 25
+
 class HIRLSegmenter:
     def __init__(self):
         return
@@ -60,10 +63,13 @@ class HIRLSegmenter:
         nComponents = min(5, len(transitions))
         subgoalsBGM = BayesianGaussianMixture(
             n_components=nComponents,
-            random_state=42
+            random_state=42,
+            reg_covar=1e-3
         )
-        subgoalsBGM.fit(transitions)
-        subgoalLabels = subgoalsBGM.predict(transitions)
+        # Add small noise to transitions to prevent clustering collapse on deterministic data
+        transitions_noisy = transitions + np.random.normal(0, 0.01, transitions.shape)
+        subgoalsBGM.fit(transitions_noisy)
+        subgoalLabels = subgoalsBGM.predict(transitions_noisy)
         subgoals = []
         for cluster in np.unique(subgoalLabels):
             points = transitions[subgoalLabels == cluster]
