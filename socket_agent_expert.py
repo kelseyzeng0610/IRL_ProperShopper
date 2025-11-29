@@ -320,12 +320,10 @@ def buildGoals(state):
     pickupCart = {"name": "pickup cart", "type": "INTERACT", "achieved": pickupCartAchieved}
     pickupBasket = {"name": "pickup basket", "type": "INTERACT", "achieved": pickupBasketAchieved}
     
-    # shoppingList = buildShoppingList(state)
-    # TODO: at first, just use the same item every time
-    shoppingList = [{'item': 'sausage', 'quantity': 1}]
+    shoppingList = buildShoppingList(state)
     print("--- Shopping List ---\n", [item['item'] for item in shoppingList])
     
-    goals = [cart_return, pickupCart]
+    goals = [cart_return]
     totalQuant = np.sum([item['quantity'] for item in shoppingList])
 
     # basketMode = totalQuant < 6
@@ -373,6 +371,8 @@ def buildGoals(state):
         prevAisle = aisle['original_position'][1]
 
     # TODO: skip everything else for now
+    goals.append(walkway)
+    goals.append(register)
     return goals, basketMode
     
     # At the end of all the shelves, we navigate back to the walkway, and then to the register.
@@ -617,7 +617,7 @@ def get_trajectory_recording_state(gameState):
     playerX, playerY = gameState['observation']['players'][0]['position']
     hasCart = gameState['observation']['players'][0]['curr_cart'] >= 0
 
-    return np.asarray([np.round(playerX, 2), np.round(playerY, 2), int(hasCart)])
+    return np.asarray([np.round(playerX, 2), np.round(playerY, 2)])
 
 if __name__ == "__main__":
     action_commands = ['NORTH', 'SOUTH', 'EAST', 'WEST', 'INTERACT']

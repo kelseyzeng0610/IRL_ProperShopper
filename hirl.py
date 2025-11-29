@@ -18,13 +18,13 @@ class HIRLSegmenter:
                 # TODO: switching to position-invariant version breaks the toy example
                 # Use deltas (velocities) instead of absolute positions
                 # allows finding changes in direction
-                # window = np.diff(window, axis=0).flatten()
-                window = window.flatten()
+                window = np.diff(window, axis=0).flatten()
+                # window = window.flatten()
                 windows.append(window)
         windows = np.asarray(windows)
 
         bgm = BayesianGaussianMixture(
-            n_components=5,
+            n_components=15,
             random_state=42,
         )
         bgm.fit(windows)
@@ -48,48 +48,58 @@ class HIRLSegmenter:
         transitions = np.asarray(transitions)
         return transitions, transitionMetadata
     
-    def subgoals(self, expertTrajectories, windowSize=2):
+    def subgoals(self, expertTrajectories, windowSize=2, threshold=0.5):
         labels = self.labels(expertTrajectories, windowSize)
         transitions, transitionMetadata = self.transitions(expertTrajectories, labels, windowSize)
-        # transitions = np.unique(transitions, axis=0)
-
-        if len(transitions) == 1:
+        
+        if len(transitions) == 0 or len(transitions) == 1:
             return transitions
 
-        # otherwise we have multiple subgoals
-        nComponents = min(5, len(transitions))
-        subgoalsBGM = BayesianGaussianMixture(
-            n_components=nComponents,
-            random_state=42
-        )
-        subgoalsBGM.fit(transitions)
-        subgoalLabels = subgoalsBGM.predict(transitions)
+        # cluster the transitions in a greedy way using a threshold, instead of using another GMM
         subgoals = []
-        for cluster in np.unique(subgoalLabels):
-            points = transitions[subgoalLabels == cluster]
-            subgoals.append(points.mean(axis=0))
-        subgoals = np.asarray(subgoals)
+        used = np.zeros(len(transitions), dtype=bool)
+        for i, transition in enumerate(transitions):
+            # only use a transition for one subgoal cluster
+            if used[i]:
+                continue
+            
+            # distances of transitions, and those within threshold
+            distances = np.linalg.norm(transitions - transition, axis=1)
+            nearby = distances < threshold
+            
+            # average the transitions within threshold to determine our estimated location for the subgoal
+            cluster = transitions[nearby]
+            subgoal = cluster.mean(axis=0)
+            subgoals.append(subgoal)
+
+            # mark all the transitions used in this cluster so we don't repeat
+            used[nearby] = True
         
-        # Sort subgoals by when they appear in the trajectory on average
-        # can do this by finding the average index of the transition points in each cluster
-        # The transitions array is ordered by trajectory then by time.
-        # so the order in transitions is roughly in order
-        cluster_avg = []
-        unique_labels = np.unique(subgoalLabels)
-        for cluster in unique_labels:
-            indices = np.where(subgoalLabels == cluster)[0]
+        subgoals = np.asarray(subgoals)
+
+        # now need to sort those subgoals based on when they appear in the expert trajectories
+        subgoalIndices = []
+        for subgoal in subgoals:
+            distances = np.linalg.norm(transitions - subgoal, axis=1)
+            close_transitions = np.where(distances < threshold)[0]
+            
+            if len(close_transitions) == 0:
+                subgoalIndices.append(0)
+                continue
+            
+            # save indices of each of the transitions so we can average them
             trajToIndex = {}
-            for idx in indices:
+            for idx in close_transitions:
                 trajIdx, timeIdx = transitionMetadata[idx]
                 if trajIdx not in trajToIndex:
                     trajToIndex[trajIdx] = []
                 trajToIndex[trajIdx].append(timeIdx)
             avgIndexPerTraj = [np.mean(trajToIndex[traj]) for traj in trajToIndex]
             avgAcrossTraj = np.mean(avgIndexPerTraj)
-            cluster_avg.append(avgAcrossTraj)
-            
-        # sort subgoals based on these average indices
-        sorted_indices = np.argsort(cluster_avg)
+            subgoalIndices.append(avgAcrossTraj)
+        
+        # sort the subgoals by average index it appears at
+        sorted_indices = np.argsort(subgoalIndices)
         subgoals = subgoals[sorted_indices]
         
         return subgoals
