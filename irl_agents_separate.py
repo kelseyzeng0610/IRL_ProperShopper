@@ -6,6 +6,22 @@ import pickle
 import matplotlib.pyplot as plt
 from irl_agent import shoppingActionMap, load_expert_trajectories
 
+def makeGetNextState(basketLocation):
+    def getNextState(state, action):
+        currentPosition, hasBasket = state[:2], state[2:]
+        if action == 4:
+            # interaction - if we are within a threshold of the basket locaiton, we pick it up. else nothing
+            if np.allclose(currentPosition, basketLocation, atol=0.75):
+                return np.concatenate([currentPosition, [1.0]])
+            else:
+                return state
+        else:
+            # normal movement, basket doesn't change
+            newPosition = shoppingActionMap[action](currentPosition)
+            return np.concatenate([newPosition, hasBasket])
+
+
+    return getNextState
 
 def segmentTrajectoriesBySubgoal(expertTrajectories, subgoals, tol=0.3):
     segments_by_subgoal = [[] for _ in range(len(subgoals))]
@@ -56,11 +72,13 @@ def trainPerSubgoalMaxEnt(expertTrajectories, subgoals, initialXY, tol=0.3, num_
                 return np.allclose(state, goal, atol=tolerance)
             return game_over
         
-        theta_random = np.random.uniform(low=0.0, high=0.1, size=2)
+        basketLocation = np.array([3.5, 18.5]) # TODO: for now just hardcoding to the initial location
+        theta_random = np.random.uniform(low=0.0, high=0.1, size=3)
+        getNextState = makeGetNextState(basketLocation)
         learner = MaxEntropyIRL(
             theta=theta_random,
-            actions=np.arange(4),
-            probeNextState=lambda state, action: shoppingActionMap[action](state),
+            actions=np.arange(5),
+            probeNextState=getNextState,
             initialState=initial_state,
             gameOver=make_game_over(subgoal, tol),
             phi=make_phi(subgoal)
@@ -112,7 +130,7 @@ if __name__ == "__main__":
     # Mask the shape so only x,y get noise
     # TODO: to train on the cart, switch the file path below
     # will also need to adjust start state and final state, and set the third value of maskShape to True so we don't add noise to the cart flag
-    expertTrajectories = load_expert_trajectories("trajectories-two-items.pkl", noise=noise, maskShape=[False, False])
+    expertTrajectories = load_expert_trajectories("trajectories.pkl", noise=noise, maskShape=[False, False, True])
 
     segmenter = HIRLSegmenter()
     subgoals = segmenter.subgoals(expertTrajectories)
@@ -123,9 +141,9 @@ if __name__ == "__main__":
     _, unique_indices = np.unique(subgoals, axis=0, return_index=True)
     subgoals = subgoals[np.sort(unique_indices)]  # Sort indices to preserve temporal order
 
-    startState = np.asarray([1.25, 15.5])
+    startState = np.asarray([1.25, 15.5, 0.0])
 
-    finalGoalLocation = np.asarray([3, 3.5])
+    finalGoalLocation = np.asarray([5.75, 11.5, 1.0])
     subgoals = np.vstack([subgoals, finalGoalLocation])
     print("Subgoals:", subgoals)
 
