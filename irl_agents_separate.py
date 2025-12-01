@@ -112,7 +112,7 @@ if __name__ == "__main__":
     # Mask the shape so only x,y get noise
     # TODO: to train on the cart, switch the file path below
     # will also need to adjust start state and final state, and set the third value of maskShape to True so we don't add noise to the cart flag
-    expertTrajectories = load_expert_trajectories("trajectories.pkl", noise=noise, maskShape=[False, False])
+    expertTrajectories = load_expert_trajectories("trajectories-two-items.pkl", noise=noise, maskShape=[False, False])
 
     segmenter = HIRLSegmenter()
     subgoals = segmenter.subgoals(expertTrajectories)
@@ -125,7 +125,7 @@ if __name__ == "__main__":
 
     startState = np.asarray([1.25, 15.5])
 
-    finalGoalLocation = np.asarray([5.75, 11])
+    finalGoalLocation = np.asarray([3, 3.5])
     subgoals = np.vstack([subgoals, finalGoalLocation])
     print("Subgoals:", subgoals)
 
@@ -172,6 +172,13 @@ if __name__ == "__main__":
     
     plt.scatter(subgoals[:, 0], subgoals[:, 1], c='red', s=250, marker='*',
                 label='Subgoals', zorder=10)
+    
+    # Add numbers to subgoals
+    for i, subgoal in enumerate(subgoals):
+        plt.text(subgoal[0] + 0.2, subgoal[1] + 0.2, str(i+1), fontsize=12, fontweight='bold',
+                ha='center', va='center', color='black', zorder=11,
+                bbox=dict(boxstyle='circle,pad=0.3', facecolor='white', edgecolor='black', linewidth=1.5))
+    
     plt.scatter(startState[0], startState[1], c='green', s=200, marker='o',
                 label='Start', zorder=10)
     
