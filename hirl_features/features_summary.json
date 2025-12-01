@@ -1,0 +1,41 @@
+{
+  "num_trajectories": 10,
+  "feature_dim": 9,
+  "trajectory_shapes": [
+    [
+      284,
+      11
+    ],
+    [
+      284,
+      11
+    ],
+    [
+      284,
+      11
+    ],
+    [
+      284,
+      11
+    ],
+    [
+      284,
+      11
+    ]
+  ],
+  "feature_names": [
+    "x_norm",
+    "y_norm",
+    "distance_to_basket",
+    "distance_to_cart",
+    "distance_to_item",
+    "distance_to_register",
+    "distance_to_exit",
+    "has_basket",
+    "has_cart",
+    "has_item",
+    "item_purchased"
+  ],
+  "total_steps": 2840,
+  "avg_trajectory_length": 284.0
+}

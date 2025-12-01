@@ -1,0 +1,17 @@
+{
+  "total_trajectories": 10,
+  "successful_trajectories": 10,
+  "violation_free_trajectories": 10,
+  "trajectories_with_violations": 0,
+  "avg_episode_length": 283.0,
+  "std_episode_length": 0.0,
+  "min_episode_length": 283,
+  "max_episode_length": 283,
+  "total_transitions": 2830,
+  "shopping_list_distribution": {
+    "1": 10
+  },
+  "avg_completion_rate": 1.0,
+  "min_completion_rate": 1.0,
+  "max_completion_rate": 1.0
+}
