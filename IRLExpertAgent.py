@@ -141,3 +141,126 @@ class ExpertAgent:
     def resetGoals(self, goals):
         self.goals = goals
         self.currentGoalIdx = 0
+
+    # Manually handle the interactions of taking items from the shelf or the counter
+    def setInteractionQueue(self, basketMode, counterMode=False):
+        if not counterMode:
+            # taking an item off the shelf
+            if len(self.interactionSequence) == 0:
+                seq = []
+                if basketMode:
+                    seq = ['APPROACH_SHELF', 'INTERACT', 'INTERACT']
+                else:
+                    seq = ['TOGGLE_CART', 'APPROACH_SHELF', 'INTERACT', 'INTERACT', 'APPROACH_CART', 'INTERACT', 'INTERACT', 'TOGGLE_CART']
+                seq.reverse()
+                self.interactionSequence = seq
+        else:
+            # interacting with one of the counters
+            if len(self.interactionSequence) == 0:
+                seq = []
+                if basketMode:
+                    seq = ['APPROACH_COUNTER', 'INTERACT', 'INTERACT']
+                else:
+                    seq = ['FACE_UP', 'TOGGLE_CART', 'APPROACH_COUNTER', 'INTERACT', 'INTERACT', 'APPROACH_CART', 'INTERACT', 'INTERACT', 'TOGGLE_CART']
+                seq.reverse()
+                self.interactionSequence = seq
+
+    def getInteraction(self, state, shelfGoal):
+        if self.interactionSequence[-1] == "APPROACH_SHELF":
+            # check if the state is more than some threshold away from the shelf - if so, get closer
+            shelfPosition, playerPosition = shelfGoal['position'], state['observation']['players'][0]['position']
+            yDist = np.abs(shelfPosition[1] - playerPosition[1])
+            if yDist > 0.25:
+                return "NORTH"
+            else:
+                # we are close enough now
+                self.interactionSequence.pop()
+                # if we aren't facing north, we still need to, since we are below the shelf
+                if state['observation']['players'][0]['direction'] != 0:
+                    return "NORTH"
+        elif self.interactionSequence[-1] == "APPROACH_CART":
+            cartPosition, playerPosition = state['observation']['carts'][0]['position'], state['observation']['players'][0]['position']
+            yDist = np.abs(cartPosition[1] - playerPosition[1])
+            if yDist > 0.25:
+                return "SOUTH"
+            else:
+                # we are close enough now, just turn to face the cart 
+                self.interactionSequence.pop()
+                if state['observation']['carts'][0]['position'][0] > state['observation']['players'][0]['position'][0]:
+                    return "EAST"
+                else:
+                    return "WEST"
+            
+        action = self.interactionSequence.pop()
+        return action
+    
+    def getInteractionCounter(self, state, counterGoal):
+        if self.interactionSequence[-1] == "FACE_UP": # facing up moves the cart out of the way
+            self.interactionSequence.pop()
+            if state['observation']['players'][0]['direction'] != 0:
+                return "NORTH"
+            else:
+                # continue to the next move
+                action = self.interactionSequence.pop()
+                return action
+        elif self.interactionSequence[-1] == "APPROACH_COUNTER":
+            counterPosition, playerPosition = counterGoal['position'], state['observation']['players'][0]['position']
+            xDist = np.abs(counterPosition[0] - playerPosition[0])
+            if xDist > 0.25:
+                return "EAST"
+            else:
+                # we are close enough now
+                self.interactionSequence.pop()
+                action = self.interactionSequence.pop()
+                return action
+        elif self.interactionSequence[-1] == "APPROACH_CART":
+            cartPosition, playerPosition = state['observation']['carts'][0]['position'], state['observation']['players'][0]['position']
+            xDist = np.abs(cartPosition[0] - playerPosition[0])
+            if xDist > 0.25:
+                return "WEST"
+            else:
+                # we are close enough now, just turn to face the cart 
+                self.interactionSequence.pop()
+                return "NORTH"
+        
+        action = self.interactionSequence.pop()
+        return action
+
+    # Manually handle the cashier interaction
+    def setPurchaseQueue(self, basketMode):
+        if len(self.interactionSequence) == 0:
+            seq = []
+            if basketMode:
+                seq = ['APPROACH_REGISTER', 'INTERACT', 'INTERACT']
+            else:
+                seq = ['TOGGLE_CART', 'APPROACH_REGISTER', 'INTERACT', 'INTERACT', 'APPROACH_CART', 'TOGGLE_CART']
+            seq.reverse()
+            self.interactionSequence = seq
+
+    def getInteractionPurchase(self, state, payGoal):
+        if self.interactionSequence[-1] == "APPROACH_REGISTER":
+            payPosition, playerPosition = payGoal['position'], state['observation']['players'][0]['position']
+            yDist = np.abs(payPosition[1] - playerPosition[1])
+            if yDist > 0.25:
+                return "SOUTH"
+            else:
+                # we are close enough
+                self.interactionSequence.pop()
+                # if we aren't facing south we still need to
+                if state['observation']['players'][0]['direction'] != 1:
+                    return "SOUTH"
+        elif self.interactionSequence[-1] == "APPROACH_CART":
+            cartPosition, playerPosition = state['observation']['carts'][0]['position'], state['observation']['players'][0]['position']
+            yDist = np.abs(cartPosition[1] - playerPosition[1])
+            if yDist > 0.25:
+                return "NORTH"
+            else:
+                # we are close enough now, just turn to face the cart
+                self.interactionSequence.pop()
+                if state['observation']['carts'][0]['position'][0] > state['observation']['players'][0]['position'][0]:
+                    return "EAST"
+                else:
+                    return "WEST"
+        
+        action = self.interactionSequence.pop()
+        return action

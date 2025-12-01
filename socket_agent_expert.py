@@ -365,6 +365,8 @@ def buildGoals(state):
             goals.append(shelfNav)
 
         # TODO: don't pick up items yet
+        if item == "sausage":
+            goals.append(pickupItem)
         # for n in range(quantity):
         #     goals.append(pickupItem)
 
@@ -607,18 +609,38 @@ def calculate_reward(previous_state, current_state, current_goal, action, basket
     raise Exception("shouldnt get here")
 
 
-def getAction(agent, state, action_commands):
-    action_index = agent.choose_action(state)
-    action = "0 " + action_commands[action_index]
+def getAction(agent, state, current_goal, basketMode, action_commands):
+    # Choose an action based on the current state
+    action, action_index, learningMode = "", -1, True
+    if current_goal['type'] == "PICKUP_ITEM":
+        learningMode = False
+        agent.setInteractionQueue(basketMode)
+        action = "0 " + agent.getInteraction(state, current_goal)
+    elif current_goal['type'] == "PICKUP_COUNTER":
+        learningMode = False
+        agent.setInteractionQueue(basketMode, counterMode=True)
+        action = "0 " + agent.getInteractionCounter(state, current_goal)
+    elif current_goal['type'] == "PAY":
+        learningMode = False
+        agent.setPurchaseQueue(basketMode)
+        action = "0 " + agent.getInteractionPurchase(state, current_goal)
+    else:
+        learningMode = True
+        action_index = agent.choose_action(state)
+        action = "0 " + action_commands[action_index]
 
-    return action, action_index
+    return action, action_index, learningMode
 
 def get_trajectory_recording_state(gameState):
     playerX, playerY = gameState['observation']['players'][0]['position']
     # hasCart = gameState['observation']['players'][0]['curr_cart'] >= 0
     basket = hasBasket(gameState)
 
-    return np.asarray([np.round(playerX, 2), np.round(playerY, 2), int(basket)])
+    # TODO: ignoring has milk for now
+    hasSausage = basketHasItem(gameState, 'sausage')
+    hasMilk = basketHasItem(gameState, 'milk')
+
+    return np.asarray([np.round(playerX, 2), np.round(playerY, 2), int(basket), int(hasSausage)])
 
 if __name__ == "__main__":
     action_commands = ['NORTH', 'SOUTH', 'EAST', 'WEST', 'INTERACT']
@@ -674,7 +696,7 @@ if __name__ == "__main__":
         trajectory = []
         while not state['gameOver']:
             cnt += 1
-            action, action_index = getAction(agent, state, action_commands)
+            action, action_index, learningMode = getAction(agent, state, current_goal, basketMode, action_commands)
             phi_state = get_trajectory_recording_state(state)
             if generateTrajectories and (len(trajectory) == 0 or not np.allclose(trajectory[-1], phi_state)):
                 trajectory.append(phi_state)
@@ -684,7 +706,7 @@ if __name__ == "__main__":
             next_state = recv_socket_data(sock_game)  # get observation from env
             next_state = json.loads(next_state)
 
-            if not generateTrajectories:
+            if not generateTrajectories and learningMode:
                 # Define the reward based on the state and next_state
                 reward = calculate_reward(state, next_state, current_goal, action_commands[action_index], basketMode)  # You need to define this function
                 # Update Q-table
@@ -714,13 +736,12 @@ if __name__ == "__main__":
                 break
 
     # At the end of training, write our saved q table to an output file
-    with open("training-output.json", "w") as file:
-        if generateTrajectories:
-            writeTrajectoriesToFile(trajectories, "trajectories.pkl")
-            print("\n\n===== Wrote trajectories to trajectories.pkl =====\n\n")
-        else:
-            writeQTableToFile(savedQTables, "training-output.json")
-            print("\n\n===== Wrote final Q Table to 'training-output.json' =====\n\n")
+    if generateTrajectories:
+        writeTrajectoriesToFile(trajectories, "trajectories.pkl")
+        print("\n\n===== Wrote trajectories to trajectories.pkl =====\n\n")
+    else:
+        writeQTableToFile(savedQTables, "training-output.json")
+        print("\n\n===== Wrote final Q Table to 'training-output.json' =====\n\n")
 
     # Close socket connection
     sock_game.close()
