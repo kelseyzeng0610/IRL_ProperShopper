@@ -320,8 +320,7 @@ def buildGoals(state):
     pickupCart = {"name": "pickup cart", "type": "INTERACT", "achieved": pickupCartAchieved}
     pickupBasket = {"name": "pickup basket", "type": "INTERACT", "achieved": pickupBasketAchieved}
     
-    # shoppingList = buildShoppingList(state)
-    shoppingList = [{'item': 'sausage', 'quantity': 1}]
+    shoppingList = buildShoppingList(state)
     print("--- Shopping List ---\n", [item['item'] for item in shoppingList])
     
     goals = [basket_return, pickupBasket]
@@ -372,8 +371,8 @@ def buildGoals(state):
         prevAisle = aisle['original_position'][1]
 
     # TODO: skip everything else for now
-    # goals.append(walkway)
-    # goals.append(register)
+    goals.append(walkway)
+    goals.append(register)
     return goals, basketMode
     
     # At the end of all the shelves, we navigate back to the walkway, and then to the register.
