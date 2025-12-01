@@ -26,7 +26,7 @@ def makeGetNextState(basketLocation):
 def segmentTrajectoriesBySubgoal(expertTrajectories, subgoals, tol=0.3):
     segments_by_subgoal = [[] for _ in range(len(subgoals))]
     
-    for trajIdx, trajectory in enumerate(expertTrajectories):
+    for trajectory in expertTrajectories:
         current_segment = []
         current_subgoal_idx = 0
         
@@ -41,7 +41,6 @@ def segmentTrajectoriesBySubgoal(expertTrajectories, subgoals, tol=0.3):
                     segments_by_subgoal[current_subgoal_idx].append(current_segment)
                     current_segment = [step]  # Start next segment from this subgoal
                     current_subgoal_idx += 1
-        print(f"Trajectory {trajIdx}: reached {current_subgoal_idx}/{len(subgoals)} subgoals") 
     return segments_by_subgoal
 
 
@@ -122,72 +121,62 @@ def generatePerSubgoalTrajectory(learned_agents, maxLength=200, epsilon=0.05):
     
     return full_trajectory, full_actions
 
-prelearned = False
 
 if __name__ == "__main__":
     # Set random seed for reproducibility
     np.random.seed(142)
 
-    if not prelearned:
-        noise = 0.05
-        # Mask the shape so only x,y get noise
-        # TODO: to train on the cart, switch the file path below
-        # will also need to adjust start state and final state, and set the third value of maskShape to True so we don't add noise to the cart flag
-        expertTrajectories = load_expert_trajectories("trajectories.pkl", noise=noise, maskShape=[False, False, True])
+    noise = 0.05
+    # Mask the shape so only x,y get noise
+    expertTrajectories = load_expert_trajectories("trajectories.pkl", noise=noise, maskShape=[False, False, True])
 
-        segmenter = HIRLSegmenter()
-        subgoals = segmenter.subgoals(expertTrajectories)
-        
-        # Round subgoals and remove duplicates while preserving order
-        subgoals = np.round(subgoals * 4) / 4
-        # Use unique with return_index to preserve order
-        _, unique_indices = np.unique(subgoals, axis=0, return_index=True)
-        subgoals = subgoals[np.sort(unique_indices)]  # Sort indices to preserve temporal order
-
-        startState = np.asarray([1.25, 15.5, 0.0])
-
-        print("Initial subgoals detected:", len(subgoals))
+    segmenter = HIRLSegmenter()
+    subgoals = segmenter.subgoals(expertTrajectories)
     
-        # Filter out subgoals that don't have expert data
-        tol = 0.2
-        segments_test = segmentTrajectoriesBySubgoal(expertTrajectories, subgoals, tol)
-        valid_subgoals = []
-        for i, segments in enumerate(segments_test):
-            if len(segments) > 0:
-                valid_subgoals.append(subgoals[i])
-            else:
-                print(f"Removing subgoal {i+1} (no expert segments): {subgoals[i]}")
-        
-        subgoals = np.array(valid_subgoals)
-        
-        # Add final goal location after filtering
-        finalGoalLocation = np.asarray([3.0, 3.5, 1.0])
-        subgoals = np.vstack([subgoals, finalGoalLocation])
-        
-        print(f"\nFiltered to {len(subgoals)} valid subgoals (including final goal)")
-        print("Valid subgoals:", subgoals)
+    # Round subgoals and remove duplicates while preserving order
+    subgoals = np.round(subgoals * 4) / 4
+    _, unique_indices = np.unique(subgoals, axis=0, return_index=True)
+    subgoals = subgoals[np.sort(unique_indices)]
 
-        print("\n" + "="*60)
-        print("TRAINING PER-SUBGOAL AGENTS")
-        print("="*60)
+    startState = np.asarray([1.25, 15.5, 0.0])
+
+    print("Initial subgoals detected:", len(subgoals))
+
+    # Filter out subgoals that don't have expert data
+    tol = 0.2
+    segments_test = segmentTrajectoriesBySubgoal(expertTrajectories, subgoals, tol)
+    valid_subgoals = []
+    for i, segments in enumerate(segments_test):
+        if len(segments) > 0:
+            valid_subgoals.append(subgoals[i])
+        else:
+            print(f"Removing subgoal {i+1} (no expert segments): {subgoals[i]}")
     
-        learned_agents = trainPerSubgoalMaxEnt(
-            expertTrajectories,
-            subgoals,
-            initialXY=startState,
-            tol=tol,
-            num_iterations=200
-        )
+    subgoals = np.array(valid_subgoals)
+    
+    # Add final goal location after filtering
+    finalGoalLocation = np.asarray([3.0, 3.5, 1.0])
+    subgoals = np.vstack([subgoals, finalGoalLocation])
+    
+    print(f"\nFiltered to {len(subgoals)} valid subgoals (including final goal)")
+    print("Valid subgoals:", subgoals)
 
-        # Save the learned agents (only theta) and subgoals
-        with open("learned_per_subgoal_agents.pkl", "wb") as f:
-            pickle.dump(([(theta, subgoal) for theta, learner, subgoal, initial_state in learned_agents], subgoals), f)
-        print("\nSaved learned per-subgoal agents to learned_per_subgoal_agents.pkl")
-    else:
-        with open("learned_per_subgoal_agents.pkl", "rb") as f:
-            learned_agents_data, subgoals = pickle.load(f)
-        learned_agents = []
-        # TODO: get the learners from the loaded theta
+    print("\n" + "="*60)
+    print("TRAINING PER-SUBGOAL AGENTS")
+    print("="*60)
+
+    learned_agents = trainPerSubgoalMaxEnt(
+        expertTrajectories,
+        subgoals,
+        initialXY=startState,
+        tol=tol,
+        num_iterations=200
+    )
+
+    # Save the learned agents (only theta) and subgoals
+    with open("learned_per_subgoal_agents.pkl", "wb") as f:
+        pickle.dump(([(theta, subgoal) for theta, learner, subgoal, initial_state in learned_agents], subgoals), f)
+    print("\nSaved learned per-subgoal agents to learned_per_subgoal_agents.pkl")
     
     print("\n" + "="*60)
     print("GENERATING TRAJECTORY WITH PER-SUBGOAL AGENTS")
