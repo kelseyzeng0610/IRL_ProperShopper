@@ -323,7 +323,7 @@ def buildGoals(state):
     shoppingList = buildShoppingList(state)
     print("--- Shopping List ---\n", [item['item'] for item in shoppingList])
     
-    goals = [cart_return]
+    goals = [basket_return, pickupBasket]
     totalQuant = np.sum([item['quantity'] for item in shoppingList])
 
     # basketMode = totalQuant < 6
@@ -615,9 +615,10 @@ def getAction(agent, state, action_commands):
 
 def get_trajectory_recording_state(gameState):
     playerX, playerY = gameState['observation']['players'][0]['position']
-    hasCart = gameState['observation']['players'][0]['curr_cart'] >= 0
+    # hasCart = gameState['observation']['players'][0]['curr_cart'] >= 0
+    basket = hasBasket(gameState)
 
-    return np.asarray([np.round(playerX, 2), np.round(playerY, 2)])
+    return np.asarray([np.round(playerX, 2), np.round(playerY, 2), int(basket)])
 
 if __name__ == "__main__":
     action_commands = ['NORTH', 'SOUTH', 'EAST', 'WEST', 'INTERACT']
