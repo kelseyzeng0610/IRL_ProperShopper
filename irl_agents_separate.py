@@ -89,14 +89,6 @@ def trainPerSubgoalMaxEnt(segments_by_subgoal, subgoals, initialXY, tol=0.2, num
         # Initial state is the start position for first segment, previous subgoal for others
         initial_state = initialXY if i == 0 else subgoals[i-1]
 
-        # learner = MaxEntropyIRL(
-        #     theta=theta_random,
-        #     actions=np.arange(5),
-        #     probeNextState=getNextState,
-        #     initialState=initial_state,
-        #     gameOver=make_game_over(subgoal, generation_tol),
-        #     phi=make_phi(subgoal)
-        # )
         learner = makeLearner(theta_random, initial_state, subgoal, tol)
         
         theta_hat, _ = learner.learn(segments, num_iterations=num_iterations, alpha=0.05, num_samples=50)
@@ -137,10 +129,6 @@ def generatePerSubgoalTrajectory(learned_agents, maxLength=200, epsilon=0.05):
     
     return full_trajectory, full_actions
 
-# TODO: 2 things here
-# - trajectories that are off by 0.25 miss the subgoal because tol is 0.2, but if we increase tol we mark it too early if it goes on to actually hit the subgoal exactly.
-# - right now somehow there is an indexing error when trying to segment the trajectories. i don't know why
-
 def getExpertTrajectoriesWithNoise(noise=0.05):
     # Mask the shape so only x,y get noise
     expertTrajectories = load_expert_trajectories("trajectories.pkl", noise=noise, maskShape=[False, False, True, True])
@@ -175,13 +163,7 @@ def getSubgoals(expertTrajectories):
 
     return subgoals, segments_by_subgoal
 
-def learnSegments(subgoals, segments_by_subgoal, startState, generation_tol=0.2):
-    # Two tolerances:
-    # - augment_tol: For marking expert trajectories (lenient - accepts "close enough")
-    # - generation_tol: For generating new trajectories (strict - avoids premature marking)
-    augment_tol = 0.3  # Accept within one step (0.25) of subgoal
-    generation_tol = 0.2  # Require closer precision to avoid marking too early
-
+def learnSegments(subgoals, segments_by_subgoal, startState, tol=0.2):
     print("\n" + "="*60)
     print("TRAINING PER-SUBGOAL AGENTS")
     print("="*60)
@@ -190,7 +172,7 @@ def learnSegments(subgoals, segments_by_subgoal, startState, generation_tol=0.2)
         segments_by_subgoal,
         subgoals,
         initialXY=startState,
-        tol=generation_tol,
+        tol=tol,
         num_iterations=200
     )
 
@@ -266,7 +248,7 @@ def plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, startS
     plt.show()
 
 
-# If you want to load previously trained agents, change this flag to false
+# If you want to train agent from scratch, set to True
 learnMode = False
 
 if __name__ == "__main__":
@@ -278,16 +260,16 @@ if __name__ == "__main__":
     print(f"\nFiltered to {len(subgoals)} valid subgoals (including final goal)")
     print("Valid subgoals:", subgoals)
 
-    generationTol = 0.2
+    tol = 0.2
     startState = np.asarray([1.25, 15.5, 0.0, 0.0])
     
     if learnMode:
-        learned_agents = learnSegments(subgoals, segments_by_subgoal, startState, generationTol)
+        learned_agents = learnSegments(subgoals, segments_by_subgoal, startState, tol)
         saveLearnedAgents(learned_agents)
     else:
-        learned_agents = loadLearnedAgents(generationTol)
+        learned_agents = loadLearnedAgents(tol)
     
     sampleTrajectory = generateLearnedTrajectory(learned_agents)
     
     plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, startState)
-    
+
