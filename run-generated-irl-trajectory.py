@@ -67,6 +67,14 @@ if __name__ == "__main__":
             if current_direction != required_direction:
                 actual_state = turn(required_direction, sock_game)
                 current_direction = actual_state['observation']['players'][0]['direction']
+        elif action == 4 and has_basket:
+            # do the interact twice - simulation env is finnicky
+            sock_game.send(str.encode("0 INTERACT"))
+            _ = recv_socket_data(sock_game)
+            sock_game.send(str.encode("0 INTERACT"))
+            actual_state = recv_socket_data(sock_game)
+            actual_state = json.loads(actual_state)
+            return actual_state
         
         # the real action
         command = f"0 {action_commands[action]}"

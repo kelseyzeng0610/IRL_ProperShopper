@@ -197,18 +197,18 @@ def learnSegments(subgoals, segments_by_subgoal, startState, generation_tol=0.2)
     return learned_agents
 
 def saveLearnedAgents(learnedAgents):
-    # Save the learned agents (only theta) and subgoals
+    # Save the learned agents (theta, subgoal, initial_state - enough to reconstruct)
     with open("learned_per_subgoal_agents.pkl", "wb") as f:
-        pickle.dump([(theta, initial_state, subgoal) for theta, learner, subgoal, initial_state in learnedAgents], f)
+        pickle.dump([(theta, subgoal, initial_state) for theta, learner, subgoal, initial_state in learnedAgents if learner is not None], f)
     print("\nSaved learned per-subgoal agents to learned_per_subgoal_agents.pkl")
 
 def loadLearnedAgents(tol):
     with open("learned_per_subgoal_agents.pkl", "rb") as f:
         agent_data = pickle.load(f)
         learned_agents = []
-        for theta, initialState, subgoal in agent_data:
-            learner = makeLearner(theta, initialState, subgoal, tol)
-            learned_agents.append(learner)
+        for theta, subgoal, initial_state in agent_data:
+            learner = makeLearner(theta, initial_state, subgoal, tol)
+            learned_agents.append((theta, learner, subgoal, initial_state))
     return learned_agents
 
 def generateLearnedTrajectory(learned_agents):
@@ -232,7 +232,7 @@ def generateLearnedTrajectory(learned_agents):
 
     return per_subgoal_trajectory
 
-def plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals):
+def plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, startState):
     # Visualize
     plt.figure(figsize=(10, 8))
     for i, traj in enumerate(expertTrajectories):
@@ -267,7 +267,7 @@ def plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals):
 
 
 # If you want to load previously trained agents, change this flag to false
-learnMode = True
+learnMode = False
 
 if __name__ == "__main__":
     # Set random seed for reproducibility
@@ -279,9 +279,9 @@ if __name__ == "__main__":
     print("Valid subgoals:", subgoals)
 
     generationTol = 0.2
+    startState = np.asarray([1.25, 15.5, 0.0, 0.0])
     
     if learnMode:
-        startState = np.asarray([1.25, 15.5, 0.0, 0.0])
         learned_agents = learnSegments(subgoals, segments_by_subgoal, startState, generationTol)
         saveLearnedAgents(learned_agents)
     else:
@@ -289,5 +289,5 @@ if __name__ == "__main__":
     
     sampleTrajectory = generateLearnedTrajectory(learned_agents)
     
-    plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals)
+    plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, startState)
     
