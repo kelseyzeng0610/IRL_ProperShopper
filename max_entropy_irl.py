@@ -88,8 +88,12 @@ class MaxEntropyIRL:
         return trajectory, actions
     
     def feature_count(self, trajectory):
-        features = [self.phi(step) for step in trajectory]
-        return np.sum(features, axis=0) / len(trajectory)
+        features = np.array([self.phi(step) for step in trajectory])
+
+        # only sum the x,y features
+        avg_xy = np.mean(features[:, :2], axis=0)
+        final_flags = features[-1, 2:] # for flags just use whatever they were in the final state
+        return np.concatenate([avg_xy, final_flags])
 
     def average_feature_counts(self, trajectories):
         total = sum(self.feature_count(traj) for traj in trajectories)

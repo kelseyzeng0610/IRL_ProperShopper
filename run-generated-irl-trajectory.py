@@ -90,3 +90,7 @@ if __name__ == "__main__":
 
     for action in generated_actions:
         current_state = execute_action_with_turning(action, current_state)
+
+    with open("final_state.json", "w") as f:
+        json.dump(current_state, f, indent=2)
+    print("Finished executing actions, wrote final state to final_state.json")
