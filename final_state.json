@@ -11,7 +11,7 @@
         "index": 0,
         "position": [
           3.0,
-          3.5
+          3.8
         ],
         "width": 0.6,
         "height": 0.4,
@@ -39,7 +39,7 @@
       {
         "position": [
           2.8,
-          3.73
+          4.03
         ],
         "direction": 3,
         "capacity": 6,
@@ -607,7 +607,7 @@
       }
     ]
   },
-  "step": 163,
+  "step": 169,
   "gameOver": false,
   "violations": ""
 }

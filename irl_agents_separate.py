@@ -13,13 +13,12 @@ MILK_LOCATION = np.array([6.5, 2.5])
 
 THETA_SIZE = 5
 
-def makeGetNextState(basketLocation, sausageLocation, milkLocation):
+def makeGetNextState(targets):
     def getNextState(state, action):
         currentPosition, hasBasket, hasSausage, hasMilk = state[:2], state[2:3], state[3:4], state[4:]
         if action == 4:
             # Now, we need to know if we are trying to pick up the basket or interact with a shelf
             # interaction - if we are within a threshold of the basket location, we pick it up. else nothing
-            targets = np.array([basketLocation, sausageLocation, milkLocation])
             distances = np.linalg.norm(targets - currentPosition, axis=1)
             closest_target_idx = np.argmin(distances)
             closest_target = targets[closest_target_idx]
@@ -50,8 +49,7 @@ def makeLearner(theta, initialState, subgoal, tol):
             return np.allclose(state, goal, atol=tolerance)
         return game_over
     
-    # getNextState = makeGetNextState([BASKET_LOCATION, SAUSAGE_LOCATION, MILK_LOCATION])
-    getNextState = makeGetNextState(BASKET_LOCATION, SAUSAGE_LOCATION, MILK_LOCATION)
+    getNextState = makeGetNextState(np.array([BASKET_LOCATION, SAUSAGE_LOCATION, MILK_LOCATION]))
 
     learner = MaxEntropyIRL(
         theta=theta,
@@ -88,12 +86,6 @@ def trainPerSubgoalMaxEnt(segments_by_subgoal, subgoals, initialXY, tol=0.2, num
             print(f"  Warning: No segments found for subgoal {i}, skipping")
             learned_agents.append(None)
             continue
-
-        # TODO: remove, debugging
-        if i == 7: 
-            print("here")
-            for seg in segments:
-                print(f"   Segment example: {seg}")
 
         theta_random = np.random.uniform(low=0.0, high=0.1, size=5)
 
@@ -142,10 +134,10 @@ def generatePerSubgoalTrajectory(learned_agents, maxLength=200, epsilon=0.05):
 
 def getExpertTrajectoriesWithNoise(filePath, noise=0.05):
     # Mask the shape so only x,y get noise
-    # mask = np.full((THETA_SIZE), True)
-    # mask[[0,1]] = False
+    mask = np.full((THETA_SIZE), True)
+    mask[[0,1]] = False
 
-    expertTrajectories = load_expert_trajectories(filePath, noise=noise, maskShape=[False, False, True, True, True])
+    expertTrajectories = load_expert_trajectories(filePath, noise=noise, maskShape=mask)
     return expertTrajectories
 
 def getSubgoals(expertTrajectories):
@@ -158,7 +150,6 @@ def getSubgoals(expertTrajectories):
     subgoals = subgoals[np.sort(unique_indices)]
     
     finalGoalLocation = np.asarray([3.0, 3.5, 1.0, 1.0, 1.0])
-    # finalGoalLocation = np.asarray([3.0, 3.5, 1.0, 1.0, 0.0])
     subgoals = np.vstack([subgoals, finalGoalLocation])
     
     # Filter out subgoals that don't have expert data
@@ -196,6 +187,10 @@ def saveLearnedAgents(learnedAgents):
     print("\nSaved learned per-subgoal agents to learned_per_subgoal_agents.pkl")
 
 def loadLearnedAgents(tol):
+    print("\n" + "="*60)
+    print("LOADING PRE-LEARNED PER-SUBGOAL AGENTS FROM FILE, SKIPPING TRAINING")
+    print("="*60)
+
     with open("learned_per_subgoal_agents.pkl", "rb") as f:
         agent_data = pickle.load(f)
         learned_agents = []
@@ -260,16 +255,15 @@ def plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, startS
 
 
 # If you want to train agent from scratch, set to True
-learnMode = True
+learnMode = False
 
 if __name__ == "__main__":
     # Set random seed for reproducibility
     np.random.seed(142)
 
-    expertTrajectories = getExpertTrajectoriesWithNoise("trajectories-milk.pkl", noise=0)
-    # expertTrajectories = getExpertTrajectoriesWithNoise("trajectories.pkl", noise=0)
+    expertTrajectories = getExpertTrajectoriesWithNoise("trajectories.pkl")
     subgoals, segments_by_subgoal = getSubgoals(expertTrajectories)
-    print("Subgoals:", subgoals)
+    print("Subgoals:\n", subgoals)
 
     tol = 0.2
     startState = np.asarray([1.25, 15.5, 0.0, 0.0, 0.0])
