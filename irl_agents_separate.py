@@ -15,7 +15,7 @@ THETA_SIZE = 5
 
 def makeGetNextState(targets):
     def getNextState(state, action):
-        currentPosition, hasBasket, hasSausage, hasMilk = state[:2], state[2:3], state[3:4], state[4:]
+        currentPosition, hasItems = state[:2], state[2:]
         if action == 4:
             # Now, we need to know if we are trying to pick up the basket or interact with a shelf
             # interaction - if we are within a threshold of the basket location, we pick it up. else nothing
@@ -32,7 +32,7 @@ def makeGetNextState(targets):
         else:
             # normal movement, flags doesn't change
             newPosition = shoppingActionMap[action](currentPosition)
-            return np.concatenate([newPosition, hasBasket, hasSausage, hasMilk])
+            return np.concatenate([newPosition, hasItems])
 
 
     return getNextState
