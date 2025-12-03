@@ -20,6 +20,9 @@ class MaxEntropyIRL:
         self.phi = phi
 
     def reward(self, state):
+        # ps = self.phi(state)
+        # d = np.dot(self.theta, ps)
+        # return d
         return np.dot(self.theta, self.phi(state))
 
     def stochastic_trajectory(self, maxLength=None):
@@ -88,8 +91,13 @@ class MaxEntropyIRL:
         return trajectory, actions
     
     def feature_count(self, trajectory):
-        features = [self.phi(step) for step in trajectory]
-        return np.sum(features, axis=0) / len(trajectory)
+        features = np.array([self.phi(step) for step in trajectory])
+
+        # only sum the x,y features
+        avg_xy = np.mean(features[:, :2], axis=0)
+        final_flags = features[-1, 2:]
+        return np.concatenate([avg_xy, final_flags])
+        # return np.sum(features, axis=0) / len(trajectory)
 
     def average_feature_counts(self, trajectories):
         total = sum(self.feature_count(traj) for traj in trajectories)

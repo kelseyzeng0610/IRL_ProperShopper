@@ -364,11 +364,8 @@ def buildGoals(state):
             goals.append(aisle)
             goals.append(shelfNav)
 
-        # TODO: don't pick up items yet
-        if item == "sausage":
+        for _ in range(quantity):
             goals.append(pickupItem)
-        # for n in range(quantity):
-        #     goals.append(pickupItem)
 
         prevAisle = aisle['original_position'][1]
 
@@ -633,14 +630,12 @@ def getAction(agent, state, current_goal, basketMode, action_commands):
 
 def get_trajectory_recording_state(gameState):
     playerX, playerY = gameState['observation']['players'][0]['position']
-    # hasCart = gameState['observation']['players'][0]['curr_cart'] >= 0
     basket = hasBasket(gameState)
 
-    # TODO: ignoring has milk for now
     hasSausage = basketHasItem(gameState, 'sausage')
     hasMilk = basketHasItem(gameState, 'milk')
 
-    return np.asarray([np.round(playerX, 2), np.round(playerY, 2), int(basket), int(hasSausage)])
+    return np.asarray([np.round(playerX, 2), np.round(playerY, 2), int(basket), int(hasSausage), int(hasMilk)])
 
 if __name__ == "__main__":
     action_commands = ['NORTH', 'SOUTH', 'EAST', 'WEST', 'INTERACT']
