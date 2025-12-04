@@ -81,6 +81,17 @@ def basketHasItem(state, item):
 def getPlayerDirection(state):
     return INT_TO_DIRECTION[state['observation']['players'][0]['direction']]
 
+def paidForItems(state, useBasket):
+    if useBasket:
+        basket = find(state['observation']['baskets'], lambda basket: basket['owner'] == 0)
+        return basket is not None and len(basket['contents']) == 0 and len(basket['purchased_contents']) > 0
+    else:
+        raise Exception("Not implemented for cart mode yet")
+
+def basketHasPaidItem(state, item):
+    basket = find(state['observation']['baskets'], lambda basket: basket['owner'] == 0)
+    return basket is not None and item in basket['purchased_contents']
+
 
 # This function gets the ideal location to be facing from agent_position with a target of target_position
 # This is an "x-first" goal, meaning until we are close in the x-coordinate, we prioritize moving in the x-direction.
@@ -369,28 +380,25 @@ def buildGoals(state):
 
         prevAisle = aisle['original_position'][1]
 
-    # TODO: skip everything else for now
-    goals.append(walkway)
-    goals.append(register)
-    return goals, basketMode
-    
+    # Skipping pickup counter
     # At the end of all the shelves, we navigate back to the walkway, and then to the register.
     # check the last goal before this, and if it's a counter, then add another checkpoint which gets us out of the way of the shelves so we can easily approach the register and exit
-    if goals[-1]['type'] == "PICKUP_COUNTER":
-        goals.append({
-            "name": "leave counters",
-            "type": "LEAVE_COUNTERS",
-            "position": (17, 3.5),
-            "height": 0.5,
-            "width": 0.5,
-            "achieved": leaveCounterAchieved,
-        })
+    # if goals[-1]['type'] == "PICKUP_COUNTER":
+    #     goals.append({
+    #         "name": "leave counters",
+    #         "type": "LEAVE_COUNTERS",
+    #         "position": (17, 3.5),
+    #         "height": 0.5,
+    #         "width": 0.5,
+    #         "achieved": leaveCounterAchieved,
+    #     })
+
     goals.append(walkway)
     goals.append(register)
     
     pay = {"name": "PAY", "type": "PAY", "position": (2.5, 4), "height": 0.5, "width": 0.5, "achieved": getPaid(basketMode)}
     goals.append(pay)
-    goals.append(exit)
+    # goals.append(exit)
 
     return goals, basketMode
 
@@ -632,10 +640,19 @@ def get_trajectory_recording_state(gameState):
     playerX, playerY = gameState['observation']['players'][0]['position']
     basket = hasBasket(gameState)
 
-    hasSausage = basketHasItem(gameState, 'sausage')
-    hasMilk = basketHasItem(gameState, 'milk')
+    hasSausage = basketHasItem(gameState, 'sausage') or basketHasPaidItem(gameState, 'sausage')
+    hasMilk = basketHasItem(gameState, 'milk') or basketHasPaidItem(gameState, 'milk')
 
-    return np.asarray([np.round(playerX, 2), np.round(playerY, 2), int(basket), int(hasSausage), int(hasMilk)])
+    paid = paidForItems(gameState, True)
+
+    return np.asarray([
+        np.round(playerX, 2), 
+        np.round(playerY, 2), 
+        int(basket), 
+        int(hasSausage), 
+        int(hasMilk),
+        int(paid),
+    ])
 
 if __name__ == "__main__":
     action_commands = ['NORTH', 'SOUTH', 'EAST', 'WEST', 'INTERACT']
@@ -718,6 +735,9 @@ if __name__ == "__main__":
                     # We finished all goals
                     print("******", i+1, "COMPLETED ALL GOALS ********")
                     if generateTrajectories:
+                        # need to add the last step
+                        phi_state = get_trajectory_recording_state(state)
+                        trajectory.append(phi_state)
                         trajectories.append(trajectory)
                     savedQTables = agent.qtables
                     break
