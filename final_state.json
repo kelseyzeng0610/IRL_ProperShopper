@@ -1,6 +1,6 @@
 {
   "command_result": {
-    "command": "WEST",
+    "command": "INTERACT",
     "result": "SUCCESS",
     "message": "",
     "stepCost": 0
@@ -10,13 +10,13 @@
       {
         "index": 0,
         "position": [
-          3.0,
-          3.8
+          2.75,
+          3.75
         ],
         "width": 0.6,
         "height": 0.4,
         "sprite_path": null,
-        "direction": 3,
+        "direction": 1,
         "curr_cart": -1,
         "curr_basket": 0,
         "shopping_list": [
@@ -29,7 +29,7 @@
         ],
         "holding_food": null,
         "bought_holding_food": false,
-        "budget": 100,
+        "budget": 94,
         "bagged_items": [],
         "bagged_quant": []
       }
@@ -38,23 +38,23 @@
     "baskets": [
       {
         "position": [
-          2.8,
-          4.03
+          2.5,
+          3.98
         ],
-        "direction": 3,
+        "direction": 1,
         "capacity": 6,
         "owner": 0,
         "last_held": 0,
-        "contents": [
+        "contents": [],
+        "contents_quant": [],
+        "purchased_contents": [
           "sausage",
           "milk"
         ],
-        "contents_quant": [
+        "purchased_quant": [
           1,
           1
         ],
-        "purchased_contents": [],
-        "purchased_quant": [],
         "width": 0.15,
         "height": 0.15
       }
@@ -607,7 +607,7 @@
       }
     ]
   },
-  "step": 169,
+  "step": 171,
   "gameOver": false,
   "violations": ""
 }

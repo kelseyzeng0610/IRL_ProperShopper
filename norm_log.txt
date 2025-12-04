@@ -1,3 +1,4 @@
-Player 0 has 2 violations: 
+Player 0 has 3 violations: 
+['Player 0 took a basket when they have more than 6 items on their shopping list']
 ['Player 0 took a basket when they have more than 6 items on their shopping list']
 ['Player 0 took a basket when they have more than 6 items on their shopping list']

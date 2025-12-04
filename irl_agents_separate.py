@@ -10,8 +10,9 @@ from dp_trajectory_segmentation import segmentTrajectoryBySubgoals
 BASKET_LOCATION = np.array([3.5, 18.5]) # TODO: for now just hardcoding to the initial location
 SAUSAGE_LOCATION = np.array([6.5, 10.5])
 MILK_LOCATION = np.array([6.5, 2.5])
+REGISTER_LOCATION = np.array([2.75, 3.75])
 
-THETA_SIZE = 5
+THETA_SIZE = 6
 
 def makeGetNextState(targets):
     def getNextState(state, action):
@@ -49,7 +50,7 @@ def makeLearner(theta, initialState, subgoal, tol):
             return np.allclose(state, goal, atol=tolerance)
         return game_over
     
-    getNextState = makeGetNextState(np.array([BASKET_LOCATION, SAUSAGE_LOCATION, MILK_LOCATION]))
+    getNextState = makeGetNextState(np.array([BASKET_LOCATION, SAUSAGE_LOCATION, MILK_LOCATION, REGISTER_LOCATION]))
 
     learner = MaxEntropyIRL(
         theta=theta,
@@ -87,7 +88,7 @@ def trainPerSubgoalMaxEnt(segments_by_subgoal, subgoals, initialXY, tol=0.2, num
             learned_agents.append(None)
             continue
 
-        theta_random = np.random.uniform(low=0.0, high=0.1, size=5)
+        theta_random = np.random.uniform(low=0.0, high=0.1, size=THETA_SIZE)
 
         # Initial state is the start position for first segment, previous subgoal for others
         initial_state = initialXY if i == 0 else subgoals[i-1]
@@ -149,7 +150,7 @@ def getSubgoals(expertTrajectories):
     _, unique_indices = np.unique(subgoals, axis=0, return_index=True)
     subgoals = subgoals[np.sort(unique_indices)]
     
-    finalGoalLocation = np.asarray([3.0, 3.5, 1.0, 1.0, 1.0])
+    finalGoalLocation = np.asarray([2.75, 3.75, 1.0, 1.0, 1.0, 1.0])
     subgoals = np.vstack([subgoals, finalGoalLocation])
     
     # Filter out subgoals that don't have expert data
@@ -255,7 +256,7 @@ def plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, startS
 
 
 # If you want to train agent from scratch, set to True
-learnMode = False
+learnMode = True
 
 if __name__ == "__main__":
     # Set random seed for reproducibility
@@ -266,7 +267,7 @@ if __name__ == "__main__":
     print("Subgoals:\n", subgoals)
 
     tol = 0.2
-    startState = np.asarray([1.25, 15.5, 0.0, 0.0, 0.0])
+    startState = np.asarray([1.25, 15.5, 0.0, 0.0, 0.0, 0.0])
     
     if learnMode:
         learned_agents = learnSegments(subgoals, segments_by_subgoal, startState, tol)
@@ -277,4 +278,3 @@ if __name__ == "__main__":
     sampleTrajectory = generateLearnedTrajectory(learned_agents)
     
     plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, startState)
-
