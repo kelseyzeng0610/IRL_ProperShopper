@@ -7,12 +7,19 @@ import matplotlib.pyplot as plt
 from irl_agent import shoppingActionMap, load_expert_trajectories
 from dp_trajectory_segmentation import segmentTrajectoryBySubgoals
 
-BASKET_LOCATION = np.array([3.5, 18.5]) # TODO: for now just hardcoding to the initial location
+# TODO: when adding a new item, add its location to the target list, then update the start/final state, and the theta size.
+BASKET_LOCATION = np.array([3.5, 18.5])
 SAUSAGE_LOCATION = np.array([6.5, 10.5])
 MILK_LOCATION = np.array([6.5, 2.5])
+BANANA_LOCATION = np.array([10.5, 6.5])
 REGISTER_LOCATION = np.array([2.75, 3.75])
 
-THETA_SIZE = 6
+TARGET_LOCATIONS = [BASKET_LOCATION, SAUSAGE_LOCATION, MILK_LOCATION, BANANA_LOCATION, REGISTER_LOCATION]
+
+START_STATE = np.asarray([1.25, 15.5, 0.0, 0.0, 0.0, 0.0, 0.0])
+FINAL_GOAL_LOCATION = np.asarray([2.75, 3.75, 1.0, 1.0, 1.0, 1.0, 1.0])
+
+THETA_SIZE = 7
 
 def makeGetNextState(targets):
     def getNextState(state, action):
@@ -50,7 +57,7 @@ def makeLearner(theta, initialState, subgoal, tol):
             return np.allclose(state, goal, atol=tolerance)
         return game_over
     
-    getNextState = makeGetNextState(np.array([BASKET_LOCATION, SAUSAGE_LOCATION, MILK_LOCATION, REGISTER_LOCATION]))
+    getNextState = makeGetNextState(np.array(TARGET_LOCATIONS))
 
     learner = MaxEntropyIRL(
         theta=theta,
@@ -150,8 +157,7 @@ def getSubgoals(expertTrajectories):
     _, unique_indices = np.unique(subgoals, axis=0, return_index=True)
     subgoals = subgoals[np.sort(unique_indices)]
     
-    finalGoalLocation = np.asarray([2.75, 3.75, 1.0, 1.0, 1.0, 1.0])
-    subgoals = np.vstack([subgoals, finalGoalLocation])
+    subgoals = np.vstack([subgoals, FINAL_GOAL_LOCATION])
     
     # Filter out subgoals that don't have expert data
     segments_by_subgoal = segmentTrajectoriesBySubgoal(expertTrajectories, subgoals)
@@ -222,7 +228,6 @@ def generateLearnedTrajectory(learned_agents):
     return per_subgoal_trajectory
 
 def plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, startState):
-    # Visualize
     plt.figure(figsize=(10, 8))
     for i, traj in enumerate(expertTrajectories):
         traj = np.array(traj)
@@ -267,7 +272,6 @@ if __name__ == "__main__":
     print("Subgoals:\n", subgoals)
 
     tol = 0.2
-    startState = np.asarray([1.25, 15.5, 0.0, 0.0, 0.0, 0.0])
     
     if learnMode:
         learned_agents = learnSegments(subgoals, segments_by_subgoal, startState, tol)
