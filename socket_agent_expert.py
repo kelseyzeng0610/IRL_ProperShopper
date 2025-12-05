@@ -642,6 +642,7 @@ def get_trajectory_recording_state(gameState):
 
     hasSausage = basketHasItem(gameState, 'sausage') or basketHasPaidItem(gameState, 'sausage')
     hasMilk = basketHasItem(gameState, 'milk') or basketHasPaidItem(gameState, 'milk')
+    hasBanana = basketHasItem(gameState, 'banana') or basketHasPaidItem(gameState, 'banana')
 
     paid = paidForItems(gameState, True)
 
@@ -651,6 +652,7 @@ def get_trajectory_recording_state(gameState):
         int(basket), 
         int(hasSausage), 
         int(hasMilk),
+        int(hasBanana),
         int(paid),
     ])
 

@@ -21,15 +21,17 @@
         "curr_basket": 0,
         "shopping_list": [
           "sausage",
-          "milk"
+          "milk",
+          "banana"
         ],
         "list_quant": [
+          1,
           1,
           1
         ],
         "holding_food": null,
         "bought_holding_food": false,
-        "budget": 94,
+        "budget": 93,
         "bagged_items": [],
         "bagged_quant": []
       }
@@ -49,9 +51,11 @@
         "contents_quant": [],
         "purchased_contents": [
           "sausage",
+          "banana",
           "milk"
         ],
         "purchased_quant": [
+          1,
           1,
           1
         ],
@@ -207,7 +211,7 @@
         "food": "banana",
         "price": 1,
         "capacity": 12,
-        "quantity": 12,
+        "quantity": 11,
         "food_image": "images/food/banana.png",
         "shelf_image": "images/Shelves/shelf.png",
         "food_name": "banana"
@@ -607,7 +611,7 @@
       }
     ]
   },
-  "step": 171,
+  "step": 237,
   "gameOver": false,
   "violations": ""
 }
