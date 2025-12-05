@@ -636,25 +636,19 @@ def getAction(agent, state, current_goal, basketMode, action_commands):
 
     return action, action_index, learningMode
 
-def get_trajectory_recording_state(gameState):
+def get_trajectory_recording_state(gameState, requiredItems):
     playerX, playerY = gameState['observation']['players'][0]['position']
     basket = hasBasket(gameState)
 
-    hasSausage = basketHasItem(gameState, 'sausage') or basketHasPaidItem(gameState, 'sausage')
-    hasMilk = basketHasItem(gameState, 'milk') or basketHasPaidItem(gameState, 'milk')
-    hasBanana = basketHasItem(gameState, 'banana') or basketHasPaidItem(gameState, 'banana')
+    hasItems = [basketHasItem(gameState, item) or basketHasPaidItem(gameState, item) for item in requiredItems]
 
     paid = paidForItems(gameState, True)
 
-    return np.asarray([
-        np.round(playerX, 2), 
-        np.round(playerY, 2), 
-        int(basket), 
-        int(hasSausage), 
-        int(hasMilk),
-        int(hasBanana),
-        int(paid),
-    ])
+    return np.concatenate((
+        np.asarray([np.round(playerX, 2), np.round(playerY, 2), int(basket)]),
+        np.asarray(hasItems),
+        np.asarray([int(paid)]),
+    ))
 
 if __name__ == "__main__":
     action_commands = ['NORTH', 'SOUTH', 'EAST', 'WEST', 'INTERACT']
@@ -687,6 +681,8 @@ if __name__ == "__main__":
     trajectories = []
     generateTrajectories = True
 
+    requiredItems = ['sausage', 'milk', 'banana']
+
     savedQTables = preloadQTable("training-output.json") if generateTrajectories else {t: {} for t in allGoalTypes} # initially our q-table is blank
     n = numTrajectories if generateTrajectories else numTrainingEpisodes
     for i in range(n):
@@ -711,7 +707,7 @@ if __name__ == "__main__":
         while not state['gameOver']:
             cnt += 1
             action, action_index, learningMode = getAction(agent, state, current_goal, basketMode, action_commands)
-            phi_state = get_trajectory_recording_state(state)
+            phi_state = get_trajectory_recording_state(state, requiredItems)
             if generateTrajectories and (len(trajectory) == 0 or not np.allclose(trajectory[-1], phi_state)):
                 trajectory.append(phi_state)
 
@@ -738,7 +734,7 @@ if __name__ == "__main__":
                     print("******", i+1, "COMPLETED ALL GOALS ********")
                     if generateTrajectories:
                         # need to add the last step
-                        phi_state = get_trajectory_recording_state(state)
+                        phi_state = get_trajectory_recording_state(state, requiredItems)
                         trajectory.append(phi_state)
                         trajectories.append(trajectory)
                     savedQTables = agent.qtables

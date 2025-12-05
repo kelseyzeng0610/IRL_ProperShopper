@@ -274,11 +274,11 @@ if __name__ == "__main__":
     tol = 0.2
     
     if learnMode:
-        learned_agents = learnSegments(subgoals, segments_by_subgoal, startState, tol)
+        learned_agents = learnSegments(subgoals, segments_by_subgoal, START_STATE, tol)
         saveLearnedAgents(learned_agents)
     else:
         learned_agents = loadLearnedAgents(tol)
     
     sampleTrajectory = generateLearnedTrajectory(learned_agents)
     
-    plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, startState)
+    plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, START_STATE)
