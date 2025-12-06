@@ -66,6 +66,7 @@
             "python": "${workspaceFolder}/venv/bin/python",
             "args": [
                 "--run_hirl_samples",
+                "--headless",
             ]
         },
         {

@@ -28,7 +28,10 @@ def generateIRLTrajectories(shoppingLists, startIdx, endIdx, headless=False):
             f.write(repr(modifiedList))
 
         # Step 1: start the environment with the provided start state
-        envProcess = subprocess.Popen(['python', 'socket_env.py', '--player_speed=0.25', f'--file={startStateFileName}', '--headless' if headless else ''])
+        args = ['python', 'socket_env.py', '--player_speed=0.25', f'--file={startStateFileName}']
+        if headless:
+            args.append('--headless')
+        envProcess = subprocess.Popen(args)
 
         # Step 2: Run the expert agent with epsilon > 0 to generate trajectories (they will be saved to file)
         if not headless:
@@ -88,30 +91,48 @@ def sampleIRLTrajectories(allShoppingLists, startIdx, endIdx):
 def runHIRLSamples(allShoppingLists, startIdx, endIdx, headless=False):
     for i in range(startIdx, endIdx):
         print(f"Running sampled trajectory for shopping list: {allShoppingLists[i]}")
-        envProcess = subprocess.Popen(['python', 'socket_env.py', '--player_speed=0.25', f'--file=experiment/runs/run_{i}/start_state_{i}.txt', '--headless' if headless else ''])
+        args = ['python', 'socket_env.py', '--player_speed=0.25', f'--file=experiment/runs/run_{i}/start_state_{i}.txt']
+        if headless:
+            args.append('--headless')
+        envProcess = subprocess.Popen(args)
 
-        # TODO: add metrics here
+        # load the generated trajectory to check if it succeeded
+        success = False
+        with open(f'experiment/runs/run_{i}/irl_generated_trajectory_{i}.json', 'r') as f:
+            generatedTrajectory = json.load(f)
+            flags = generatedTrajectory[-1][2:]
+            success = np.all(np.array(flags))
+
         if not headless:
             time.sleep(5)  # wait for the env to start up
-        subprocess.run([
+        
+        args = [
             'python', 'run-generated-irl-trajectory.py',
             f'--file=experiment/runs/run_{i}/irl_generated_actions_{i}.json',
-            f'--output=experiment/runs/run_{i}/irl_final_state_{i}.json'
-        ])
+            f'--output=experiment/runs/run_{i}/irl_final_state_{i}.json',
+            f'--run_id={i}',
+            f'--metrics_file=experiment/runs/run_{i}/irl_generated_action_metrics_{i}.json'
+        ]
+        if success:
+            args.append('--success')
+        subprocess.run(args)
 
         envProcess.terminate()
         envProcess.wait()
 
 def runExpertForEvaluation(startIdx, endIdx, headless=False):
     for i in range(startIdx, endIdx):
-        envProcess = subprocess.Popen(['python', 'socket_env.py', '--player_speed=0.25', f'--file=experiment/runs/run_{i}/start_state_{i}.txt', '--headless' if headless else ''])
+        args = ['python', 'socket_env.py', '--player_speed=0.25', f'--file=experiment/runs/run_{i}/start_state_{i}.txt']
+        if headless:
+            args.append('--headless')
+        envProcess = subprocess.Popen(args)
 
         if not headless:
             time.sleep(5)  # wait for the env to start up
         genProcess = subprocess.run([
             'python', 'socket_agent_expert.py', 
             '--agent_epsilon=0.0',
-            f'--metrics_output=experiment/runs/run_{i}/metrics_expert_evaluation_{i}.json'
+            f'--metrics_output=experiment/runs/run_{i}/metrics_expert_evaluation_{i}.json',
         ])
 
         envProcess.terminate()
