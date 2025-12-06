@@ -80,5 +80,16 @@
                 "--headless",
             ]
         },
+        {
+            "name": "Aggregate Experiment Results",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/experiment_results.py",
+            "python": "${workspaceFolder}/venv/bin/python",
+            "args": [
+                "--start_idx=0",
+                "--end_idx=1"
+            ]
+        }
     ]
 }
