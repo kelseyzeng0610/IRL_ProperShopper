@@ -7,6 +7,77 @@
             "request": "launch",
             "program": "${file}",
             "python": "${workspaceFolder}/venv/bin/python",
-        }
+        },
+        {
+            "name": "Generate Shopping Lists",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/experiment.py",
+            "python": "${workspaceFolder}/venv/bin/python",
+            "args": [
+                "--generate_lists", 
+                "--num_lists=1",
+            ]
+        },
+        {
+            "name": "Generate Expert Trajectories for Experiment",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/experiment.py",
+            "python": "${workspaceFolder}/venv/bin/python",
+            "args": [
+                "--generate_irl_trajectories",
+                "--headless", 
+            ]
+        },
+        {
+            "name": "Add noise to lists",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/experiment.py",
+            "python": "${workspaceFolder}/venv/bin/python",
+            "args": ["--add_noise"]
+        },
+        {
+            "name": "Run HIRL",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/experiment.py",
+            "python": "${workspaceFolder}/venv/bin/python",
+            "args": [
+                "--run_irl",
+            ]
+        },
+        {
+            "name": "Sample IRL Trajectories",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/experiment.py",
+            "python": "${workspaceFolder}/venv/bin/python",
+            "args": [
+                "--sample_irl_trajectories",
+            ]
+        },
+        {
+            "name": "Run HIRL Samples",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/experiment.py",
+            "python": "${workspaceFolder}/venv/bin/python",
+            "args": [
+                "--run_hirl_samples",
+            ]
+        },
+        {
+            "name": "Run Expert for Evaluation",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/experiment.py",
+            "python": "${workspaceFolder}/venv/bin/python",
+            "args": [
+                "--record_expert",
+                "--headless",
+            ]
+        },
     ]
 }

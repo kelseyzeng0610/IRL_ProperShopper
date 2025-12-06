@@ -4,6 +4,7 @@ import time
 from utils import recv_socket_data
 import numpy as np
 from socket_agent_expert import hasBasket
+import argparse
 
 action_commands = {
     0: 'NORTH',
@@ -41,7 +42,23 @@ if __name__ == "__main__":
     sock_game = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock_game.connect((HOST, PORT))
 
-    filename = 'generated_actions_per_subgoal.json'
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--file',
+        type=str,
+        help="file containing the actions to execute",
+        default="generated_actions_per_subgoal.json"
+    )
+    parser.add_argument(
+        '--output',
+        type=str,
+        help="file to write the final state to",
+        default="final_state.json"
+    )
+    args = parser.parse_args()
+    filename = args.file
+    output_file = args.output
+
     generated_actions = load_generated_actions(filename)
 
     print(f"Loaded generated actions from {filename}")
@@ -83,7 +100,7 @@ if __name__ == "__main__":
         actual_state = json.loads(actual_state)
         
         return actual_state
-    
+    # TODO: record metrics
     sock_game.send(str.encode("0 RESET"))
     start_state = recv_socket_data(sock_game)
     current_state = json.loads(start_state)
@@ -91,6 +108,6 @@ if __name__ == "__main__":
     for action in generated_actions:
         current_state = execute_action_with_turning(action, current_state)
 
-    with open("final_state.json", "w") as f:
+    with open(output_file, "w") as f:
         json.dump(current_state, f, indent=2)
-    print("Finished executing actions, wrote final state to final_state.json")
+    print(f"Finished executing actions, wrote final state to {output_file}")
