@@ -3,6 +3,7 @@
 import json
 import random
 import socket
+import argparse
 
 import gymnasium as gym
 from env import SupermarketEnv
@@ -156,7 +157,7 @@ def writeQTableToFile(savedQTable, filePath):
 def writeTrajectoriesToFile(trajectories, filePath):
     with open(filePath, 'wb') as f:
         pickle.dump(trajectories, f)
-    with open("trajectories.json", "w") as f:
+    with open(filePath.replace('.pkl', '.json'), "w") as f:
         json.dump([[list(t) for t in traj] for traj in trajectories], f, indent=2)
 
 # this is a function that returns True/False of whether we are in the "walkway"
@@ -655,10 +656,38 @@ if __name__ == "__main__":
     # Initialize Q-learning agent
     action_space = len(action_commands)
 
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--generate_trajectories',
+        action='store_true',
+        help="whether to generate trajectories",
+    )
+    parser.add_argument(
+        '--trajectory_output',
+        type=str,
+        help="file to write generated trajectories to",
+        default="trajectories.pkl"
+    )
+    parser.add_argument(
+        '--agent_epsilon',
+        type=float,
+        help="epsilon value for the agent",
+        default=0.0
+    )
+    parser.add_argument(
+        '--metrics_output',
+        type=str,
+        help="location to write evaluation output to",
+        default="metrics-output.json"
+    )
+
+    args = parser.parse_args()
+    print(f"Generating Trajectories: {args.generate_trajectories}")
+
     # To train an agent on new shelves, simply replace the shelf names in the array below. Note that they must appear in this array
     # exactly as they appear in the state object of the game. Case matters.
 
-    agent = ExpertAgent(action_space, epsilon=0.2)
+    agent = ExpertAgent(action_space, epsilon=args.agent_epsilon)
 
 ####################
     #Once you have your agent trained, or you want to continue training from a previous training session, you can load the qtable from a json file
@@ -676,25 +705,38 @@ if __name__ == "__main__":
     numTrajectories = 5
     numTrainingEpisodes = 50
     episode_length = 500 # Increase max episode length since sequences can be long
-    success = 0
 
     trajectories = []
-    generateTrajectories = True
 
-    requiredItems = ['sausage', 'milk', 'banana']
+    generateTrajectories = args.generate_trajectories
+    trainFromScratch = False
+    train = False
+    # TODO: we need a mode that just executes without saving trajectories or updating q tables
+    savedQTables = {t: {} for t in allGoalTypes} if trainFromScratch else preloadQTable("training-output.json")
+    n = 1
+    if generateTrajectories:
+        n = 5
+    elif train:
+        n = numTrainingEpisodes
 
-    savedQTables = preloadQTable("training-output.json") if generateTrajectories else {t: {} for t in allGoalTypes} # initially our q-table is blank
-    n = numTrajectories if generateTrajectories else numTrainingEpisodes
-    for i in range(n):
+    metrics = []
+
+    maxViolationsForExpertDemo = 10
+    i = 0
+    while i < n:
         sock_game.send(str.encode("0 RESET"))  # reset the game
         state = recv_socket_data(sock_game)
         state = json.loads(state)
         cnt = 0
+        success = False
+        violationCount = 0
 
         # keep track of our current goal so we know when to end the training loop
         goals, basketMode = buildGoals(state)
         agent.setGoals(goals)
         current_goal, current_goal_idx = goals[0], 0
+
+        requiredItems = state['observation']['players'][0]['shopping_list']
 
         # For this iteration of training, use the most recent updated Q Table
         # At the first iteration, this will be blank
@@ -716,7 +758,13 @@ if __name__ == "__main__":
             next_state = recv_socket_data(sock_game)  # get observation from env
             next_state = json.loads(next_state)
 
-            if not generateTrajectories and learningMode:
+            violationCount += len(next_state['violations'])
+            if violationCount > maxViolationsForExpertDemo and generateTrajectories:
+                # too many violations, it probably found a random spot that wasn't used in training and doesn't know what to do
+                print("too many violations, ending trajectory generation")
+                break
+
+            if train and learningMode:
                 # Define the reward based on the state and next_state
                 reward = calculate_reward(state, next_state, current_goal, action_commands[action_index], basketMode)  # You need to define this function
                 # Update Q-table
@@ -732,6 +780,7 @@ if __name__ == "__main__":
                 if current_goal_idx == len(goals):
                     # We finished all goals
                     print("******", i+1, "COMPLETED ALL GOALS ********")
+                    success = True
                     if generateTrajectories:
                         # need to add the last step
                         phi_state = get_trajectory_recording_state(state, requiredItems)
@@ -747,12 +796,31 @@ if __name__ == "__main__":
             if cnt > episode_length:
                 print("too many moves this loop. ending now")
                 break
+        
+        if generateTrajectories and (violationCount > 10 or cnt > episode_length):
+            # discard this trajectory
+            print("discarding trajectory due to too many violations or too many moves")
+            continue
+
+        metrics.append({
+            'run_id': i,
+            'success': success,
+            'num_steps': cnt,
+            'num_violations': violationCount,
+        })
+        i += 1
+
+    # write metrics at the end
+    if args.metrics_output != "":
+        with open(args.metrics_output, "w") as f:
+            json.dump(metrics, f, indent=2)
+            print(f"\n\n===== Wrote metrics to {args.metrics_output} =====\n\n")
 
     # At the end of training, write our saved q table to an output file
     if generateTrajectories:
-        writeTrajectoriesToFile(trajectories, "trajectories.pkl")
-        print("\n\n===== Wrote trajectories to trajectories.pkl =====\n\n")
-    else:
+        writeTrajectoriesToFile(trajectories, args.trajectory_output)
+        print(f"\n\n===== Wrote trajectories to {args.trajectory_output} =====\n\n")
+    elif train:
         writeQTableToFile(savedQTables, "training-output.json")
         print("\n\n===== Wrote final Q Table to 'training-output.json' =====\n\n")
 

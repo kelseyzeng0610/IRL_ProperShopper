@@ -9,17 +9,35 @@ from dp_trajectory_segmentation import segmentTrajectoryBySubgoals
 
 # TODO: when adding a new item, add its location to the target list, then update the start/final state, and the theta size.
 BASKET_LOCATION = np.array([3.5, 18.5])
-SAUSAGE_LOCATION = np.array([6.5, 10.5])
-MILK_LOCATION = np.array([6.5, 2.5])
-BANANA_LOCATION = np.array([10.5, 6.5])
 REGISTER_LOCATION = np.array([2.75, 3.75])
-
-TARGET_LOCATIONS = [BASKET_LOCATION, SAUSAGE_LOCATION, MILK_LOCATION, BANANA_LOCATION, REGISTER_LOCATION]
 
 START_STATE = np.asarray([1.25, 15.5, 0.0, 0.0, 0.0, 0.0, 0.0])
 FINAL_GOAL_LOCATION = np.asarray([2.75, 3.75, 1.0, 1.0, 1.0, 1.0, 1.0])
 
 THETA_SIZE = 7
+
+def getItemLocations():
+    with open('sample-start-state.json', 'r') as f:
+        sampleState = json.load(f)
+
+    itemLocations = {}
+    for shelf in sampleState['shelves']:
+        item = shelf['food']
+        if item in itemLocations:
+            continue  # already recorded - keep the first when there are multiple?
+        position = shelf['position']
+        height = shelf['height']
+        width = shelf['width']
+        targetPosition = np.array([position[0] + 0.5 * width, position[1] + height])
+        itemLocations[item] = targetPosition
+    return itemLocations
+
+def getTargetLocations(itemLocations, shoppingList):
+    targetLocations = [BASKET_LOCATION]
+    for item in shoppingList:
+        targetLocations.append(itemLocations[item])
+    targetLocations.append(REGISTER_LOCATION)
+    return targetLocations
 
 def makeGetNextState(targets):
     def getNextState(state, action):
@@ -45,7 +63,7 @@ def makeGetNextState(targets):
 
     return getNextState
 
-def makeLearner(theta, initialState, subgoal, tol):
+def makeLearner(theta, initialState, subgoal, tol, shoppingList):
     def make_phi(goal):
         def phi(state):
             # phi is xdist, ydist, current flags (not distances)
@@ -57,7 +75,10 @@ def makeLearner(theta, initialState, subgoal, tol):
             return np.allclose(state, goal, atol=tolerance)
         return game_over
     
-    getNextState = makeGetNextState(np.array(TARGET_LOCATIONS))
+    itemLocations = getItemLocations()
+    targetLocations = getTargetLocations(itemLocations, shoppingList)
+    
+    getNextState = makeGetNextState(np.array(targetLocations))
 
     learner = MaxEntropyIRL(
         theta=theta,
@@ -83,7 +104,7 @@ def segmentTrajectoriesBySubgoal(expertTrajectories, subgoals):
     return segments_by_subgoal
 
 
-def trainPerSubgoalMaxEnt(segments_by_subgoal, subgoals, initialXY, tol=0.2, num_iterations=200):    
+def trainPerSubgoalMaxEnt(segments_by_subgoal, subgoals, initialXY, shoppingList, tol=0.2, num_iterations=200):    
     learned_agents = []
     
     for i, (subgoal, segments) in enumerate(zip(subgoals, segments_by_subgoal)):
@@ -100,7 +121,7 @@ def trainPerSubgoalMaxEnt(segments_by_subgoal, subgoals, initialXY, tol=0.2, num
         # Initial state is the start position for first segment, previous subgoal for others
         initial_state = initialXY if i == 0 else subgoals[i-1]
 
-        learner = makeLearner(theta_random, initial_state, subgoal, tol)
+        learner = makeLearner(theta_random, initial_state, subgoal, tol, shoppingList)
         
         theta_hat, _ = learner.learn(segments, num_iterations=num_iterations, alpha=0.05, num_samples=50)
         print(f"  Learned theta: {theta_hat}")
@@ -172,7 +193,7 @@ def getSubgoals(expertTrajectories):
 
     return subgoals, segments_by_subgoal
 
-def learnSegments(subgoals, segments_by_subgoal, startState, tol=0.2):
+def learnSegments(subgoals, segments_by_subgoal, shoppingList, tol=0.2,):
     print("\n" + "="*60)
     print("TRAINING PER-SUBGOAL AGENTS")
     print("="*60)
@@ -180,54 +201,60 @@ def learnSegments(subgoals, segments_by_subgoal, startState, tol=0.2):
     learned_agents = trainPerSubgoalMaxEnt(
         segments_by_subgoal,
         subgoals,
-        initialXY=startState,
+        initialXY=START_STATE,
+        shoppingList=shoppingList,
         tol=tol,
         num_iterations=200
     )
 
     return learned_agents
 
-def saveLearnedAgents(learnedAgents):
+def saveLearnedAgents(learnedAgents, file="learned_per_subgoal_agents.pkl", verbose=False):
     # Save the learned agents (theta, subgoal, initial_state - enough to reconstruct)
-    with open("learned_per_subgoal_agents.pkl", "wb") as f:
+    with open(file, "wb") as f:
         pickle.dump([(theta, subgoal, initial_state) for theta, learner, subgoal, initial_state in learnedAgents if learner is not None], f)
-    print("\nSaved learned per-subgoal agents to learned_per_subgoal_agents.pkl")
+    if verbose:
+        print(f"\nSaved learned per-subgoal agents to {file}")
 
-def loadLearnedAgents(tol):
-    print("\n" + "="*60)
-    print("LOADING PRE-LEARNED PER-SUBGOAL AGENTS FROM FILE, SKIPPING TRAINING")
-    print("="*60)
+    return
 
-    with open("learned_per_subgoal_agents.pkl", "rb") as f:
+def loadLearnedAgents(shoppingList, file="learned_per_subgoal_agents.pkl", tol=0.2, verbose=False):
+    if verbose:
+        print("\n" + "="*60)
+        print("LOADING PRE-LEARNED PER-SUBGOAL AGENTS FROM FILE, SKIPPING TRAINING")
+        print("="*60)
+
+    with open(file, "rb") as f:
         agent_data = pickle.load(f)
         learned_agents = []
         for theta, subgoal, initial_state in agent_data:
-            learner = makeLearner(theta, initial_state, subgoal, tol)
+            learner = makeLearner(theta, initial_state, subgoal, tol, shoppingList)
             learned_agents.append((theta, learner, subgoal, initial_state))
     return learned_agents
 
-def generateLearnedTrajectory(learned_agents):
-    print("\n" + "="*60)
-    print("GENERATING TRAJECTORY WITH PER-SUBGOAL AGENTS")
-    print("="*60)
+def generateLearnedTrajectory(learned_agents, trajectoryPath="generated_trajectory_per_subgoal.json", actionPath="generated_actions_per_subgoal.json", verbose=False):
+    if verbose:
+        print("\n" + "="*60)
+        print("GENERATING TRAJECTORY WITH PER-SUBGOAL AGENTS")
+        print("="*60)
     
     per_subgoal_trajectory, per_subgoal_actions = generatePerSubgoalTrajectory(learned_agents, maxLength=100, epsilon=0.05)
 
     # Save trajectory
     trajectory_to_save = [step.tolist() for step in per_subgoal_trajectory]
-    with open("generated_trajectory_per_subgoal.json", "w") as f:
+    with open(trajectoryPath, "w") as f:
         json.dump(trajectory_to_save, f, indent=2)
-    print(f"\nSaved per-subgoal trajectory to generated_trajectory_per_subgoal.json")
+    print(f"\nSaved per-subgoal trajectory to {trajectoryPath}")
     print(f"Total trajectory length: {len(per_subgoal_trajectory)}")
 
     # Save actions
-    with open("generated_actions_per_subgoal.json", "w") as f:
+    with open(actionPath, "w") as f:
         json.dump(np.asarray(per_subgoal_actions).tolist(), f, indent=2)
-    print(f"Saved per-subgoal actions to generated_actions_per_subgoal.json")
+    print(f"Saved per-subgoal actions to {actionPath}")
 
     return per_subgoal_trajectory
 
-def plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, startState):
+def plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, startState, imgPath="per_subgoal_agents_trajectory.png", showPlot=True):
     plt.figure(figsize=(10, 8))
     for i, traj in enumerate(expertTrajectories):
         traj = np.array(traj)
@@ -255,13 +282,14 @@ def plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, startS
     plt.grid(True)
     plt.legend()
     plt.tight_layout()
-    plt.savefig("per_subgoal_agents_trajectory.png")
-    print("Visualization saved to per_subgoal_agents_trajectory.png")
-    plt.show()
+    plt.savefig(imgPath)
+    print(f"Visualization saved to {imgPath}")
+    if showPlot:
+        plt.show()
 
 
 # If you want to train agent from scratch, set to True
-learnMode = True
+learnMode = False
 
 if __name__ == "__main__":
     # Set random seed for reproducibility
@@ -271,14 +299,16 @@ if __name__ == "__main__":
     subgoals, segments_by_subgoal = getSubgoals(expertTrajectories)
     print("Subgoals:\n", subgoals)
 
+    shoppingList = ['sausage', 'milk', 'banana']
+
     tol = 0.2
     
     if learnMode:
-        learned_agents = learnSegments(subgoals, segments_by_subgoal, START_STATE, tol)
+        learned_agents = learnSegments(subgoals, segments_by_subgoal, shoppingList=shoppingList, tol=tol)
         saveLearnedAgents(learned_agents)
     else:
-        learned_agents = loadLearnedAgents(tol)
+        learned_agents = loadLearnedAgents(shoppingList, tol=tol, verbose=True)
     
-    sampleTrajectory = generateLearnedTrajectory(learned_agents)
+    sampleTrajectory = generateLearnedTrajectory(learned_agents, verbose=True)
     
     plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, START_STATE)
