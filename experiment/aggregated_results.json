@@ -1,0 +1,20 @@
+{
+  "demo_metrics": {
+    "success_rate": 1.0,
+    "avg_violations_per_run": 0.2,
+    "percent_violation_free": 0.8,
+    "avg_num_steps": 465.4,
+    "avg_num_subgoals": -1.0,
+    "avg_steps_between_subgoals": -1.0
+  },
+  "expert_metrics": {
+    "success_rate": 1.0,
+    "avg_violations_per_run": 0.0,
+    "percent_violation_free": 1.0,
+    "avg_num_steps": 351.0,
+    "avg_num_subgoals": -1.0,
+    "avg_steps_between_subgoals": -1.0
+  },
+  "irl_metrics": {},
+  "baseline_metrics": {}
+}
