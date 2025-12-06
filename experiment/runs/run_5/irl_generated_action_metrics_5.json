@@ -1,6 +1,62 @@
-{
-  "run_id": 5,
-  "num_steps": 892,
-  "num_violations": 111,
-  "success": true
-}
+[
+  {
+    "run_id": 0,
+    "num_steps": 148,
+    "num_violations": 12,
+    "success": false
+  },
+  {
+    "run_id": 1,
+    "num_steps": 347,
+    "num_violations": 23,
+    "success": false
+  },
+  {
+    "run_id": 2,
+    "num_steps": 166,
+    "num_violations": 4,
+    "success": false
+  },
+  {
+    "run_id": 3,
+    "num_steps": 166,
+    "num_violations": 19,
+    "success": false
+  },
+  {
+    "run_id": 4,
+    "num_steps": 814,
+    "num_violations": 97,
+    "success": true
+  },
+  {
+    "run_id": 5,
+    "num_steps": 894,
+    "num_violations": 110,
+    "success": true
+  },
+  {
+    "run_id": 6,
+    "num_steps": 331,
+    "num_violations": 20,
+    "success": false
+  },
+  {
+    "run_id": 7,
+    "num_steps": 826,
+    "num_violations": 90,
+    "success": true
+  },
+  {
+    "run_id": 8,
+    "num_steps": 146,
+    "num_violations": 9,
+    "success": false
+  },
+  {
+    "run_id": 9,
+    "num_steps": 174,
+    "num_violations": 6,
+    "success": false
+  }
+]

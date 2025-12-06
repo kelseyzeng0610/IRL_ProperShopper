@@ -101,53 +101,115 @@ def trainHIRL(allShoppingLists, startIdx, endIdx, max_workers, parallel=True, ve
 
 def sampleIRLTrajectories(allShoppingLists, startIdx, endIdx, numSamples=10):
     for i in range(startIdx, endIdx):
+        # load learned agents
         learned_agents = loadLearnedAgents(allShoppingLists[i], file=f'experiment/runs/run_{i}/learned_agents_{i}.pkl')
-        # TODO: should do this `m` times
-        sampleTrajectory = generateLearnedTrajectory(
-            learned_agents, 
-            trajectoryPath=f'experiment/runs/run_{i}/irl_generated_trajectory_{i}.json',
-            actionPath=f'experiment/runs/run_{i}/irl_generated_actions_{i}.json'
-        )
-
-        # load the expert trajectories for the plot
-        with open(f'experiment/runs/run_{i}/noisy_trajectories_{i}.pkl', 'rb') as f:
-            expertTrajectories = pickle.load(f)
 
         # get the subgoals from learned_agents
         subgoals = np.array([subgoal for (theta, learner, subgoal, initialState) in learned_agents])
+        
+        # load the expert trajectories for the plot
+        with open(f'experiment/runs/run_{i}/noisy_trajectories_{i}.pkl', 'rb') as f:
+            expertTrajectories = pickle.load(f)
+        
+        # Generate m sample trajectories
+        sampleTrajectories, sampleActions = [], []
+        for m in range(numSamples):
+            trajectoryPath = f'experiment/runs/run_{i}/irl_generated_trajectory_{i}_sample_{m}.json'
+            actionPath = f'experiment/runs/run_{i}/irl_generated_actions_{i}_sample_{m}.json'
+            sampleTrajectory = generateLearnedTrajectory(
+                learned_agents, 
+                trajectoryPath=trajectoryPath,
+                actionPath=actionPath,
+            )
 
-        plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, START_STATE, imgPath=f'experiment/runs/run_{i}/irl_sampled_trajectory_{i}.png', showPlot=False)
+            # instead of keeping actions and trajectories in separate files, we can just make a list.
+            sampleTrajectories.append(sampleTrajectory)
+            with open(actionPath, 'r') as f:
+                actions = json.load(f)
+                sampleActions.append(actions)
+
+            # remove the per-sample files
+            Path(trajectoryPath).unlink()
+            Path(actionPath).unlink()
+
+            plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, START_STATE, imgPath=f'experiment/runs/run_{i}/irl_sampled_trajectory_{i}_sample_{m}.png', showPlot=False)
+
+        # save all trajectories and actions to one file each
+        with open(f'experiment/runs/run_{i}/irl_generated_trajectories_{i}.pkl', 'wb') as f:
+            pickle.dump(sampleTrajectories, f)
+        with open(f'experiment/runs/run_{i}/irl_generated_actions_{i}.json', 'w') as f:
+            json.dump(sampleActions, f, indent=2)
 
 
 def runHIRLSamples(allShoppingLists, startIdx, endIdx, headless=False, numSamples=10):
     for i in range(startIdx, endIdx):
-        print(f"Running sampled trajectory for shopping list: {allShoppingLists[i]}")
-        args = ['python', 'socket_env.py', '--player_speed=0.25', f'--file=experiment/runs/run_{i}/start_state_{i}.txt']
+        print(f"Running {numSamples} sampled trajectories for shopping list: {allShoppingLists[i]}")
+        args = ['python', 'socket_env.py', '--player_speed=0.25', f'--file=experiment/runs/run_{i}/start_state_{i}.txt', '--stay_alive']
         if headless:
             args.append('--headless')
         envProcess = subprocess.Popen(args)
 
-        # TODO: this will need to happen m times
-        # load the generated trajectory to check if it succeeded
-        success = False
-        with open(f'experiment/runs/run_{i}/irl_generated_trajectory_{i}.json', 'r') as f:
-            generatedTrajectory = json.load(f)
-            flags = generatedTrajectory[-1][2:]
-            success = np.all(np.array(flags))
-
         if not headless:
             time.sleep(5)  # wait for the env to start up
         
-        args = [
-            'python', 'run-generated-irl-trajectory.py',
-            f'--file=experiment/runs/run_{i}/irl_generated_actions_{i}.json',
-            f'--output=experiment/runs/run_{i}/irl_final_state_{i}.json',
-            f'--run_id={i}',
-            f'--metrics_file=experiment/runs/run_{i}/irl_generated_action_metrics_{i}.json'
-        ]
-        if success:
-            args.append('--success')
-        subprocess.run(args)
+        allMetrics = []
+        finalStates = []
+        actionsFile = f'experiment/runs/run_{i}/irl_generated_actions_{i}.json'
+        with open(actionsFile, 'r') as f:
+            generatedActionsList = json.load(f)
+        
+        with open(f'experiment/runs/run_{i}/irl_generated_trajectories_{i}.pkl', 'rb') as f:
+            generatedTrajectories = pickle.load(f)
+        
+        assert len(generatedActionsList) == numSamples
+        assert len(generatedTrajectories) == numSamples
+        
+        for m in range(numSamples):
+            generatedTrajectory = generatedTrajectories[m]
+            flags = generatedTrajectory[-1][2:]
+            success = np.all(np.array(flags))
+            
+            metricsFile = f'experiment/runs/run_{i}/irl_generated_action_metrics_{i}_sample_{m}.json'
+            finalStateFile = f'experiment/runs/run_{i}/irl_final_state_{i}_sample_{m}.json'
+            # TODO: generated actions script expects actions to exist in a single file
+            tmpFile = f'experiment/runs/run_{i}/tmp_generated_actions_{i}_sample_{m}.json'
+            with open(tmpFile, 'w') as f:
+                json.dump(generatedActionsList[m], f, indent=2)
+            args = [
+                'python', 'run-generated-irl-trajectory.py',
+                f'--file={tmpFile}',
+                f'--output={finalStateFile}',
+                f'--run_id={m}',
+                f'--metrics_file={metricsFile}',
+            ]
+            if success:
+                args.append('--success')
+            
+            subprocess.run(args)  # Runs and waits for completion before next iteration
+
+            # remove the temporary actions file
+            Path(tmpFile).unlink()
+
+            # it's silly to have a metrics file per sample, so aggregate all of them here
+            with open(metricsFile, 'r') as f:
+                sampleMetrics = json.load(f)
+                allMetrics.append(sampleMetrics)
+                # remove the file
+                Path(metricsFile).unlink()
+
+            # same deal with the final state jsons
+            with open(finalStateFile, 'r') as f:
+                finalState = json.load(f)
+                finalStates.append(finalState)
+                # remove the file
+                Path(finalStateFile).unlink()
+
+        # at the end, save all metrics and final states to one file each
+        with open(f'experiment/runs/run_{i}/irl_generated_action_metrics_{i}.json', 'w') as f:
+            json.dump(allMetrics, f, indent=2)
+        with open(f'experiment/runs/run_{i}/irl_final_states_{i}.json', 'w') as f:
+            json.dump(finalStates, f, indent=2)
+        
 
         envProcess.terminate()
         envProcess.wait()
