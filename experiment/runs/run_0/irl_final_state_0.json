@@ -11,18 +11,18 @@
         "index": 0,
         "position": [
           2.75,
-          4.050000000000001
+          4.05
         ],
         "width": 0.6,
         "height": 0.4,
         "sprite_path": null,
-        "direction": 3,
+        "direction": 1,
         "curr_cart": -1,
         "curr_basket": 0,
         "shopping_list": [
-          "strawberry",
-          "chicken",
-          "onion"
+          "avocado",
+          "strawberry milk",
+          "cheese wheel"
         ],
         "list_quant": [
           1,
@@ -31,7 +31,7 @@
         ],
         "holding_food": null,
         "bought_holding_food": false,
-        "budget": 100,
+        "budget": 81,
         "bagged_items": [],
         "bagged_quant": []
       }
@@ -40,23 +40,25 @@
     "baskets": [
       {
         "position": [
-          2.55,
-          4.280000000000001
+          2.5,
+          4.28
         ],
-        "direction": 3,
+        "direction": 1,
         "capacity": 6,
         "owner": 0,
         "last_held": 0,
-        "contents": [
-          "onion",
-          "chicken"
+        "contents": [],
+        "contents_quant": [],
+        "purchased_contents": [
+          "avocado",
+          "cheese wheel",
+          "strawberry milk"
         ],
-        "contents_quant": [
+        "purchased_quant": [
+          1,
           1,
           1
         ],
-        "purchased_contents": [],
-        "purchased_quant": [],
         "width": 0.15,
         "height": 0.15
       }
@@ -164,7 +166,7 @@
         "food": "strawberry milk",
         "price": 2,
         "capacity": 12,
-        "quantity": 12,
+        "quantity": 11,
         "food_image": "images/food/milk_strawberry.png",
         "shelf_image": "images/Shelves/fridge.png",
         "food_name": "strawberry milk"
@@ -299,7 +301,7 @@
         "food": "chicken",
         "price": 6,
         "capacity": 12,
-        "quantity": 11,
+        "quantity": 12,
         "food_image": "images/food/meat_03.png",
         "shelf_image": "images/Shelves/shelf.png",
         "food_name": "chicken"
@@ -359,7 +361,7 @@
         "food": "cheese wheel",
         "price": 15,
         "capacity": 12,
-        "quantity": 12,
+        "quantity": 11,
         "food_image": "images/food/cheese_03.png",
         "shelf_image": "images/Shelves/shelf.png",
         "food_name": "cheese wheel"
@@ -479,7 +481,7 @@
         "food": "avocado",
         "price": 2,
         "capacity": 12,
-        "quantity": 12,
+        "quantity": 11,
         "food_image": "images/food/avocado.png",
         "shelf_image": "images/Shelves/shelf.png",
         "food_name": "avocado"
@@ -539,7 +541,7 @@
         "food": "onion",
         "price": 2,
         "capacity": 12,
-        "quantity": 11,
+        "quantity": 12,
         "food_image": "images/food/onion.png",
         "shelf_image": "images/Shelves/shelf.png",
         "food_name": "onion"
@@ -609,7 +611,7 @@
       }
     ]
   },
-  "step": 418,
+  "step": 354,
   "gameOver": false,
   "violations": ""
 }

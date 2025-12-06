@@ -67,6 +67,11 @@ def getParser():
         action='store_true',
         help="whether to run the environment in headless mode",
     )
+    parser.add_argument(
+        '--verbose',
+        action='store_true',
+        help="whether to print verbose output during training",
+    )
 
     return parser
 

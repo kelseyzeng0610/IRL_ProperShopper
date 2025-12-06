@@ -100,7 +100,7 @@ class MaxEntropyIRL:
         return total / len(trajectories)
     
 
-    def learn(self, expert_trajectories, num_iterations=200, num_samples=50, alpha = 0.01, maxTrajectoryLength=50):
+    def learn(self, expert_trajectories, num_iterations=200, num_samples=50, alpha = 0.01, maxTrajectoryLength=50, verbose=True):
         muhat_expert = self.average_feature_counts(expert_trajectories)
         grad_norms = []
         for iteration in range(num_iterations):
@@ -112,7 +112,8 @@ class MaxEntropyIRL:
             grad = muhat_expert - muhat
             self.theta += alpha * grad
             grad_norms.append(np.linalg.norm(grad))
-            writeProgressBar(iteration+1, num_iterations)
+            if verbose:
+                writeProgressBar(iteration+1, num_iterations)
             
 
         return self.theta, grad_norms
