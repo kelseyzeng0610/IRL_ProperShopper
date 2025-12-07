@@ -83,8 +83,6 @@ def trainSingleHIRL(i, shoppingList, verbose=False):
     return {
         'run_id': i,
         'training_time': trainingTime,
-        'run_id': i,
-        'training_time': trainingTime,
         'num_subgoals': len(subgoals),
     }
 
