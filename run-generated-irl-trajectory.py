@@ -28,7 +28,7 @@ def get_required_direction(player_pos, object_pos):
         return 2 if dx > 0 else 3
     else:
         return 1 if dy > 0 else 0
-
+    
 def turn(action, sock_game, metrics):
     newMetrics = metrics.copy()
     turn_command = f"0 {action_commands[action]}"
