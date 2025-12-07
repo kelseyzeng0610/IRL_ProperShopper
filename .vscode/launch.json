@@ -59,7 +59,7 @@
             "python": "${workspaceFolder}/venv/bin/python",
             "args": [
                 "--sample_irl_trajectories",
-                "--verbose"
+                "--verbose",
             ]
         },
         {
@@ -71,7 +71,7 @@
             "args": [
                 "--run_hirl_samples",
                 "--headless",
-                "--verbose"
+                "--verbose",
             ]
         },
         {

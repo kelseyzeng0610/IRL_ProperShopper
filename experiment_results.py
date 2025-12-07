@@ -61,15 +61,14 @@ def evaluateExpertDeterministic(idx):
 
 def evaluateIRL(idx):
     # compute metrics on the IRL-generated trajectories
-    # TODO: first we need to figure out the format - should be multiple runs, right now it's just one
     with open(f'experiment/runs/run_{idx}/irl_generated_action_metrics_{idx}.json', 'r') as f:
         irl_metrics = json.load(f)
     
     # TODO: also need subgoal metrics
     return makeMetrics(
-        successRate=1.0 if irl_metrics['success'] else 0.0,
-        violations=np.array([irl_metrics['num_violations']]),
-        avgNumSteps=irl_metrics['num_steps'],
+        successRate=np.mean(np.array([run['success'] for run in irl_metrics])),
+        violations=np.array([run['num_violations'] for run in irl_metrics]),
+        avgNumSteps=np.mean(np.array([run['num_steps'] for run in irl_metrics])),
         avgNumSubgoals=-1,
         avgStepsBetweenSubgoals=-1
     )

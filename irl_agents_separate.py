@@ -132,7 +132,7 @@ def trainPerSubgoalMaxEnt(segments_by_subgoal, subgoals, initialXY, shoppingList
     return learned_agents
 
 
-def generatePerSubgoalTrajectory(learned_agents, maxLength=200, epsilon=0.05):
+def generatePerSubgoalTrajectory(learned_agents, maxLength=200, epsilon=0.05, verbose=True):
     full_trajectory = []
     full_actions = []
     
@@ -158,7 +158,8 @@ def generatePerSubgoalTrajectory(learned_agents, maxLength=200, epsilon=0.05):
         
         full_actions.extend(actions)
         
-        print(f"Subgoal {i+1}: Generated segment with {len(segment)} steps, reached {segment[-1]}")
+        if verbose:
+            print(f"Subgoal {i+1}: Generated segment with {len(segment)} steps, reached {segment[-1]}")
     
     return full_trajectory, full_actions
 
@@ -241,19 +242,21 @@ def generateLearnedTrajectory(learned_agents, trajectoryPath="generated_trajecto
         print("GENERATING TRAJECTORY WITH PER-SUBGOAL AGENTS")
         print("="*60)
     
-    per_subgoal_trajectory, per_subgoal_actions = generatePerSubgoalTrajectory(learned_agents, maxLength=100, epsilon=0.05)
+    per_subgoal_trajectory, per_subgoal_actions = generatePerSubgoalTrajectory(learned_agents, maxLength=100, epsilon=0.05, verbose=verbose)
 
     # Save trajectory
     trajectory_to_save = [step.tolist() for step in per_subgoal_trajectory]
     with open(trajectoryPath, "w") as f:
         json.dump(trajectory_to_save, f, indent=2)
-    print(f"\nSaved per-subgoal trajectory to {trajectoryPath}")
-    print(f"Total trajectory length: {len(per_subgoal_trajectory)}")
+    if verbose:
+        print(f"\nSaved per-subgoal trajectory to {trajectoryPath}")
+        print(f"Total trajectory length: {len(per_subgoal_trajectory)}")
 
     # Save actions
     with open(actionPath, "w") as f:
         json.dump(np.asarray(per_subgoal_actions).tolist(), f, indent=2)
-    print(f"Saved per-subgoal actions to {actionPath}")
+    if verbose:
+        print(f"Saved per-subgoal actions to {actionPath}")
 
     return per_subgoal_trajectory
 
@@ -289,6 +292,8 @@ def plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, startS
     print(f"Visualization saved to {imgPath}")
     if showPlot:
         plt.show()
+    else:
+        plt.close()
 
 
 # If you want to train agent from scratch, set to True
