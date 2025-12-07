@@ -1,0 +1,120 @@
+import argparse
+import pickle
+import json
+import numpy as np
+
+def getParser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--start_idx',
+        type=int,
+        help="starting index in existing shopping lists for experiment",
+        default=0
+    )
+    parser.add_argument(
+        '--end_idx',
+        type=int,
+        help="ending index in existing shopping lists for experiment",
+        default=-1
+    )
+
+    return parser
+
+def makeMetrics(successRate, avgViolations, percentViolationFree, avgNumSteps, avgNumSubgoals, avgStepsBetweenSubgoals):
+    return {
+        'success_rate': successRate,
+        'avg_violations_per_run': avgViolations,
+        'percent_violation_free': percentViolationFree,
+        'avg_num_steps': avgNumSteps,
+        'avg_num_subgoals': avgNumSubgoals,
+        'avg_steps_between_subgoals': avgStepsBetweenSubgoals,
+    }
+
+def evaluateExpertDemos(idx):
+    # compute metrics on expert demos
+    with open(f'experiment/runs/run_{idx}/metrics_expert_demos_{idx}.json', 'r') as f:
+        expert_demos_metrics = json.load(f)
+    success = np.array([run['success'] for run in expert_demos_metrics])
+    successRate = np.mean(success)
+    
+    numViolations = np.array([run['num_violations'] for run in expert_demos_metrics])
+    avgViolations = np.mean(numViolations)
+    percentViolationFree = np.mean(numViolations == 0)
+
+    avgNumSteps = np.mean([run['num_steps'] for run in expert_demos_metrics])
+    return makeMetrics(successRate, avgViolations, percentViolationFree, avgNumSteps, -1, -1)
+
+def evaluateExpertDeterministic(idx):
+    # computes metrics on the actual expert results where epsilon=0
+    with open(f'experiment/runs/run_{idx}/metrics_expert_evaluation_{idx}.json', 'r') as f:
+        expert_eval_metrics = json.load(f)
+
+    # this only has one run since it's deterministic, so the averages are just the values from that run
+    expert_eval_metrics = expert_eval_metrics[0]
+    return makeMetrics(
+        successRate=1.0 if expert_eval_metrics['success'] else 0.0,
+        avgViolations=expert_eval_metrics['num_violations'],
+        percentViolationFree=1.0 if expert_eval_metrics['num_violations'] == 0 else 0.0,
+        avgNumSteps=expert_eval_metrics['num_steps'],
+        avgNumSubgoals=-1,
+        avgStepsBetweenSubgoals=-1
+    )
+
+def aggregateResults(resultsByRun):
+    modelKeys = ['demo_metrics', 'expert_metrics', 'irl_metrics', 'baseline_metrics']
+    return {
+        key: {
+            'success_rate': np.mean([run[key]['success_rate'] for run in resultsByRun]),
+            'avg_violations_per_run': np.mean([run[key]['avg_violations_per_run'] for run in resultsByRun]),
+            'percent_violation_free': np.mean([run[key]['percent_violation_free'] for run in resultsByRun]),
+            'avg_num_steps': np.mean([run[key]['avg_num_steps'] for run in resultsByRun]),
+            'avg_num_subgoals': np.mean([run[key]['avg_num_subgoals'] for run in resultsByRun]),
+            'avg_steps_between_subgoals': np.mean([run[key]['avg_steps_between_subgoals'] for run in resultsByRun]),
+        } if resultsByRun[0][key] != {} else {} for key in modelKeys
+    }
+
+def evaluateIRL(idx):
+    # compute metrics on the IRL-generated trajectories
+    # TODO: first we need to figure out the format - should be multiple runs
+    return {}
+
+if __name__ == "__main__":
+    parser = getParser()
+    args = parser.parse_args()
+    
+    startIdx = args.start_idx
+    endIdx = args.end_idx if args.end_idx != -1 else 50
+
+    print(f"Aggregating experiment results from run {startIdx} to {endIdx - 1}")
+    results = []
+    for i in range(startIdx, endIdx):
+        # These will all be computed metrics for a single shopping list / run
+        # Then we need to aggregate them at the end to get the overall metrics
+
+        # compute metrics on the demos used for IRL training, from expert with epsilon > 0
+        demoMetrics = evaluateExpertDemos(i)
+
+        # compute metrics on expert with epsilon=0
+        expertMetrics = evaluateExpertDeterministic(i)
+
+        # compute metrics on irl-generated trajectories
+        irlMetrics = evaluateIRL(i)
+
+        # compute metrics on baseline IRL
+        baselineMetrics = {} # TODO: need baseline 
+
+        results.append({
+            'run_id': i,
+            'demo_metrics': demoMetrics,
+            'expert_metrics': expertMetrics,
+            'irl_metrics': irlMetrics,
+            'baseline_metrics': baselineMetrics
+        })
+
+    # aggregate to get averages for each model
+    aggregatedResults = aggregateResults(results)
+    with open('experiment/aggregated_results.json', 'w') as f:
+        json.dump(aggregatedResults, f, indent=2)
+
+    print("Aggregated Results saved to experiment/aggregated_results.json")
+
