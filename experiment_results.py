@@ -20,11 +20,13 @@ def getParser():
 
     return parser
 
-def makeMetrics(successRate, avgViolations, percentViolationFree, avgNumSteps, avgNumSubgoals, avgStepsBetweenSubgoals):
+def makeMetrics(successRate, violations, avgNumSteps, avgNumSubgoals, avgStepsBetweenSubgoals):
     return {
         'success_rate': successRate,
-        'avg_violations_per_run': avgViolations,
-        'percent_violation_free': percentViolationFree,
+        'avg_violations_per_run': np.mean(violations),
+        'median_violations_per_run': np.median(violations),
+        'percent_violation_free': np.mean(violations == 0),
+        'worst_violations': np.max(violations),
         'avg_num_steps': avgNumSteps,
         'avg_num_subgoals': avgNumSubgoals,
         'avg_steps_between_subgoals': avgStepsBetweenSubgoals,
@@ -38,11 +40,9 @@ def evaluateExpertDemos(idx):
     successRate = np.mean(success)
     
     numViolations = np.array([run['num_violations'] for run in expert_demos_metrics])
-    avgViolations = np.mean(numViolations)
-    percentViolationFree = np.mean(numViolations == 0)
 
     avgNumSteps = np.mean([run['num_steps'] for run in expert_demos_metrics])
-    return makeMetrics(successRate, avgViolations, percentViolationFree, avgNumSteps, -1, -1)
+    return makeMetrics(successRate, numViolations, avgNumSteps, -1, -1)
 
 def evaluateExpertDeterministic(idx):
     # computes metrics on the actual expert results where epsilon=0
@@ -53,9 +53,23 @@ def evaluateExpertDeterministic(idx):
     expert_eval_metrics = expert_eval_metrics[0]
     return makeMetrics(
         successRate=1.0 if expert_eval_metrics['success'] else 0.0,
-        avgViolations=expert_eval_metrics['num_violations'],
-        percentViolationFree=1.0 if expert_eval_metrics['num_violations'] == 0 else 0.0,
+        violations=np.array([expert_eval_metrics['num_violations']]),
         avgNumSteps=expert_eval_metrics['num_steps'],
+        avgNumSubgoals=-1,
+        avgStepsBetweenSubgoals=-1
+    )
+
+def evaluateIRL(idx):
+    # compute metrics on the IRL-generated trajectories
+    # TODO: first we need to figure out the format - should be multiple runs, right now it's just one
+    with open(f'experiment/runs/run_{idx}/irl_generated_action_metrics_{idx}.json', 'r') as f:
+        irl_metrics = json.load(f)
+    
+    # TODO: also need subgoal metrics
+    return makeMetrics(
+        successRate=1.0 if irl_metrics['success'] else 0.0,
+        violations=np.array([irl_metrics['num_violations']]),
+        avgNumSteps=irl_metrics['num_steps'],
         avgNumSubgoals=-1,
         avgStepsBetweenSubgoals=-1
     )
@@ -66,24 +80,25 @@ def aggregateResults(resultsByRun):
         key: {
             'success_rate': np.mean([run[key]['success_rate'] for run in resultsByRun]),
             'avg_violations_per_run': np.mean([run[key]['avg_violations_per_run'] for run in resultsByRun]),
+            'median_violations_per_run': np.median([run[key]['median_violations_per_run'] for run in resultsByRun]),
             'percent_violation_free': np.mean([run[key]['percent_violation_free'] for run in resultsByRun]),
+            'worst_violations': int(np.max([run[key]['worst_violations'] for run in resultsByRun])),
             'avg_num_steps': np.mean([run[key]['avg_num_steps'] for run in resultsByRun]),
             'avg_num_subgoals': np.mean([run[key]['avg_num_subgoals'] for run in resultsByRun]),
             'avg_steps_between_subgoals': np.mean([run[key]['avg_steps_between_subgoals'] for run in resultsByRun]),
         } if resultsByRun[0][key] != {} else {} for key in modelKeys
     }
 
-def evaluateIRL(idx):
-    # compute metrics on the IRL-generated trajectories
-    # TODO: first we need to figure out the format - should be multiple runs
-    return {}
-
 if __name__ == "__main__":
     parser = getParser()
     args = parser.parse_args()
+
+    with open('experiment/random_shopping_lists.json', 'r') as f:
+        randomLists = json.load(f)
+    numLists = len(randomLists)
     
     startIdx = args.start_idx
-    endIdx = args.end_idx if args.end_idx != -1 else 50
+    endIdx = args.end_idx if args.end_idx != -1 else numLists
 
     print(f"Aggregating experiment results from run {startIdx} to {endIdx - 1}")
     results = []

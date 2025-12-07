@@ -16,7 +16,8 @@
             "python": "${workspaceFolder}/venv/bin/python",
             "args": [
                 "--generate_lists", 
-                "--num_lists=1",
+                "--num_lists=12",
+                "--verbose",
             ]
         },
         {
@@ -27,7 +28,8 @@
             "python": "${workspaceFolder}/venv/bin/python",
             "args": [
                 "--generate_irl_trajectories",
-                "--headless", 
+                "--headless",
+                "--verbose",
             ]
         },
         {
@@ -46,6 +48,7 @@
             "python": "${workspaceFolder}/venv/bin/python",
             "args": [
                 "--run_irl",
+                "--verbose",
             ]
         },
         {
@@ -56,10 +59,11 @@
             "python": "${workspaceFolder}/venv/bin/python",
             "args": [
                 "--sample_irl_trajectories",
+                "--verbose"
             ]
         },
         {
-            "name": "Run HIRL Samples",
+            "name": "Run and Evaluate HIRL Samples",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/experiment.py",
@@ -67,6 +71,7 @@
             "args": [
                 "--run_hirl_samples",
                 "--headless",
+                "--verbose"
             ]
         },
         {
@@ -78,6 +83,7 @@
             "args": [
                 "--record_expert",
                 "--headless",
+                "--verbose"
             ]
         },
         {
@@ -87,8 +93,6 @@
             "program": "${workspaceFolder}/experiment_results.py",
             "python": "${workspaceFolder}/venv/bin/python",
             "args": [
-                "--start_idx=0",
-                "--end_idx=1"
             ]
         }
     ]

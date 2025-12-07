@@ -103,16 +103,16 @@ def segmentTrajectoriesBySubgoal(expertTrajectories, subgoals):
 
     return segments_by_subgoal
 
-
-def trainPerSubgoalMaxEnt(segments_by_subgoal, subgoals, initialXY, shoppingList, tol=0.2, num_iterations=200):    
+def trainPerSubgoalMaxEnt(segments_by_subgoal, subgoals, initialXY, shoppingList, tol=0.2, num_iterations=200, verbose=True):    
     learned_agents = []
-    
     for i, (subgoal, segments) in enumerate(zip(subgoals, segments_by_subgoal)):
-        print(f"\nTraining agent for subgoal {i+1}/{len(subgoals)}: {subgoal}")
-        print(f"  Number of expert segments: {len(segments)}")
+        if verbose:
+            print(f"\nTraining agent for subgoal {i+1}/{len(subgoals)}: {subgoal}")
+            print(f"  Number of expert segments: {len(segments)}")
         
         if len(segments) == 0:
-            print(f"  Warning: No segments found for subgoal {i}, skipping")
+            if verbose:
+                print(f"  Warning: No segments found for subgoal {i}, skipping")
             learned_agents.append(None)
             continue
 
@@ -123,8 +123,9 @@ def trainPerSubgoalMaxEnt(segments_by_subgoal, subgoals, initialXY, shoppingList
 
         learner = makeLearner(theta_random, initial_state, subgoal, tol, shoppingList)
         
-        theta_hat, _ = learner.learn(segments, num_iterations=num_iterations, alpha=0.05, num_samples=50)
-        print(f"  Learned theta: {theta_hat}")
+        theta_hat, _ = learner.learn(segments, num_iterations=num_iterations, alpha=0.05, num_samples=50, verbose=verbose)
+        if verbose:
+            print(f"  Learned theta: {theta_hat}")
         
         learned_agents.append((theta_hat, learner, subgoal, initial_state))
     
@@ -193,10 +194,11 @@ def getSubgoals(expertTrajectories):
 
     return subgoals, segments_by_subgoal
 
-def learnSegments(subgoals, segments_by_subgoal, shoppingList, tol=0.2,):
-    print("\n" + "="*60)
-    print("TRAINING PER-SUBGOAL AGENTS")
-    print("="*60)
+def learnSegments(subgoals, segments_by_subgoal, shoppingList, tol=0.2, verbose=True):
+    if verbose:
+        print("\n" + "="*60)
+        print("TRAINING PER-SUBGOAL AGENTS")
+        print("="*60)
 
     learned_agents = trainPerSubgoalMaxEnt(
         segments_by_subgoal,
@@ -204,7 +206,8 @@ def learnSegments(subgoals, segments_by_subgoal, shoppingList, tol=0.2,):
         initialXY=START_STATE,
         shoppingList=shoppingList,
         tol=tol,
-        num_iterations=200
+        num_iterations=200,
+        verbose=verbose,
     )
 
     return learned_agents

@@ -6,6 +6,8 @@ from experiment_utils import buildRandomLists, getParser
 import pickle
 from pathlib import Path
 from irl_agents_separate import getExpertTrajectoriesWithNoise, getSubgoals, learnSegments, generateLearnedTrajectory, loadLearnedAgents, saveLearnedAgents, plotSampledTrajectory, START_STATE
+import concurrent.futures
+import warnings
 
 def generateRandomLists(numLists=50, listSize=3):
     randomLists = buildRandomLists(numLists, listSize)
@@ -56,19 +58,48 @@ def addNoiseForIRL(startIdx, endIdx):
         with open(f'experiment/runs/run_{i}/noisy_trajectories_{i}.pkl', 'wb') as f:
             pickle.dump(noisy, f)
 
-def trainHIRL(allShoppingLists, startIdx, endIdx):
-    for i in range(startIdx, endIdx):
-        # load the noisy trajectories file
-        with open(f'experiment/runs/run_{i}/noisy_trajectories_{i}.pkl', 'rb') as f:
-            noisyTrajectories = pickle.load(f)
+def trainSingleHIRL(i, shoppingList, verbose=False):
 
-        # get subgoals
-        subgoals, segments_by_subgoal = getSubgoals(noisyTrajectories)
-        learned_agents = learnSegments(subgoals, segments_by_subgoal, allShoppingLists[i], tol=0.2)
+    # Suppress numpy warnings about divide by zero/overflow during IRL training - doesn't seem to be causing issues 
+    warnings.filterwarnings('ignore', category=RuntimeWarning)
+    
+    print(f"Starting training for run {i}: {shoppingList}")
+    
+    # load the noisy trajectories file
+    with open(f'experiment/runs/run_{i}/noisy_trajectories_{i}.pkl', 'rb') as f:
+        noisyTrajectories = pickle.load(f)
 
-        saveLearnedAgents(learned_agents, file=f'experiment/runs/run_{i}/learned_agents_{i}.pkl')
+    # get subgoals
+    subgoals, segments_by_subgoal = getSubgoals(noisyTrajectories)
+    learned_agents = learnSegments(subgoals, segments_by_subgoal, shoppingList, tol=0.2, verbose=verbose)
 
-def sampleIRLTrajectories(allShoppingLists, startIdx, endIdx):
+    saveLearnedAgents(learned_agents, file=f'experiment/runs/run_{i}/learned_agents_{i}.pkl')
+    return i
+
+def trainHIRL(allShoppingLists, startIdx, endIdx, max_workers, parallel=True, verbose=False):
+    total_runs = endIdx - startIdx
+    if parallel:
+        startTime = time.time()
+        print(f"\nStarting parallel training for {total_runs} runs with {max_workers} workers...")
+        with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) as executor:
+            futures = []
+            for i in range(startIdx, endIdx):
+                futures.append(executor.submit(trainSingleHIRL, i, allShoppingLists[i], verbose=verbose))
+            
+            completed = 0
+            for future in concurrent.futures.as_completed(futures):
+                run_id = future.result()
+                completed += 1
+                elapsed = time.time() - startTime
+                print(f"Progress: {completed}/{total_runs} complete ({100*completed/total_runs:.1f}%) - Run {run_id} finished - Elapsed: {elapsed:.1f}s")
+        endTime = time.time()
+        print(f"All HIRL training completed in {endTime - startTime:.2f} seconds")
+    else:
+        # Sequential fallback
+        for i in range(startIdx, endIdx):
+            trainSingleHIRL(i, allShoppingLists[i])
+
+def sampleIRLTrajectories(allShoppingLists, startIdx, endIdx, numSamples=10):
     for i in range(startIdx, endIdx):
         learned_agents = loadLearnedAgents(allShoppingLists[i], file=f'experiment/runs/run_{i}/learned_agents_{i}.pkl')
         # TODO: should do this `m` times
@@ -88,7 +119,7 @@ def sampleIRLTrajectories(allShoppingLists, startIdx, endIdx):
         plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, START_STATE, imgPath=f'experiment/runs/run_{i}/irl_sampled_trajectory_{i}.png', showPlot=False)
 
 
-def runHIRLSamples(allShoppingLists, startIdx, endIdx, headless=False):
+def runHIRLSamples(allShoppingLists, startIdx, endIdx, headless=False, numSamples=10):
     for i in range(startIdx, endIdx):
         print(f"Running sampled trajectory for shopping list: {allShoppingLists[i]}")
         args = ['python', 'socket_env.py', '--player_speed=0.25', f'--file=experiment/runs/run_{i}/start_state_{i}.txt']
@@ -96,6 +127,7 @@ def runHIRLSamples(allShoppingLists, startIdx, endIdx, headless=False):
             args.append('--headless')
         envProcess = subprocess.Popen(args)
 
+        # TODO: this will need to happen m times
         # load the generated trajectory to check if it succeeded
         success = False
         with open(f'experiment/runs/run_{i}/irl_generated_trajectory_{i}.json', 'r') as f:
@@ -154,6 +186,7 @@ if __name__ == "__main__":
 
     startIdx = args.start_idx
     endIdx = args.end_idx if args.end_idx != -1 else len(randomLists)
+    verbose = args.verbose
 
     if args.generate_irl_trajectories:
         generateIRLTrajectories(randomLists, startIdx, endIdx, headless=args.headless)
@@ -162,7 +195,7 @@ if __name__ == "__main__":
         addNoiseForIRL(startIdx=startIdx, endIdx=endIdx)
 
     if args.run_irl:
-        trainHIRL(randomLists, startIdx=startIdx, endIdx=endIdx)
+        trainHIRL(randomLists, startIdx=startIdx, endIdx=endIdx, verbose=verbose, max_workers=12)
 
     if args.sample_irl_trajectories:
         sampleIRLTrajectories(randomLists, startIdx=startIdx, endIdx=endIdx)

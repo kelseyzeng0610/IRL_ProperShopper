@@ -1,20 +1,33 @@
 {
   "demo_metrics": {
     "success_rate": 1.0,
-    "avg_violations_per_run": 0.2,
-    "percent_violation_free": 0.8,
-    "avg_num_steps": 465.4,
+    "avg_violations_per_run": 0.3333333333333333,
+    "median_violations_per_run": 0.0,
+    "percent_violation_free": 0.7166666666666667,
+    "worst_violations": 2,
+    "avg_num_steps": 309.34999999999997,
     "avg_num_subgoals": -1.0,
     "avg_steps_between_subgoals": -1.0
   },
   "expert_metrics": {
     "success_rate": 1.0,
     "avg_violations_per_run": 0.0,
+    "median_violations_per_run": 0.0,
     "percent_violation_free": 1.0,
-    "avg_num_steps": 351.0,
+    "worst_violations": 0,
+    "avg_num_steps": 231.66666666666666,
     "avg_num_subgoals": -1.0,
     "avg_steps_between_subgoals": -1.0
   },
-  "irl_metrics": {},
+  "irl_metrics": {
+    "success_rate": 1.0,
+    "avg_violations_per_run": 11.25,
+    "median_violations_per_run": 1.0,
+    "percent_violation_free": 0.25,
+    "worst_violations": 111,
+    "avg_num_steps": 359.1666666666667,
+    "avg_num_subgoals": -1.0,
+    "avg_steps_between_subgoals": -1.0
+  },
   "baseline_metrics": {}
 }
