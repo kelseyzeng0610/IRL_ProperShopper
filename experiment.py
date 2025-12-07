@@ -8,6 +8,7 @@ from pathlib import Path
 from irl_agents_separate import getExpertTrajectoriesWithNoise, getSubgoals, learnSegments, generateLearnedTrajectory, loadLearnedAgents, saveLearnedAgents, plotSampledTrajectory, START_STATE
 import concurrent.futures
 import warnings
+import sys
 
 def generateRandomLists(numLists=50, listSize=3):
     randomLists = buildRandomLists(numLists, listSize)
@@ -65,6 +66,7 @@ def trainSingleHIRL(i, shoppingList, verbose=False):
     
     print(f"Starting training for run {i}: {shoppingList}")
     
+    startTime = time.time()
     # load the noisy trajectories file
     with open(f'experiment/runs/run_{i}/noisy_trajectories_{i}.pkl', 'rb') as f:
         noisyTrajectories = pickle.load(f)
@@ -74,13 +76,24 @@ def trainSingleHIRL(i, shoppingList, verbose=False):
     learned_agents = learnSegments(subgoals, segments_by_subgoal, shoppingList, tol=0.2, verbose=verbose)
 
     saveLearnedAgents(learned_agents, file=f'experiment/runs/run_{i}/learned_agents_{i}.pkl')
-    return i
+    
+    endTime = time.time()
+    trainingTime = endTime - startTime
+    
+    return {
+        'run_id': i,
+        'training_time': trainingTime,
+        'run_id': i,
+        'training_time': trainingTime,
+        'num_subgoals': len(subgoals),
+    }
 
 def trainHIRL(allShoppingLists, startIdx, endIdx, max_workers, parallel=True, verbose=False):
     total_runs = endIdx - startIdx
     if parallel:
         startTime = time.time()
         print(f"\nStarting parallel training for {total_runs} runs with {max_workers} workers...")
+        results = []
         with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) as executor:
             futures = []
             for i in range(startIdx, endIdx):
@@ -88,16 +101,51 @@ def trainHIRL(allShoppingLists, startIdx, endIdx, max_workers, parallel=True, ve
             
             completed = 0
             for future in concurrent.futures.as_completed(futures):
-                run_id = future.result()
+                result = future.result()
+                results.append(result)
                 completed += 1
                 elapsed = time.time() - startTime
-                print(f"Progress: {completed}/{total_runs} complete ({100*completed/total_runs:.1f}%) - Run {run_id} finished - Elapsed: {elapsed:.1f}s")
+                print(f"Progress: {completed}/{total_runs} complete ({100*completed/total_runs:.1f}%) - Run {result['run_id']} finished - Elapsed: {elapsed:.1f}s")
         endTime = time.time()
+        
+        # Calculate and save aggregate metrics
+        total_training_time = sum(r['training_time'] for r in results)
+        avg_training_time = total_training_time / len(results) if results else 0
+        avg_subgoals = sum(r['num_subgoals'] for r in results) / len(results) if results else 0
+        
+        metrics = {
+            'total_time_all_runs': endTime - startTime,
+            'avg_training_time_per_run': avg_training_time,
+            'avg_subgoals_per_run': avg_subgoals,
+            'run_details': sorted(results, key=lambda x: x['run_id'])
+        }
+        
+        with open('experiment/training_metrics.json', 'w') as f:
+            json.dump(metrics, f, indent=2)
+            
         print(f"All HIRL training completed in {endTime - startTime:.2f} seconds")
+        print(f"Average training time per run: {avg_training_time:.2f}s")
+        print(f"Average number of subgoals: {avg_subgoals:.2f}")
     else:
         # Sequential fallback
+        results = []
         for i in range(startIdx, endIdx):
-            trainSingleHIRL(i, allShoppingLists[i])
+            result = trainSingleHIRL(i, allShoppingLists[i], verbose=verbose)
+            results.append(result)
+            
+        # Calculate and save aggregate metrics for sequential run too
+        avg_training_time = sum(r['training_time'] for r in results) / len(results) if results else 0
+        avg_subgoals = sum(r['num_subgoals'] for r in results) / len(results) if results else 0
+        
+        metrics = {
+            'total_time_all_runs': sum(r['training_time'] for r in results), # approximate for sequential
+            'avg_training_time_per_run': avg_training_time,
+            'avg_subgoals_per_run': avg_subgoals,
+            'run_details': results
+        }
+        
+        with open('experiment/training_metrics.json', 'w') as f:
+            json.dump(metrics, f, indent=2)
 
 def sampleIRLTrajectories(allShoppingLists, startIdx, endIdx, numSamples=10):
     for i in range(startIdx, endIdx):
