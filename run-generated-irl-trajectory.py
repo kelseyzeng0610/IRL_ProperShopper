@@ -74,7 +74,9 @@ def execute_action_with_turning(action, current_state, metrics):
         newMetrics['num_violations'] += len(actual_state['violations'])
         newMetrics['num_steps'] += 1
 
-        return actual_state, newMetrics
+        gameOver = 'Player 0 exited through an entrance' in actual_state['violations']
+
+        return actual_state, newMetrics, gameOver
     
     # the real action
     command = f"0 {action_commands[action]}"
@@ -83,8 +85,10 @@ def execute_action_with_turning(action, current_state, metrics):
     actual_state = json.loads(actual_state)
     newMetrics['num_steps'] += 1
     newMetrics['num_violations'] += len(actual_state['violations'])
+    gameOver = 'Player 0 exited through an entrance' in actual_state['violations']
+
     
-    return actual_state, newMetrics
+    return actual_state, newMetrics, gameOver
 
 if __name__ == "__main__":
     # Connect to Supermarket
@@ -145,14 +149,17 @@ if __name__ == "__main__":
     }
 
     for action in generated_actions:
-        current_state, metrics = execute_action_with_turning(action, current_state, metrics)
+        current_state, metrics, gameOver = execute_action_with_turning(action, current_state, metrics)
+        if gameOver:
+            print("Game over detected, stopping execution of further actions.")
+            break
 
 
     with open(output_file, "w") as f:
         json.dump(current_state, f, indent=2)
     print(f"Finished executing actions, wrote final state to {output_file}")
 
-    metrics['success'] = success
+    metrics['success'] = success and not gameOver
     with open(metrics_file, "w") as f:
         json.dump(metrics, f, indent=2)
     print(f"Wrote metrics to {metrics_file}")

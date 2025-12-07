@@ -20,12 +20,12 @@
     "avg_steps_between_subgoals": -1.0
   },
   "irl_metrics": {
-    "success_rate": 1.0,
-    "avg_violations_per_run": 11.25,
+    "success_rate": 0.8916666666666666,
+    "avg_violations_per_run": 6.325,
     "median_violations_per_run": 1.0,
-    "percent_violation_free": 0.25,
-    "worst_violations": 111,
-    "avg_num_steps": 359.1666666666667,
+    "percent_violation_free": 0.325,
+    "worst_violations": 110,
+    "avg_num_steps": 337.475,
     "avg_num_subgoals": -1.0,
     "avg_steps_between_subgoals": -1.0
   },
