@@ -1,0 +1,257 @@
+{
+  "total_time_all_runs": 1937.3224852085114,
+  "avg_training_time_per_run": 429.5666951465607,
+  "avg_subgoals_per_run": 26.24,
+  "run_details": [
+    {
+      "run_id": 0,
+      "training_time": 444.21382999420166,
+      "num_subgoals": 30
+    },
+    {
+      "run_id": 1,
+      "training_time": 390.2031421661377,
+      "num_subgoals": 24
+    },
+    {
+      "run_id": 2,
+      "training_time": 446.86176800727844,
+      "num_subgoals": 28
+    },
+    {
+      "run_id": 3,
+      "training_time": 504.90245294570923,
+      "num_subgoals": 29
+    },
+    {
+      "run_id": 4,
+      "training_time": 440.50874495506287,
+      "num_subgoals": 26
+    },
+    {
+      "run_id": 5,
+      "training_time": 430.46499514579773,
+      "num_subgoals": 27
+    },
+    {
+      "run_id": 6,
+      "training_time": 489.3929400444031,
+      "num_subgoals": 30
+    },
+    {
+      "run_id": 7,
+      "training_time": 458.4557411670685,
+      "num_subgoals": 27
+    },
+    {
+      "run_id": 8,
+      "training_time": 370.1825940608978,
+      "num_subgoals": 23
+    },
+    {
+      "run_id": 9,
+      "training_time": 421.46833395957947,
+      "num_subgoals": 26
+    },
+    {
+      "run_id": 10,
+      "training_time": 550.0176689624786,
+      "num_subgoals": 31
+    },
+    {
+      "run_id": 11,
+      "training_time": 413.17513275146484,
+      "num_subgoals": 26
+    },
+    {
+      "run_id": 12,
+      "training_time": 435.3763840198517,
+      "num_subgoals": 27
+    },
+    {
+      "run_id": 13,
+      "training_time": 409.943727016449,
+      "num_subgoals": 26
+    },
+    {
+      "run_id": 14,
+      "training_time": 421.40901136398315,
+      "num_subgoals": 25
+    },
+    {
+      "run_id": 15,
+      "training_time": 383.74290585517883,
+      "num_subgoals": 23
+    },
+    {
+      "run_id": 16,
+      "training_time": 507.4405429363251,
+      "num_subgoals": 30
+    },
+    {
+      "run_id": 17,
+      "training_time": 385.15812611579895,
+      "num_subgoals": 24
+    },
+    {
+      "run_id": 18,
+      "training_time": 425.62603187561035,
+      "num_subgoals": 25
+    },
+    {
+      "run_id": 19,
+      "training_time": 459.11402106285095,
+      "num_subgoals": 29
+    },
+    {
+      "run_id": 20,
+      "training_time": 434.2883677482605,
+      "num_subgoals": 27
+    },
+    {
+      "run_id": 21,
+      "training_time": 532.993047952652,
+      "num_subgoals": 31
+    },
+    {
+      "run_id": 22,
+      "training_time": 471.9850778579712,
+      "num_subgoals": 28
+    },
+    {
+      "run_id": 23,
+      "training_time": 451.9238471984863,
+      "num_subgoals": 27
+    },
+    {
+      "run_id": 24,
+      "training_time": 504.46371388435364,
+      "num_subgoals": 31
+    },
+    {
+      "run_id": 25,
+      "training_time": 431.863906621933,
+      "num_subgoals": 25
+    },
+    {
+      "run_id": 26,
+      "training_time": 456.87506198883057,
+      "num_subgoals": 27
+    },
+    {
+      "run_id": 27,
+      "training_time": 487.66754508018494,
+      "num_subgoals": 29
+    },
+    {
+      "run_id": 28,
+      "training_time": 470.59825682640076,
+      "num_subgoals": 27
+    },
+    {
+      "run_id": 29,
+      "training_time": 396.6888339519501,
+      "num_subgoals": 23
+    },
+    {
+      "run_id": 30,
+      "training_time": 472.64660000801086,
+      "num_subgoals": 27
+    },
+    {
+      "run_id": 31,
+      "training_time": 422.32171297073364,
+      "num_subgoals": 26
+    },
+    {
+      "run_id": 32,
+      "training_time": 355.07029914855957,
+      "num_subgoals": 21
+    },
+    {
+      "run_id": 33,
+      "training_time": 477.69247102737427,
+      "num_subgoals": 27
+    },
+    {
+      "run_id": 34,
+      "training_time": 431.78194522857666,
+      "num_subgoals": 27
+    },
+    {
+      "run_id": 35,
+      "training_time": 479.22421503067017,
+      "num_subgoals": 29
+    },
+    {
+      "run_id": 36,
+      "training_time": 496.86849308013916,
+      "num_subgoals": 30
+    },
+    {
+      "run_id": 37,
+      "training_time": 319.9431688785553,
+      "num_subgoals": 20
+    },
+    {
+      "run_id": 38,
+      "training_time": 451.8398931026459,
+      "num_subgoals": 26
+    },
+    {
+      "run_id": 39,
+      "training_time": 441.174635887146,
+      "num_subgoals": 26
+    },
+    {
+      "run_id": 40,
+      "training_time": 419.8229730129242,
+      "num_subgoals": 25
+    },
+    {
+      "run_id": 41,
+      "training_time": 438.67342591285706,
+      "num_subgoals": 26
+    },
+    {
+      "run_id": 42,
+      "training_time": 407.5838580131531,
+      "num_subgoals": 24
+    },
+    {
+      "run_id": 43,
+      "training_time": 348.8484239578247,
+      "num_subgoals": 21
+    },
+    {
+      "run_id": 44,
+      "training_time": 355.46698021888733,
+      "num_subgoals": 22
+    },
+    {
+      "run_id": 45,
+      "training_time": 443.6617081165314,
+      "num_subgoals": 30
+    },
+    {
+      "run_id": 46,
+      "training_time": 374.19407176971436,
+      "num_subgoals": 25
+    },
+    {
+      "run_id": 47,
+      "training_time": 341.6402850151062,
+      "num_subgoals": 23
+    },
+    {
+      "run_id": 48,
+      "training_time": 314.3771572113037,
+      "num_subgoals": 24
+    },
+    {
+      "run_id": 49,
+      "training_time": 258.49668622016907,
+      "num_subgoals": 22
+    }
+  ]
+}
