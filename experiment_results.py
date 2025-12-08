@@ -68,21 +68,18 @@ def evaluateIRL(idx):
         types = run.get('violation_types', {})
         for v, count in types.items():
             run_violation_types[v] = run_violation_types.get(v, 0) + count
-            
-            metrics['violation_types'] = run_violation_types
-    metrics = makeMetrics(
-        successRate = .... # keep this call to makeMetrics as is, just store it in a variable instead of returning it
-    )
-    metrics['violation_types'] = run_violation_types
-    return metrics
+    
     # TODO: also need subgoal metrics
-    return makeMetrics(
+    metrics = makeMetrics(
         successRate=np.mean(np.array([run['success'] for run in irl_metrics])),
         violations=np.array([run['num_violations'] for run in irl_metrics]),
         avgNumSteps=np.mean(np.array([run['num_steps'] for run in irl_metrics])),
         avgNumSubgoals=-1,
         avgStepsBetweenSubgoals=-1
     )
+    metrics['violation_types'] = run_violation_types
+    return metrics
+    
 
 def aggregateResults(resultsByRun):
     modelKeys = ['demo_metrics', 'expert_metrics', 'irl_metrics', 'baseline_metrics']
@@ -98,15 +95,14 @@ def aggregateResults(resultsByRun):
             'avg_steps_between_subgoals': np.mean([run[key]['avg_steps_between_subgoals'] for run in resultsByRun]),
         } if resultsByRun[0][key] != {} else {} for key in modelKeys
     }
-total_irl_violations = {}
+    total_irl_violations = {}
     for run in resultsByRun:
         # Use .get() to safely access 'violation_types' in case it's missing from some runs
         v_types = run['irl_metrics'].get('violation_types', {})
         for v, count in v_types.items():
             total_irl_violations[v] = total_irl_violations.get(v, 0) + count
-            
-    if 'irl_metrics' in aggregated and aggregated['irl_metrics']:
-        aggregated['irl_metrics']['total_violation_breakdown'] = total_irl_violations
+    
+    aggregated['irl_metrics']['total_violation_breakdown'] = total_irl_violations
 
     return aggregated
 
