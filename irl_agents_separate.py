@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 from irl_agent import shoppingActionMap, load_expert_trajectories
 from dp_trajectory_segmentation import segmentTrajectoryBySubgoals
 
-# TODO: when adding a new item, add its location to the target list, then update the start/final state, and the theta size.
 BASKET_LOCATION = np.array([3.5, 18.5])
 REGISTER_LOCATION = np.array([2.75, 3.75])
 
@@ -260,7 +259,8 @@ def generateLearnedTrajectory(learned_agents, trajectoryPath="generated_trajecto
 
     return per_subgoal_trajectory
 
-def plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, startState, imgPath="per_subgoal_agents_trajectory.png", showPlot=True):
+def plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, startState, 
+                          imgPath="per_subgoal_agents_trajectory.png", showPlot=True, title=None):
     plt.figure(figsize=(10, 8))
     for i, traj in enumerate(expertTrajectories):
         traj = np.array(traj)
@@ -270,7 +270,8 @@ def plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, startS
     x, y = [step[0] for step in sampleTrajectory], [step[1] for step in sampleTrajectory]
     plt.plot(x, y, 'o-', color='purple', linewidth=2, markersize=4, label='Per-Subgoal Agent Trajectory')
     
-    plt.scatter(subgoals[:, 0], subgoals[:, 1], c='red', s=250, marker='*',
+    if len(subgoals) > 0:
+        plt.scatter(subgoals[:, 0], subgoals[:, 1], c='red', s=250, marker='*',
                 label='Subgoals', zorder=10)
     
     # Add numbers to subgoals
@@ -282,7 +283,10 @@ def plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, startS
     plt.scatter(startState[0], startState[1], c='green', s=200, marker='o',
                 label='Start', zorder=10)
     
-    plt.title("Per-Subgoal MaxEnt Agents: Generated Trajectory")
+    if title is None:
+        plt.title("Per-Subgoal MaxEnt Agents: Generated Trajectory")
+    else:
+        plt.title(title)
     plt.xlabel("X Position")
     plt.ylabel("Y Position")
     plt.grid(True)
