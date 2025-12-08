@@ -6,6 +6,19 @@ import numpy as np
 from socket_agent_expert import hasBasket
 import argparse
 
+def update_violation_metrics(metrics, actual_state):
+    """Helper to update violation counts and types."""
+    current_violations = actual_state.get('violations', [])
+    metrics['num_violations'] += len(current_violations)
+    
+    
+    if 'violation_types' not in metrics:
+        metrics['violation_types'] = {}
+        
+    # Tally specific violation strings
+    for v in current_violations:
+        metrics['violation_types'][v] = metrics['violation_types'].get(v, 0) + 1
+    return metrics
 action_commands = {
     0: 'NORTH',
     1: 'SOUTH',
@@ -36,7 +49,8 @@ def turn(action, sock_game, metrics):
     actual_state = recv_socket_data(sock_game)
     actual_state = json.loads(actual_state)
     newMetrics['num_steps'] += 1
-    newMetrics['num_violations'] += len(actual_state['violations'])
+    newMetrics = update_violation_metrics(newMetrics, actual_state)
+    
     return actual_state, newMetrics
 
 # wrapper around the actual action execution to get rid of some of the issues.
@@ -65,13 +79,13 @@ def execute_action_with_turning(action, current_state, metrics):
         sock_game.send(str.encode("0 INTERACT"))
         actual_state = recv_socket_data(sock_game)
         actual_state = json.loads(actual_state)
-        newMetrics['num_violations'] += len(actual_state['violations'])
+        newMetrics = update_violation_metrics(newMetrics, actual_state)
         newMetrics['num_steps'] += 1
 
         sock_game.send(str.encode("0 INTERACT"))
         actual_state = recv_socket_data(sock_game)
         actual_state = json.loads(actual_state)
-        newMetrics['num_violations'] += len(actual_state['violations'])
+        newMetrics = update_violation_metrics(newMetrics, actual_state)
         newMetrics['num_steps'] += 1
 
         gameOver = 'Player 0 exited through an entrance' in actual_state['violations']
@@ -84,7 +98,7 @@ def execute_action_with_turning(action, current_state, metrics):
     actual_state = recv_socket_data(sock_game)
     actual_state = json.loads(actual_state)
     newMetrics['num_steps'] += 1
-    newMetrics['num_violations'] += len(actual_state['violations'])
+    newMetrics = update_violation_metrics(newMetrics, actual_state)
     gameOver = 'Player 0 exited through an entrance' in actual_state['violations']
 
     
@@ -145,6 +159,7 @@ if __name__ == "__main__":
         'run_id': run_id,
         'num_steps': 0,
         'num_violations': 0,
+        'violation_types': {},
         'success': False,
     }
 
