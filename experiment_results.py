@@ -63,19 +63,27 @@ def evaluateIRL(idx):
     # compute metrics on the IRL-generated trajectories
     with open(f'experiment/runs/run_{idx}/irl_generated_action_metrics_{idx}.json', 'r') as f:
         irl_metrics = json.load(f)
+    run_violation_types = {}
+    for run in irl_metrics:
+        types = run.get('violation_types', {})
+        for v, count in types.items():
+            run_violation_types[v] = run_violation_types.get(v, 0) + count
     
     # TODO: also need subgoal metrics
-    return makeMetrics(
+    metrics = makeMetrics(
         successRate=np.mean(np.array([run['success'] for run in irl_metrics])),
         violations=np.array([run['num_violations'] for run in irl_metrics]),
         avgNumSteps=np.mean(np.array([run['num_steps'] for run in irl_metrics])),
         avgNumSubgoals=-1,
         avgStepsBetweenSubgoals=-1
     )
+    metrics['violation_types'] = run_violation_types
+    return metrics
+    
 
 def aggregateResults(resultsByRun):
     modelKeys = ['demo_metrics', 'expert_metrics', 'irl_metrics', 'baseline_metrics']
-    return {
+    aggregated = {
         key: {
             'success_rate': np.mean([run[key]['success_rate'] for run in resultsByRun]),
             'avg_violations_per_run': np.mean([run[key]['avg_violations_per_run'] for run in resultsByRun]),
@@ -87,6 +95,18 @@ def aggregateResults(resultsByRun):
             'avg_steps_between_subgoals': np.mean([run[key]['avg_steps_between_subgoals'] for run in resultsByRun]),
         } if resultsByRun[0][key] != {} else {} for key in modelKeys
     }
+    total_irl_violations = {}
+    for run in resultsByRun:
+        # Use .get() to safely access 'violation_types' in case it's missing from some runs
+        v_types = run['irl_metrics'].get('violation_types', {})
+        for v, count in v_types.items():
+            total_irl_violations[v] = total_irl_violations.get(v, 0) + count
+    
+    aggregated['irl_metrics']['total_violation_breakdown'] = total_irl_violations
+
+    return aggregated
+
+
 
 if __name__ == "__main__":
     parser = getParser()
