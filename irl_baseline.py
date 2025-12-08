@@ -23,16 +23,15 @@ def augmentStep(step, targetLocations):
 
     return new_features
 
-if __name__ == "__main__":
-    learnMode = False
-    shoppingList = ['sausage', 'milk', 'banana']
+
+def runBaseline(shoppingList, learnMode=False, thetaFile="experiment/baseline_theta.json", verbose=True):
     mask = np.full((THETA_SIZE), True)
     mask[[0,1]] = False # mask only the x,y features
     expertTrajectories = load_expert_trajectories("trajectories.pkl", maskShape=mask)
 
     itemLocations = getItemLocations()
     targetLocations = getTargetLocations(itemLocations, shoppingList)
-    
+
     # now our phi is: 2 coordinates for distances to basket, 3 items, and register, plus 5 for the flags
     def phi(state):
         return augmentStep(state, targetLocations)
@@ -40,13 +39,13 @@ if __name__ == "__main__":
     # size of above phi
     augmentedThetaSize = 15 
     theta = np.random.uniform(0.0, 0.1, size=augmentedThetaSize)
-    
-    getNextState = makeGetNextState(np.array(targetLocations))
-    
+
     if not learnMode:
-        with open("baseline_theta.json", "r") as f:
+        with open(thetaFile, "r") as f:
             theta = np.array(json.load(f))
     
+    getNextState = makeGetNextState(np.array(targetLocations))
+
     learner = MaxEntropyIRL(
         theta=theta,
         actions=np.arange(5),
@@ -65,28 +64,44 @@ if __name__ == "__main__":
             maxTrajectoryLength=300,
             verbose=True
         )
-        print("Learned theta:", theta_hat)
+        if verbose:
+            print("Learned theta:", theta_hat)
     
         with open("baseline_theta.json", "w") as f:
             json.dump(theta_hat.tolist(), f, indent=2)
 
+    # generate a trajectory for this shopping list
     newTraj, actions = learner.greedy_trajectory(maxLength=500, epsilon=0.1, recordActions=True)
-    print("Final state:", newTraj[-1])
-    print("Goal state:", FINAL_GOAL_LOCATION)
+    if verbose:
+        print("Final state:", newTraj[-1])
+        print("Goal state:", FINAL_GOAL_LOCATION)
+        
+        # Analyze subgoal completion
+        finalLocation = newTraj[-1]
+        print(f"Has basket: {finalLocation[2] > 0.5}")
+        print(f"Has item 1: {finalLocation[3] > 0.5}")
+        print(f"Has item 2: {finalLocation[4] > 0.5}")
+        print(f"Has item 3: {finalLocation[5] > 0.5}")
+        print(f"Has paid: {finalLocation[6] > 0.5}")
+
+    return newTraj, actions
+
+
+if __name__ == "__main__":
+    learnMode = False
+    shoppingList = ['sausage', 'milk', 'banana']
     
-    # Analyze subgoal completion
-    finalLocation = newTraj[-1]
-    print(f"Has basket: {finalLocation[2] > 0.5}")
-    print(f"Has item 1: {finalLocation[3] > 0.5}")
-    print(f"Has item 2: {finalLocation[4] > 0.5}")
-    print(f"Has item 3: {finalLocation[5] > 0.5}")
-    print(f"Has paid: {finalLocation[6] > 0.5}")
+    newTraj, actions = runBaseline(shoppingList, learnMode=learnMode)
     
     with open("baseline_trajectory.json", "w") as f:
         json.dump([step.tolist() for step in newTraj], f)
     with open("baseline_actions.json", "w") as f:
         json.dump([int(a) for a in actions], f)
     
+
+    mask = np.full((THETA_SIZE), True)
+    mask[[0,1]] = False # mask only the x,y features
+    expertTrajectories = load_expert_trajectories("trajectories.pkl", maskShape=mask)
     plotSampledTrajectory(newTraj, expertTrajectories, subgoals=[], startState=START_STATE, imgPath="baseline.png", title="Baseline IRL Agent")
 
 

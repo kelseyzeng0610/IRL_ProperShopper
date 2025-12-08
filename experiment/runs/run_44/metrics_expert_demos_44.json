@@ -1,0 +1,32 @@
+[
+  {
+    "run_id": 0,
+    "success": true,
+    "num_steps": 231,
+    "num_violations": 0
+  },
+  {
+    "run_id": 1,
+    "success": true,
+    "num_steps": 225,
+    "num_violations": 1
+  },
+  {
+    "run_id": 2,
+    "success": true,
+    "num_steps": 228,
+    "num_violations": 0
+  },
+  {
+    "run_id": 3,
+    "success": true,
+    "num_steps": 249,
+    "num_violations": 0
+  },
+  {
+    "run_id": 4,
+    "success": true,
+    "num_steps": 234,
+    "num_violations": 2
+  }
+]

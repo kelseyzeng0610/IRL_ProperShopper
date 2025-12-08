@@ -16,7 +16,7 @@
             "python": "${workspaceFolder}/venv/bin/python",
             "args": [
                 "--generate_lists", 
-                "--num_lists=12",
+                "--num_lists=50",
                 "--verbose",
             ]
         },
@@ -84,6 +84,17 @@
                 "--record_expert",
                 "--headless",
                 "--verbose"
+            ]
+        },
+        {
+            "name": "Run Baseline Evaluation",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/experiment.py",
+            "python": "${workspaceFolder}/venv/bin/python",
+            "args": [
+                "--run_baseline",
+                "--verbose",
             ]
         },
         {
