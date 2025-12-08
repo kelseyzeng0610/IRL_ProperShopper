@@ -70,6 +70,10 @@ def evaluateIRL(idx):
             run_violation_types[v] = run_violation_types.get(v, 0) + count
             
             metrics['violation_types'] = run_violation_types
+    metrics = makeMetrics(
+        successRate = .... # keep this call to makeMetrics as is, just store it in a variable instead of returning it
+    )
+    metrics['violation_types'] = run_violation_types
     return metrics
     # TODO: also need subgoal metrics
     return makeMetrics(
