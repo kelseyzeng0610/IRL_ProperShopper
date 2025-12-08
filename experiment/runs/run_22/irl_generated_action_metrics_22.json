@@ -1,0 +1,79 @@
+[
+  {
+    "run_id": 0,
+    "num_steps": 273,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 1,
+    "num_steps": 274,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 2,
+    "num_steps": 259,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the milk shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 3,
+    "num_steps": 265,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 4,
+    "num_steps": 291,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 5,
+    "num_steps": 271,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 6,
+    "num_steps": 275,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 7,
+    "num_steps": 279,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 8,
+    "num_steps": 251,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 9,
+    "num_steps": 453,
+    "num_violations": 4,
+    "violation_types": {
+      "Player 0 ran into the leek shelf": 1,
+      "Player 0 ran into the chocolate milk shelf": 1,
+      "Player 0 took more chocolate milk than they needed": 1,
+      "Player 0 ran into a checkout counter": 1
+    },
+    "success": true
+  }
+]

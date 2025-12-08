@@ -1,0 +1,84 @@
+[
+  {
+    "run_id": 0,
+    "num_steps": 292,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 1,
+    "num_steps": 317,
+    "num_violations": 27,
+    "violation_types": {
+      "Player 0 ran into the basket return": 1,
+      "Player 0 ran into the garlic shelf": 8,
+      "Player 0 ran into a wall": 7,
+      "Player 0 ran into a checkout counter": 11
+    },
+    "success": true
+  },
+  {
+    "run_id": 2,
+    "num_steps": 285,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 3,
+    "num_steps": 296,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 4,
+    "num_steps": 286,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the apples shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 5,
+    "num_steps": 278,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 6,
+    "num_steps": 302,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the brie cheese shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 7,
+    "num_steps": 308,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 8,
+    "num_steps": 296,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 9,
+    "num_steps": 301,
+    "num_violations": 2,
+    "violation_types": {
+      "Player 0 ran into the banana shelf": 1,
+      "Player 0 ran into the oranges shelf": 1
+    },
+    "success": true
+  }
+]

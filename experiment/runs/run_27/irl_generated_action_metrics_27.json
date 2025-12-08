@@ -1,0 +1,82 @@
+[
+  {
+    "run_id": 0,
+    "num_steps": 355,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the avocado shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 1,
+    "num_steps": 314,
+    "num_violations": 6,
+    "violation_types": {
+      "Player 0 ran into the onion shelf": 1,
+      "Player 0 ran into the apples shelf": 4,
+      "Player 0 took an item, apples, that is not on their shopping list": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 2,
+    "num_steps": 318,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 3,
+    "num_steps": 338,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the milk shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 4,
+    "num_steps": 314,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 5,
+    "num_steps": 340,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 took an item, avocado, that is not on their shopping list": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 6,
+    "num_steps": 322,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 7,
+    "num_steps": 325,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 8,
+    "num_steps": 336,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 9,
+    "num_steps": 330,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  }
+]

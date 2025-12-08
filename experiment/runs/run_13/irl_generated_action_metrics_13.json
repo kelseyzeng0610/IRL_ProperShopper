@@ -1,0 +1,108 @@
+[
+  {
+    "run_id": 0,
+    "num_steps": 254,
+    "num_violations": 3,
+    "violation_types": {
+      "Player 0 ran into the sausage shelf": 1,
+      "Player 0 ran into a checkout counter": 2
+    },
+    "success": true
+  },
+  {
+    "run_id": 1,
+    "num_steps": 255,
+    "num_violations": 3,
+    "violation_types": {
+      "Player 0 ran into the swiss cheese shelf": 1,
+      "Player 0 ran into a checkout counter": 2
+    },
+    "success": true
+  },
+  {
+    "run_id": 2,
+    "num_steps": 262,
+    "num_violations": 3,
+    "violation_types": {
+      "Player 0 ran into the sausage shelf": 1,
+      "Player 0 ran into a checkout counter": 2
+    },
+    "success": true
+  },
+  {
+    "run_id": 3,
+    "num_steps": 245,
+    "num_violations": 3,
+    "violation_types": {
+      "Player 0 ran into the sausage shelf": 1,
+      "Player 0 ran into a checkout counter": 2
+    },
+    "success": true
+  },
+  {
+    "run_id": 4,
+    "num_steps": 271,
+    "num_violations": 3,
+    "violation_types": {
+      "Player 0 ran into the cheese wheel shelf": 1,
+      "Player 0 ran into the swiss cheese shelf": 1,
+      "Player 0 ran into a checkout counter": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 5,
+    "num_steps": 427,
+    "num_violations": 6,
+    "violation_types": {
+      "Player 0 ran into the sausage shelf": 1,
+      "Player 0 ran into a checkout counter": 5
+    },
+    "success": false
+  },
+  {
+    "run_id": 6,
+    "num_steps": 1689,
+    "num_violations": 85,
+    "violation_types": {
+      "Player 0 took more cheese wheel than they needed": 2,
+      "Player 0 ran into the sausage shelf": 11,
+      "Player 0 ran into the brie cheese shelf": 11,
+      "Player 0 ran into the chicken shelf": 4,
+      "Player 0 ran into the cheese wheel shelf": 1,
+      "Player 0 ran into the apples shelf": 24,
+      "Player 0 ran into a checkout counter": 32
+    },
+    "success": false
+  },
+  {
+    "run_id": 7,
+    "num_steps": 264,
+    "num_violations": 2,
+    "violation_types": {
+      "Player 0 ran into the sausage shelf": 1,
+      "Player 0 ran into a checkout counter": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 8,
+    "num_steps": 259,
+    "num_violations": 3,
+    "violation_types": {
+      "Player 0 ran into the sausage shelf": 1,
+      "Player 0 ran into a checkout counter": 2
+    },
+    "success": true
+  },
+  {
+    "run_id": 9,
+    "num_steps": 249,
+    "num_violations": 3,
+    "violation_types": {
+      "Player 0 ran into the sausage shelf": 1,
+      "Player 0 ran into a checkout counter": 2
+    },
+    "success": true
+  }
+]

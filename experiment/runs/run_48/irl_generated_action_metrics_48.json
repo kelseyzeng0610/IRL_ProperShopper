@@ -1,0 +1,83 @@
+[
+  {
+    "run_id": 0,
+    "num_steps": 258,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 1,
+    "num_steps": 250,
+    "num_violations": 2,
+    "violation_types": {
+      "Player 0 took more avocado than they needed": 1,
+      "Player 0 ran into the cheese wheel shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 2,
+    "num_steps": 257,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the basket return": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 3,
+    "num_steps": 260,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 4,
+    "num_steps": 254,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 5,
+    "num_steps": 229,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 6,
+    "num_steps": 427,
+    "num_violations": 6,
+    "violation_types": {
+      "Player 0 ran into the cheese wheel shelf": 1,
+      "Player 0 ran into a checkout counter": 5
+    },
+    "success": false
+  },
+  {
+    "run_id": 7,
+    "num_steps": 276,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 8,
+    "num_steps": 415,
+    "num_violations": 8,
+    "violation_types": {
+      "Player 0 ran into a checkout counter": 6,
+      "Player 0 ran into a wall": 2
+    },
+    "success": false
+  },
+  {
+    "run_id": 9,
+    "num_steps": 238,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  }
+]

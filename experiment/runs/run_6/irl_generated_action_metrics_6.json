@@ -1,62 +1,86 @@
 [
   {
     "run_id": 0,
-    "num_steps": 307,
-    "num_violations": 6,
+    "num_steps": 342,
+    "num_violations": 0,
+    "violation_types": {},
     "success": true
   },
   {
     "run_id": 1,
-    "num_steps": 316,
-    "num_violations": 12,
+    "num_steps": 358,
+    "num_violations": 0,
+    "violation_types": {},
     "success": true
   },
   {
     "run_id": 2,
-    "num_steps": 321,
-    "num_violations": 1,
+    "num_steps": 339,
+    "num_violations": 0,
+    "violation_types": {},
     "success": true
   },
   {
     "run_id": 3,
-    "num_steps": 484,
-    "num_violations": 2,
+    "num_steps": 369,
+    "num_violations": 0,
+    "violation_types": {},
     "success": true
   },
   {
     "run_id": 4,
-    "num_steps": 311,
-    "num_violations": 1,
+    "num_steps": 340,
+    "num_violations": 0,
+    "violation_types": {},
     "success": true
   },
   {
     "run_id": 5,
-    "num_steps": 349,
-    "num_violations": 5,
+    "num_steps": 367,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the garlic shelf": 1
+    },
     "success": true
   },
   {
     "run_id": 6,
-    "num_steps": 297,
-    "num_violations": 1,
+    "num_steps": 350,
+    "num_violations": 19,
+    "violation_types": {
+      "Player 0 ran into the avocado shelf": 1,
+      "Player 0 ran into the garlic shelf": 7,
+      "Player 0 ran into a wall": 4,
+      "Player 0 ran into a checkout counter": 7
+    },
     "success": true
   },
   {
     "run_id": 7,
-    "num_steps": 315,
-    "num_violations": 1,
+    "num_steps": 323,
+    "num_violations": 0,
+    "violation_types": {},
     "success": true
   },
   {
     "run_id": 8,
-    "num_steps": 300,
-    "num_violations": 2,
+    "num_steps": 346,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the avocado shelf": 1
+    },
     "success": true
   },
   {
     "run_id": 9,
-    "num_steps": 308,
-    "num_violations": 0,
+    "num_steps": 518,
+    "num_violations": 6,
+    "violation_types": {
+      "Player 0 ran into the swiss cheese shelf": 1,
+      "Player 0 ran into the cheese wheel shelf": 1,
+      "Player 0 ran into a checkout counter": 2,
+      "Player 0 ran into a wall": 2
+    },
     "success": true
   }
 ]
