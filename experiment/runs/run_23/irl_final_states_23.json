@@ -32,7 +32,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 92,
+          "budget": 90,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -52,10 +52,12 @@
           "contents_quant": [],
           "purchased_contents": [
             "leek",
+            "garlic",
             "swiss cheese",
             "chocolate milk"
           ],
           "purchased_quant": [
+            1,
             1,
             1,
             1
@@ -407,7 +409,7 @@
           "food": "garlic",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/garlic.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "garlic"
@@ -612,7 +614,7 @@
         }
       ]
     },
-    "step": 257,
+    "step": 261,
     "gameOver": false,
     "violations": ""
   },
@@ -1225,7 +1227,7 @@
         }
       ]
     },
-    "step": 274,
+    "step": 278,
     "gameOver": false,
     "violations": ""
   },
@@ -1262,7 +1264,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 92,
+          "budget": 90,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -1282,10 +1284,12 @@
           "contents_quant": [],
           "purchased_contents": [
             "leek",
+            "garlic",
             "swiss cheese",
             "chocolate milk"
           ],
           "purchased_quant": [
+            1,
             1,
             1,
             1
@@ -1637,7 +1641,7 @@
           "food": "garlic",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/garlic.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "garlic"
@@ -1842,7 +1846,7 @@
         }
       ]
     },
-    "step": 249,
+    "step": 251,
     "gameOver": false,
     "violations": ""
   },
@@ -2459,7 +2463,7 @@
         }
       ]
     },
-    "step": 261,
+    "step": 262,
     "gameOver": false,
     "violations": ""
   },
@@ -2496,7 +2500,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 99,
+          "budget": 97,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -2515,9 +2519,11 @@
           "contents": [],
           "contents_quant": [],
           "purchased_contents": [
+            "garlic",
             "leek"
           ],
           "purchased_quant": [
+            1,
             1
           ],
           "width": 0.15,
@@ -2867,7 +2873,7 @@
           "food": "garlic",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/garlic.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "garlic"
@@ -3072,7 +3078,7 @@
         }
       ]
     },
-    "step": 268,
+    "step": 274,
     "gameOver": false,
     "violations": ""
   },
@@ -3685,7 +3691,7 @@
         }
       ]
     },
-    "step": 428,
+    "step": 429,
     "gameOver": false,
     "violations": ""
   },
@@ -4300,7 +4306,7 @@
         }
       ]
     },
-    "step": 261,
+    "step": 265,
     "gameOver": false,
     "violations": ""
   },
@@ -4322,7 +4328,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 2,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -4337,7 +4343,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 94,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -4346,21 +4352,23 @@
       "baskets": [
         {
           "position": [
-            3.4,
-            4.050000000000001
+            2.5,
+            4.280000000000001
           ],
-          "direction": 2,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
+            "leek",
             "swiss cheese"
           ],
-          "contents_quant": [
+          "purchased_quant": [
+            1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -4723,7 +4731,7 @@
           "food": "leek",
           "price": 1,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/leek_onion.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "leek"
@@ -4913,7 +4921,7 @@
         }
       ]
     },
-    "step": 280,
+    "step": 287,
     "gameOver": false,
     "violations": ""
   },
@@ -5530,7 +5538,7 @@
         }
       ]
     },
-    "step": 256,
+    "step": 258,
     "gameOver": false,
     "violations": ""
   },
@@ -6143,7 +6151,7 @@
         }
       ]
     },
-    "step": 269,
+    "step": 271,
     "gameOver": false,
     "violations": ""
   }

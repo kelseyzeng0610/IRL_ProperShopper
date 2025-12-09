@@ -270,7 +270,20 @@ def runHIRLSamples(allShoppingLists, startIdx, endIdx, headless=False, numSample
             json.dump(allMetrics, f, indent=2)
         with open(f'experiment/runs/run_{i}/irl_final_states_{i}.json', 'w') as f:
             json.dump(finalStates, f, indent=2)
-        
+
+        # evaluate the deterministic ones
+        deterministicActionsFile = f'experiment/runs/run_{i}/irl_generated_actions_{i}_deterministic.json'
+        deterministicFinalStateFile = f'experiment/runs/run_{i}/irl_deterministic_final_state_{i}.json'
+        deterministicMetricsFile = f'experiment/runs/run_{i}/irl_deterministic_action_metrics_{i}.json'
+        args = [
+            'python', 'run-generated-irl-trajectory.py',
+            f'--file={deterministicActionsFile}',
+            f'--output={deterministicFinalStateFile}',
+            f'--run_id=99',
+            f'--metrics_file={deterministicMetricsFile}',
+            f'--shopping_list={",".join(allShoppingLists[i])}'
+        ]
+        subprocess.run(args)
 
         envProcess.terminate()
         envProcess.wait()
@@ -289,8 +302,15 @@ def recomputeHIRLMetrics(allShoppingLists, startIdx, endIdx, numSamples=10):
 
         for m in range(numSamples):
             finalState = finalStates[m]
-            basket_contents = finalState['observation']['baskets'][0]['purchased_contents'] if len(finalState['observation']['baskets']) > 0 else []
-            allMetrics[m]['success'] = all(item in basket_contents for item in shoppingList)
+            purchased_contents = finalState['observation']['baskets'][0]['purchased_contents'] if len(finalState['observation']['baskets']) > 0 else []
+            unpurchased_contents = finalState['observation']['baskets'][0]['contents'] if len(finalState['observation']['baskets']) > 0 else []
+
+            # success if everything in the shopping list is purchased
+            success = all(item in purchased_contents for item in shoppingList)
+
+            allMetrics[m]['success'] = success
+            allMetrics[m]['paid_items'] = purchased_contents
+            allMetrics[m]['unpaid_items'] = unpurchased_contents
 
         with open(metricsFile, 'w') as f:
             json.dump(allMetrics, f, indent=2)
@@ -371,10 +391,10 @@ if __name__ == "__main__":
         trainHIRL(randomLists, startIdx=startIdx, endIdx=endIdx, verbose=verbose, max_workers=12)
 
     if args.sample_irl_trajectories:
-        sampleIRLTrajectories(randomLists, startIdx=startIdx, endIdx=endIdx, numSamples=1)
+        sampleIRLTrajectories(randomLists, startIdx=startIdx, endIdx=endIdx)
 
     if args.run_hirl_samples:
-        runHIRLSamples(randomLists, startIdx=startIdx, endIdx=endIdx, headless=args.headless, numSamples=1)
+        runHIRLSamples(randomLists, startIdx=startIdx, endIdx=endIdx, headless=args.headless)
 
     if args.recompute_hirl_metrics:
         recomputeHIRLMetrics(randomLists, startIdx=startIdx, endIdx=endIdx)

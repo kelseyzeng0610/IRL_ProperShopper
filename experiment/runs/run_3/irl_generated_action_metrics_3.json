@@ -1,105 +1,164 @@
 [
   {
     "run_id": 0,
-    "num_steps": 366,
-    "num_violations": 17,
+    "num_steps": 370,
+    "num_violations": 18,
     "violation_types": {
       "Player 0 ran into the avocado shelf": 5,
+      "Player 0 took an item, avocado, that is not on their shopping list": 1,
       "Player 0 ran into the cart return": 5,
       "Player 0 took an item, brie cheese, that is not on their shopping list": 1,
       "Player 0 ran into a checkout counter": 6
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "avocado",
+      "brie cheese"
+    ]
   },
   {
     "run_id": 1,
-    "num_steps": 381,
+    "num_steps": 383,
     "num_violations": 3,
     "violation_types": {
       "Player 0 ran into the avocado shelf": 1,
       "Player 0 ran into a checkout counter": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": []
   },
   {
     "run_id": 2,
-    "num_steps": 538,
-    "num_violations": 6,
+    "num_steps": 558,
+    "num_violations": 11,
     "violation_types": {
-      "Player 0 took more swiss cheese than they needed": 2,
+      "Player 0 took an item, avocado, that is not on their shopping list": 1,
+      "Player 0 took more swiss cheese than they needed": 5,
       "Player 0 ran into the swiss cheese shelf": 2,
+      "Player 0 took an item, brie cheese, that is not on their shopping list": 1,
       "Player 0 ran into a checkout counter": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "avocado",
+      "yellow bell pepper",
+      "swiss cheese"
+    ]
   },
   {
     "run_id": 3,
-    "num_steps": 514,
+    "num_steps": 519,
     "num_violations": 27,
     "violation_types": {
       "Player 0 ran into the yellow bell pepper shelf": 12,
       "Player 0 ran into a wall": 13,
       "Player 0 ran into a checkout counter": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "yellow bell pepper"
+    ]
   },
   {
     "run_id": 4,
-    "num_steps": 371,
-    "num_violations": 1,
+    "num_steps": 376,
+    "num_violations": 2,
     "violation_types": {
-      "Player 0 ran into the avocado shelf": 1
+      "Player 0 ran into the avocado shelf": 1,
+      "Player 0 took an item, chicken, that is not on their shopping list": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "yellow bell pepper",
+      "swiss cheese",
+      "ham",
+      "chicken"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 5,
-    "num_steps": 394,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 403,
+    "num_violations": 2,
+    "violation_types": {
+      "Player 0 took an item, broccoli, that is not on their shopping list": 1,
+      "Player 0 took an item, avocado, that is not on their shopping list": 1
+    },
+    "success": true,
+    "paid_items": [
+      "broccoli",
+      "yellow bell pepper",
+      "avocado",
+      "swiss cheese",
+      "ham"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 6,
-    "num_steps": 391,
+    "num_steps": 399,
     "num_violations": 6,
     "violation_types": {
-      "Player 0 ran into the steak shelf": 1,
       "Player 0 ran into the sausage shelf": 1,
+      "Player 0 ran into the steak shelf": 1,
       "Player 0 ran into the apples shelf": 2,
       "Player 0 ran into a checkout counter": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "yellow bell pepper",
+      "swiss cheese",
+      "ham"
+    ]
   },
   {
     "run_id": 7,
-    "num_steps": 426,
+    "num_steps": 434,
     "num_violations": 4,
     "violation_types": {
       "Player 0 ran into the cucumber shelf": 1,
       "Player 0 ran into the steak shelf": 1,
       "Player 0 ran into a checkout counter": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "yellow bell pepper"
+    ]
   },
   {
     "run_id": 8,
-    "num_steps": 366,
-    "num_violations": 2,
+    "num_steps": 374,
+    "num_violations": 3,
     "violation_types": {
+      "Player 0 took an item, broccoli, that is not on their shopping list": 1,
       "Player 0 ran into a checkout counter": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "broccoli",
+      "yellow bell pepper",
+      "swiss cheese",
+      "ham"
+    ]
   },
   {
     "run_id": 9,
-    "num_steps": 370,
+    "num_steps": 374,
     "num_violations": 4,
     "violation_types": {
-      "Player 0 ran into the yellow bell pepper shelf": 1,
       "Player 0 ran into the cucumber shelf": 1,
+      "Player 0 ran into the yellow bell pepper shelf": 1,
       "Player 0 ran into a checkout counter": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": []
   }
 ]

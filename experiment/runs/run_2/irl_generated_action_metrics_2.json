@@ -1,26 +1,45 @@
 [
   {
     "run_id": 0,
-    "num_steps": 375,
+    "num_steps": 380,
     "num_violations": 1,
     "violation_types": {
       "Player 0 ran into the avocado shelf": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [
+      "yellow bell pepper"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 1,
-    "num_steps": 336,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 343,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 took an item, avocado, that is not on their shopping list": 1
+    },
+    "success": true,
+    "paid_items": [
+      "yellow bell pepper",
+      "avocado",
+      "leek",
+      "chocolate milk"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 2,
-    "num_steps": 339,
+    "num_steps": 343,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "yellow bell pepper",
+      "leek",
+      "chocolate milk"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 3,
@@ -29,62 +48,116 @@
     "violation_types": {
       "Player 0 ran into the milk shelf": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "yellow bell pepper",
+      "leek",
+      "chocolate milk"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 4,
-    "num_steps": 678,
-    "num_violations": 7,
+    "num_steps": 683,
+    "num_violations": 8,
     "violation_types": {
-      "Player 0 took an item, garlic, that is not on their shopping list": 1,
+      "Player 0 took an item, garlic, that is not on their shopping list": 2,
       "Player 0 ran into a checkout counter": 4,
       "Player 0 ran into a wall": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "yellow bell pepper",
+      "leek",
+      "garlic",
+      "chocolate milk"
+    ]
   },
   {
     "run_id": 5,
-    "num_steps": 452,
+    "num_steps": 453,
     "num_violations": 4,
     "violation_types": {
       "Player 0 ran into a checkout counter": 2,
       "Player 0 ran into a wall": 2
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "yellow bell pepper",
+      "leek",
+      "chocolate milk"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 6,
-    "num_steps": 666,
-    "num_violations": 2,
+    "num_steps": 672,
+    "num_violations": 3,
     "violation_types": {
+      "Player 0 took an item, avocado, that is not on their shopping list": 1,
       "Player 0 ran into a checkout counter": 2
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "avocado",
+      "yellow bell pepper",
+      "leek",
+      "chocolate milk"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 7,
-    "num_steps": 679,
-    "num_violations": 5,
+    "num_steps": 690,
+    "num_violations": 7,
     "violation_types": {
+      "Player 0 took an item, avocado, that is not on their shopping list": 1,
+      "Player 0 took an item, garlic, that is not on their shopping list": 1,
       "Player 0 ran into a checkout counter": 3,
       "Player 0 ran into a wall": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "yellow bell pepper",
+      "avocado",
+      "leek",
+      "garlic",
+      "chocolate milk"
+    ]
   },
   {
     "run_id": 8,
     "num_steps": 349,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 took an item, broccoli, that is not on their shopping list": 1
+    },
+    "success": true,
+    "paid_items": [
+      "yellow bell pepper",
+      "broccoli",
+      "leek",
+      "chocolate milk"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 9,
-    "num_steps": 361,
-    "num_violations": 1,
+    "num_steps": 367,
+    "num_violations": 3,
     "violation_types": {
+      "Player 0 took an item, cucumber, that is not on their shopping list": 2,
       "Player 0 ran into the milk shelf": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "cucumber",
+      "yellow bell pepper",
+      "leek",
+      "chocolate milk"
+    ],
+    "unpaid_items": []
   }
 ]

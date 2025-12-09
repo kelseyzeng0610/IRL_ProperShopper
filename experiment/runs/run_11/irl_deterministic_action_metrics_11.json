@@ -1,0 +1,15 @@
+{
+  "run_id": 99,
+  "num_steps": 306,
+  "num_violations": 1,
+  "violation_types": {
+    "Player 0 ran into the milk shelf": 1
+  },
+  "success": true,
+  "paid_items": [
+    "lettuce",
+    "raspberry",
+    "milk"
+  ],
+  "unpaid_items": []
+}

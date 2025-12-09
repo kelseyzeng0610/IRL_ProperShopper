@@ -32,7 +32,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 96,
+          "budget": 90,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -52,9 +52,13 @@
           "contents_quant": [],
           "purchased_contents": [
             "red bell pepper",
+            "garlic",
+            "sausage",
             "milk"
           ],
           "purchased_quant": [
+            1,
+            1,
             1,
             1
           ],
@@ -255,7 +259,7 @@
           "food": "sausage",
           "price": 4,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/sausage.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "sausage"
@@ -405,7 +409,7 @@
           "food": "garlic",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/garlic.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "garlic"
@@ -610,7 +614,7 @@
         }
       ]
     },
-    "step": 231,
+    "step": 238,
     "gameOver": false,
     "violations": ""
   },
@@ -1260,7 +1264,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 88,
+          "budget": 86,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -1286,7 +1290,7 @@
           "purchased_quant": [
             1,
             1,
-            3
+            4
           ],
           "width": 0.15,
           "height": 0.15
@@ -1335,7 +1339,7 @@
           "food": "milk",
           "price": 2,
           "capacity": 12,
-          "quantity": 9,
+          "quantity": 8,
           "food_image": "images/food/milk.png",
           "shelf_image": "images/Shelves/fridge.png",
           "food_name": "milk"
@@ -1840,7 +1844,7 @@
         }
       ]
     },
-    "step": 386,
+    "step": 394,
     "gameOver": false,
     "violations": ""
   },
@@ -2457,7 +2461,7 @@
         }
       ]
     },
-    "step": 250,
+    "step": 252,
     "gameOver": false,
     "violations": ""
   },
@@ -3111,7 +3115,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 94,
+          "budget": 92,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -3130,10 +3134,12 @@
           "contents": [],
           "contents_quant": [],
           "purchased_contents": [
+            "red bell pepper",
             "sausage",
             "milk"
           ],
           "purchased_quant": [
+            1,
             1,
             1
           ],
@@ -3514,7 +3520,7 @@
           "food": "red bell pepper",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/bell_pepper_red.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "red bell pepper"
@@ -3726,7 +3732,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 98,
+          "budget": 92,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -3745,628 +3751,15 @@
           "contents": [],
           "contents_quant": [],
           "purchased_contents": [
-            "red bell pepper"
-          ],
-          "purchased_quant": [
-            1
-          ],
-          "width": 0.15,
-          "height": 0.15
-        }
-      ],
-      "registers": [
-        {
-          "height": 2.5,
-          "width": 2.25,
-          "position": [
-            1,
-            4.5
-          ],
-          "num_items": 0,
-          "foods": [],
-          "food_quantities": [],
-          "food_images": [],
-          "capacity": 12,
-          "image": "images/Registers/registersA.png",
-          "curr_player": null
-        },
-        {
-          "height": 2.5,
-          "width": 2.25,
-          "position": [
-            1,
-            9.5
-          ],
-          "num_items": 0,
-          "foods": [],
-          "food_quantities": [],
-          "food_images": [],
-          "capacity": 12,
-          "image": "images/Registers/registersB.png",
-          "curr_player": null
-        }
-      ],
-      "shelves": [
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            5.5,
-            1.5
-          ],
-          "food": "milk",
-          "price": 2,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/milk.png",
-          "shelf_image": "images/Shelves/fridge.png",
-          "food_name": "milk"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            7.5,
-            1.5
-          ],
-          "food": "milk",
-          "price": 2,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/milk.png",
-          "shelf_image": "images/Shelves/fridge.png",
-          "food_name": "milk"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            9.5,
-            1.5
-          ],
-          "food": "chocolate milk",
-          "price": 2,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/milk_chocolate.png",
-          "shelf_image": "images/Shelves/fridge.png",
-          "food_name": "chocolate milk"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            11.5,
-            1.5
-          ],
-          "food": "chocolate milk",
-          "price": 2,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/milk_chocolate.png",
-          "shelf_image": "images/Shelves/fridge.png",
-          "food_name": "chocolate milk"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            13.5,
-            1.5
-          ],
-          "food": "strawberry milk",
-          "price": 2,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/milk_strawberry.png",
-          "shelf_image": "images/Shelves/fridge.png",
-          "food_name": "strawberry milk"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            5.5,
-            5.5
-          ],
-          "food": "apples",
-          "price": 5,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/apples.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "apples"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            7.5,
-            5.5
-          ],
-          "food": "oranges",
-          "price": 5,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/oranges.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "oranges"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            9.5,
-            5.5
-          ],
-          "food": "banana",
-          "price": 1,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/banana.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "banana"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            11.5,
-            5.5
-          ],
-          "food": "strawberry",
-          "price": 1,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/strawberry.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "strawberry"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            13.5,
-            5.5
-          ],
-          "food": "raspberry",
-          "price": 1,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/raspberry.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "raspberry"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            5.5,
-            9.5
-          ],
-          "food": "sausage",
-          "price": 4,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/sausage.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "sausage"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            7.5,
-            9.5
-          ],
-          "food": "steak",
-          "price": 5,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/meat_01.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "steak"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            9.5,
-            9.5
-          ],
-          "food": "steak",
-          "price": 5,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/meat_02.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "steak"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            11.5,
-            9.5
-          ],
-          "food": "chicken",
-          "price": 6,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/meat_03.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "chicken"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            13.5,
-            9.5
-          ],
-          "food": "ham",
-          "price": 6,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/ham.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "ham"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            5.5,
-            13.5
-          ],
-          "food": "brie cheese",
-          "price": 5,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/cheese_01.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "brie cheese"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            7.5,
-            13.5
-          ],
-          "food": "swiss cheese",
-          "price": 5,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/cheese_02.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "swiss cheese"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            9.5,
-            13.5
-          ],
-          "food": "cheese wheel",
-          "price": 15,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/cheese_03.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "cheese wheel"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            11.5,
-            13.5
-          ],
-          "food": "cheese wheel",
-          "price": 15,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/cheese_03.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "cheese wheel"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            13.5,
-            13.5
-          ],
-          "food": "cheese wheel",
-          "price": 15,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/cheese_03.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "cheese wheel"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            5.5,
-            17.5
-          ],
-          "food": "garlic",
-          "price": 2,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/garlic.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "garlic"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            7.5,
-            17.5
-          ],
-          "food": "leek",
-          "price": 1,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/leek_onion.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "leek"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            9.5,
-            17.5
-          ],
-          "food": "red bell pepper",
-          "price": 2,
-          "capacity": 12,
-          "quantity": 11,
-          "food_image": "images/food/bell_pepper_red.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "red bell pepper"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            11.5,
-            17.5
-          ],
-          "food": "carrot",
-          "price": 1,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/carrot.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "carrot"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            13.5,
-            17.5
-          ],
-          "food": "lettuce",
-          "price": 2,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/lettuce.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "lettuce"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            5.5,
-            21.5
-          ],
-          "food": "avocado",
-          "price": 2,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/avocado.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "avocado"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            7.5,
-            21.5
-          ],
-          "food": "broccoli",
-          "price": 1,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/broccoli.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "broccoli"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            9.5,
-            21.5
-          ],
-          "food": "cucumber",
-          "price": 2,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/cucumber.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "cucumber"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            11.5,
-            21.5
-          ],
-          "food": "yellow bell pepper",
-          "price": 2,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/bell_pepper_yellow.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "yellow bell pepper"
-        },
-        {
-          "height": 1,
-          "width": 2,
-          "position": [
-            13.5,
-            21.5
-          ],
-          "food": "onion",
-          "price": 2,
-          "capacity": 12,
-          "quantity": 12,
-          "food_image": "images/food/onion.png",
-          "shelf_image": "images/Shelves/shelf.png",
-          "food_name": "onion"
-        }
-      ],
-      "basketReturns": [
-        {
-          "height": 0.2,
-          "width": 0.3,
-          "position": [
-            3.5,
-            18.5
-          ],
-          "quantity": 11
-        }
-      ],
-      "cartReturns": [
-        {
-          "height": 6,
-          "width": 0.7,
-          "position": [
-            1,
-            18.5
-          ],
-          "quantity": 6
-        },
-        {
-          "height": 6,
-          "width": 0.7,
-          "position": [
-            2,
-            18.5
-          ],
-          "quantity": 6
-        }
-      ],
-      "counters": [
-        {
-          "height": 2.25,
-          "width": 1.5,
-          "position": [
-            18.25,
-            4.75
-          ],
-          "food": "prepared foods",
-          "price": 15
-        },
-        {
-          "height": 2.25,
-          "width": 1.5,
-          "position": [
-            18.25,
-            10.75
-          ],
-          "food": "fresh fish",
-          "price": 12
-        },
-        {
-          "height": 2.25,
-          "width": 1.5,
-          "position": [
-            18.25,
-            10.75
-          ],
-          "food": "fresh fish",
-          "price": 12
-        }
-      ]
-    },
-    "step": 228,
-    "gameOver": false,
-    "violations": ""
-  },
-  {
-    "command_result": {
-      "command": "INTERACT",
-      "result": "SUCCESS",
-      "message": "",
-      "stepCost": 0
-    },
-    "observation": {
-      "players": [
-        {
-          "index": 0,
-          "position": [
-            2.75,
-            3.75
-          ],
-          "width": 0.6,
-          "height": 0.4,
-          "sprite_path": null,
-          "direction": 0,
-          "curr_cart": -1,
-          "curr_basket": 0,
-          "shopping_list": [
-            "milk",
-            "sausage",
-            "red bell pepper"
-          ],
-          "list_quant": [
-            1,
-            1,
-            1
-          ],
-          "holding_food": null,
-          "bought_holding_food": false,
-          "budget": 100,
-          "bagged_items": [],
-          "bagged_quant": []
-        }
-      ],
-      "carts": [],
-      "baskets": [
-        {
-          "position": [
-            3.45,
-            3.75
-          ],
-          "direction": 0,
-          "capacity": 6,
-          "owner": 0,
-          "last_held": 0,
-          "contents": [
             "red bell pepper",
             "sausage",
             "milk"
           ],
-          "contents_quant": [
+          "purchased_quant": [
             1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -4919,7 +4312,7 @@
         }
       ]
     },
-    "step": 239,
+    "step": 231,
     "gameOver": false,
     "violations": ""
   },
@@ -5536,7 +4929,7 @@
         }
       ]
     },
-    "step": 238,
+    "step": 240,
     "gameOver": false,
     "violations": ""
   },
@@ -5573,7 +4966,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 92,
+          "budget": 90,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -5592,11 +4985,13 @@
           "contents": [],
           "contents_quant": [],
           "purchased_contents": [
+            "garlic",
             "red bell pepper",
             "sausage",
             "milk"
           ],
           "purchased_quant": [
+            1,
             1,
             1,
             1
@@ -5948,7 +5343,7 @@
           "food": "garlic",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/garlic.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "garlic"
@@ -6153,7 +5548,626 @@
         }
       ]
     },
-    "step": 218,
+    "step": 242,
+    "gameOver": false,
+    "violations": ""
+  },
+  {
+    "command_result": {
+      "command": "INTERACT",
+      "result": "SUCCESS",
+      "message": "",
+      "stepCost": 0
+    },
+    "observation": {
+      "players": [
+        {
+          "index": 0,
+          "position": [
+            2.75,
+            3.75
+          ],
+          "width": 0.6,
+          "height": 0.4,
+          "sprite_path": null,
+          "direction": 1,
+          "curr_cart": -1,
+          "curr_basket": 0,
+          "shopping_list": [
+            "milk",
+            "sausage",
+            "red bell pepper"
+          ],
+          "list_quant": [
+            1,
+            1,
+            1
+          ],
+          "holding_food": null,
+          "bought_holding_food": false,
+          "budget": 88,
+          "bagged_items": [],
+          "bagged_quant": []
+        }
+      ],
+      "carts": [],
+      "baskets": [
+        {
+          "position": [
+            2.5,
+            3.98
+          ],
+          "direction": 1,
+          "capacity": 6,
+          "owner": 0,
+          "last_held": 0,
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
+            "garlic",
+            "red bell pepper",
+            "sausage",
+            "milk"
+          ],
+          "purchased_quant": [
+            2,
+            1,
+            1,
+            1
+          ],
+          "width": 0.15,
+          "height": 0.15
+        }
+      ],
+      "registers": [
+        {
+          "height": 2.5,
+          "width": 2.25,
+          "position": [
+            1,
+            4.5
+          ],
+          "num_items": 0,
+          "foods": [],
+          "food_quantities": [],
+          "food_images": [],
+          "capacity": 12,
+          "image": "images/Registers/registersA.png",
+          "curr_player": null
+        },
+        {
+          "height": 2.5,
+          "width": 2.25,
+          "position": [
+            1,
+            9.5
+          ],
+          "num_items": 0,
+          "foods": [],
+          "food_quantities": [],
+          "food_images": [],
+          "capacity": 12,
+          "image": "images/Registers/registersB.png",
+          "curr_player": null
+        }
+      ],
+      "shelves": [
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            5.5,
+            1.5
+          ],
+          "food": "milk",
+          "price": 2,
+          "capacity": 12,
+          "quantity": 11,
+          "food_image": "images/food/milk.png",
+          "shelf_image": "images/Shelves/fridge.png",
+          "food_name": "milk"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            7.5,
+            1.5
+          ],
+          "food": "milk",
+          "price": 2,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/milk.png",
+          "shelf_image": "images/Shelves/fridge.png",
+          "food_name": "milk"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            9.5,
+            1.5
+          ],
+          "food": "chocolate milk",
+          "price": 2,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/milk_chocolate.png",
+          "shelf_image": "images/Shelves/fridge.png",
+          "food_name": "chocolate milk"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            11.5,
+            1.5
+          ],
+          "food": "chocolate milk",
+          "price": 2,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/milk_chocolate.png",
+          "shelf_image": "images/Shelves/fridge.png",
+          "food_name": "chocolate milk"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            13.5,
+            1.5
+          ],
+          "food": "strawberry milk",
+          "price": 2,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/milk_strawberry.png",
+          "shelf_image": "images/Shelves/fridge.png",
+          "food_name": "strawberry milk"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            5.5,
+            5.5
+          ],
+          "food": "apples",
+          "price": 5,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/apples.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "apples"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            7.5,
+            5.5
+          ],
+          "food": "oranges",
+          "price": 5,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/oranges.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "oranges"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            9.5,
+            5.5
+          ],
+          "food": "banana",
+          "price": 1,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/banana.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "banana"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            11.5,
+            5.5
+          ],
+          "food": "strawberry",
+          "price": 1,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/strawberry.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "strawberry"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            13.5,
+            5.5
+          ],
+          "food": "raspberry",
+          "price": 1,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/raspberry.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "raspberry"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            5.5,
+            9.5
+          ],
+          "food": "sausage",
+          "price": 4,
+          "capacity": 12,
+          "quantity": 11,
+          "food_image": "images/food/sausage.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "sausage"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            7.5,
+            9.5
+          ],
+          "food": "steak",
+          "price": 5,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/meat_01.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "steak"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            9.5,
+            9.5
+          ],
+          "food": "steak",
+          "price": 5,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/meat_02.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "steak"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            11.5,
+            9.5
+          ],
+          "food": "chicken",
+          "price": 6,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/meat_03.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "chicken"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            13.5,
+            9.5
+          ],
+          "food": "ham",
+          "price": 6,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/ham.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "ham"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            5.5,
+            13.5
+          ],
+          "food": "brie cheese",
+          "price": 5,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/cheese_01.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "brie cheese"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            7.5,
+            13.5
+          ],
+          "food": "swiss cheese",
+          "price": 5,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/cheese_02.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "swiss cheese"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            9.5,
+            13.5
+          ],
+          "food": "cheese wheel",
+          "price": 15,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/cheese_03.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "cheese wheel"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            11.5,
+            13.5
+          ],
+          "food": "cheese wheel",
+          "price": 15,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/cheese_03.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "cheese wheel"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            13.5,
+            13.5
+          ],
+          "food": "cheese wheel",
+          "price": 15,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/cheese_03.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "cheese wheel"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            5.5,
+            17.5
+          ],
+          "food": "garlic",
+          "price": 2,
+          "capacity": 12,
+          "quantity": 10,
+          "food_image": "images/food/garlic.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "garlic"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            7.5,
+            17.5
+          ],
+          "food": "leek",
+          "price": 1,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/leek_onion.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "leek"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            9.5,
+            17.5
+          ],
+          "food": "red bell pepper",
+          "price": 2,
+          "capacity": 12,
+          "quantity": 11,
+          "food_image": "images/food/bell_pepper_red.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "red bell pepper"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            11.5,
+            17.5
+          ],
+          "food": "carrot",
+          "price": 1,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/carrot.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "carrot"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            13.5,
+            17.5
+          ],
+          "food": "lettuce",
+          "price": 2,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/lettuce.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "lettuce"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            5.5,
+            21.5
+          ],
+          "food": "avocado",
+          "price": 2,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/avocado.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "avocado"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            7.5,
+            21.5
+          ],
+          "food": "broccoli",
+          "price": 1,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/broccoli.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "broccoli"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            9.5,
+            21.5
+          ],
+          "food": "cucumber",
+          "price": 2,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/cucumber.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "cucumber"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            11.5,
+            21.5
+          ],
+          "food": "yellow bell pepper",
+          "price": 2,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/bell_pepper_yellow.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "yellow bell pepper"
+        },
+        {
+          "height": 1,
+          "width": 2,
+          "position": [
+            13.5,
+            21.5
+          ],
+          "food": "onion",
+          "price": 2,
+          "capacity": 12,
+          "quantity": 12,
+          "food_image": "images/food/onion.png",
+          "shelf_image": "images/Shelves/shelf.png",
+          "food_name": "onion"
+        }
+      ],
+      "basketReturns": [
+        {
+          "height": 0.2,
+          "width": 0.3,
+          "position": [
+            3.5,
+            18.5
+          ],
+          "quantity": 11
+        }
+      ],
+      "cartReturns": [
+        {
+          "height": 6,
+          "width": 0.7,
+          "position": [
+            1,
+            18.5
+          ],
+          "quantity": 6
+        },
+        {
+          "height": 6,
+          "width": 0.7,
+          "position": [
+            2,
+            18.5
+          ],
+          "quantity": 6
+        }
+      ],
+      "counters": [
+        {
+          "height": 2.25,
+          "width": 1.5,
+          "position": [
+            18.25,
+            4.75
+          ],
+          "food": "prepared foods",
+          "price": 15
+        },
+        {
+          "height": 2.25,
+          "width": 1.5,
+          "position": [
+            18.25,
+            10.75
+          ],
+          "food": "fresh fish",
+          "price": 12
+        },
+        {
+          "height": 2.25,
+          "width": 1.5,
+          "position": [
+            18.25,
+            10.75
+          ],
+          "food": "fresh fish",
+          "price": 12
+        }
+      ]
+    },
+    "step": 224,
     "gameOver": false,
     "violations": ""
   }

@@ -32,7 +32,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 93,
+          "budget": 91,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -52,9 +52,11 @@
           "contents_quant": [],
           "purchased_contents": [
             "lettuce",
+            "red bell pepper",
             "steak"
           ],
           "purchased_quant": [
+            1,
             1,
             1
           ],
@@ -435,7 +437,7 @@
           "food": "red bell pepper",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/bell_pepper_red.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "red bell pepper"
@@ -610,7 +612,7 @@
         }
       ]
     },
-    "step": 339,
+    "step": 343,
     "gameOver": false,
     "violations": ""
   },
@@ -1225,7 +1227,7 @@
         }
       ]
     },
-    "step": 661,
+    "step": 666,
     "gameOver": false,
     "violations": ""
   },
@@ -1262,7 +1264,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 96,
+          "budget": 87,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -1281,9 +1283,15 @@
           "contents": [],
           "contents_quant": [],
           "purchased_contents": [
+            "lettuce",
+            "garlic",
+            "steak",
             "chocolate milk"
           ],
           "purchased_quant": [
+            1,
+            1,
+            1,
             2
           ],
           "width": 0.15,
@@ -1498,7 +1506,7 @@
           "food": "steak",
           "price": 5,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/meat_01.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "steak"
@@ -1633,7 +1641,7 @@
           "food": "garlic",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/garlic.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "garlic"
@@ -1693,7 +1701,7 @@
           "food": "lettuce",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/lettuce.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "lettuce"
@@ -1838,7 +1846,7 @@
         }
       ]
     },
-    "step": 326,
+    "step": 332,
     "gameOver": false,
     "violations": ""
   },
@@ -1875,7 +1883,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 98,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -1893,8 +1901,12 @@
           "last_held": 0,
           "contents": [],
           "contents_quant": [],
-          "purchased_contents": [],
-          "purchased_quant": [],
+          "purchased_contents": [
+            "lettuce"
+          ],
+          "purchased_quant": [
+            1
+          ],
           "width": 0.15,
           "height": 0.15
         }
@@ -2302,7 +2314,7 @@
           "food": "lettuce",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/lettuce.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "lettuce"
@@ -2447,7 +2459,7 @@
         }
       ]
     },
-    "step": 345,
+    "step": 350,
     "gameOver": false,
     "violations": ""
   },
@@ -3681,7 +3693,7 @@
         }
       ]
     },
-    "step": 325,
+    "step": 327,
     "gameOver": false,
     "violations": ""
   },
@@ -3718,7 +3730,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 95,
+          "budget": 93,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -3737,9 +3749,11 @@
           "contents": [],
           "contents_quant": [],
           "purchased_contents": [
+            "lettuce",
             "steak"
           ],
           "purchased_quant": [
+            1,
             1
           ],
           "width": 0.15,
@@ -4149,7 +4163,7 @@
           "food": "lettuce",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/lettuce.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "lettuce"
@@ -4294,7 +4308,7 @@
         }
       ]
     },
-    "step": 334,
+    "step": 336,
     "gameOver": false,
     "violations": ""
   },
@@ -4331,7 +4345,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 98,
+          "budget": 96,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -4353,7 +4367,7 @@
             "chocolate milk"
           ],
           "purchased_quant": [
-            1
+            2
           ],
           "width": 0.15,
           "height": 0.15
@@ -4432,7 +4446,7 @@
           "food": "chocolate milk",
           "price": 2,
           "capacity": 12,
-          "quantity": 11,
+          "quantity": 10,
           "food_image": "images/food/milk_chocolate.png",
           "shelf_image": "images/Shelves/fridge.png",
           "food_name": "chocolate milk"
@@ -4907,7 +4921,7 @@
         }
       ]
     },
-    "step": 474,
+    "step": 485,
     "gameOver": false,
     "violations": ""
   },
@@ -5542,7 +5556,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 3,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -5557,7 +5571,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 91,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -5566,23 +5580,25 @@
       "baskets": [
         {
           "position": [
-            2.55,
+            2.5,
             3.98
           ],
-          "direction": 3,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
+            "lettuce",
             "steak",
             "chocolate milk"
           ],
-          "contents_quant": [
+          "purchased_quant": [
+            1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -5990,7 +6006,7 @@
           "food": "lettuce",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/lettuce.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "lettuce"
@@ -6135,7 +6151,7 @@
         }
       ]
     },
-    "step": 316,
+    "step": 318,
     "gameOver": false,
     "violations": ""
   }

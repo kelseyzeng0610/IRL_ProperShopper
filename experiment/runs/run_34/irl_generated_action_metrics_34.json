@@ -1,81 +1,140 @@
 [
   {
     "run_id": 0,
-    "num_steps": 225,
+    "num_steps": 228,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "garlic",
+      "cheese wheel",
+      "steak"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 1,
-    "num_steps": 240,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 245,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 took more garlic than they needed": 1
+    },
+    "success": true,
+    "paid_items": [
+      "garlic",
+      "cheese wheel",
+      "steak"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 2,
-    "num_steps": 251,
+    "num_steps": 256,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "garlic",
+      "cheese wheel",
+      "steak"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 3,
-    "num_steps": 228,
+    "num_steps": 229,
     "num_violations": 1,
     "violation_types": {
       "Player 0 ran into the brie cheese shelf": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [
+      "garlic",
+      "cheese wheel"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 4,
-    "num_steps": 238,
+    "num_steps": 241,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "garlic",
+      "cheese wheel",
+      "steak"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 5,
-    "num_steps": 242,
+    "num_steps": 243,
     "num_violations": 1,
     "violation_types": {
       "Player 0 ran into the garlic shelf": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [
+      "garlic"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 6,
-    "num_steps": 245,
+    "num_steps": 246,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "garlic",
+      "cheese wheel",
+      "steak"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 7,
-    "num_steps": 286,
+    "num_steps": 291,
     "num_violations": 1,
     "violation_types": {
       "Player 0 ran into the steak shelf": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "garlic",
+      "cheese wheel",
+      "steak"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 8,
-    "num_steps": 255,
+    "num_steps": 258,
     "num_violations": 2,
     "violation_types": {
       "Player 0 ran into the basket return": 1,
       "Player 0 ran into the brie cheese shelf": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "garlic",
+      "cheese wheel",
+      "steak"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 9,
-    "num_steps": 236,
+    "num_steps": 237,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "garlic",
+      "cheese wheel",
+      "steak"
+    ],
+    "unpaid_items": []
   }
 ]

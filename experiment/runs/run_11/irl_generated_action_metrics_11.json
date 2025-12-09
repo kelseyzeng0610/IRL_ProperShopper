@@ -1,34 +1,60 @@
 [
   {
     "run_id": 0,
-    "num_steps": 421,
-    "num_violations": 26,
+    "num_steps": 426,
+    "num_violations": 27,
     "violation_types": {
+      "Player 0 took more lettuce than they needed": 1,
       "Player 0 ran into the lettuce shelf": 6,
       "Player 0 ran into the onion shelf": 5,
       "Player 0 ran into the sausage shelf": 7,
       "Player 0 ran into a wall": 5,
       "Player 0 ran into a checkout counter": 3
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "lettuce"
+    ]
   },
   {
     "run_id": 1,
-    "num_steps": 343,
-    "num_violations": 1,
+    "num_steps": 350,
+    "num_violations": 4,
     "violation_types": {
+      "Player 0 took an item, garlic, that is not on their shopping list": 1,
+      "Player 0 took more raspberry than they needed": 1,
+      "Player 0 took an item, oranges, that is not on their shopping list": 1,
       "Player 0 ran into the milk shelf": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "lettuce",
+      "garlic",
+      "raspberry",
+      "oranges",
+      "milk"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 2,
-    "num_steps": 321,
-    "num_violations": 1,
+    "num_steps": 326,
+    "num_violations": 3,
     "violation_types": {
+      "Player 0 took an item, garlic, that is not on their shopping list": 1,
+      "Player 0 took an item, red bell pepper, that is not on their shopping list": 1,
       "Player 0 ran into the milk shelf": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "garlic",
+      "lettuce",
+      "red bell pepper",
+      "raspberry",
+      "milk"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 3,
@@ -37,50 +63,82 @@
     "violation_types": {
       "Player 0 ran into the milk shelf": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "lettuce",
+      "raspberry",
+      "milk"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 4,
-    "num_steps": 524,
-    "num_violations": 1,
+    "num_steps": 534,
+    "num_violations": 2,
     "violation_types": {
+      "Player 0 took an item, garlic, that is not on their shopping list": 1,
       "Player 0 ran into the raspberry shelf": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [
+      "garlic",
+      "lettuce",
+      "raspberry"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 5,
-    "num_steps": 347,
-    "num_violations": 2,
+    "num_steps": 351,
+    "num_violations": 4,
     "violation_types": {
+      "Player 0 took an item, garlic, that is not on their shopping list": 1,
+      "Player 0 took an item, carrot, that is not on their shopping list": 1,
       "Player 0 ran into the lettuce shelf": 1,
       "Player 0 took an item, red bell pepper, that is not on their shopping list": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [
+      "garlic",
+      "carrot",
+      "lettuce",
+      "red bell pepper"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 6,
-    "num_steps": 354,
+    "num_steps": 358,
     "num_violations": 1,
     "violation_types": {
       "Player 0 ran into the milk shelf": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "lettuce",
+      "raspberry",
+      "milk"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 7,
-    "num_steps": 329,
+    "num_steps": 334,
     "num_violations": 20,
     "violation_types": {
       "Player 0 ran into the garlic shelf": 3,
       "Player 0 ran into the sausage shelf": 7,
       "Player 0 ran into a checkout counter": 10
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "lettuce"
+    ]
   },
   {
     "run_id": 8,
-    "num_steps": 338,
+    "num_steps": 342,
     "num_violations": 22,
     "violation_types": {
       "Player 0 ran into the basket return": 1,
@@ -88,7 +146,11 @@
       "Player 0 ran into the sausage shelf": 7,
       "Player 0 ran into a checkout counter": 10
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "lettuce"
+    ]
   },
   {
     "run_id": 9,
@@ -97,6 +159,12 @@
     "violation_types": {
       "Player 0 ran into the milk shelf": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "lettuce",
+      "raspberry",
+      "milk"
+    ],
+    "unpaid_items": []
   }
 ]
