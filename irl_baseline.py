@@ -1,6 +1,7 @@
 import numpy as np
 from max_entropy_irl import MaxEntropyIRL
 import json
+import time
 from irl_agents_separate import getItemLocations, getTargetLocations, makeGetNextState, load_expert_trajectories, BASKET_LOCATION, REGISTER_LOCATION, START_STATE, FINAL_GOAL_LOCATION, THETA_SIZE, plotSampledTrajectory
 
 def augmentStep(step, targetLocations):
@@ -88,15 +89,22 @@ def runBaseline(shoppingList, learnMode=False, thetaFile="experiment/baseline_th
 
 
 if __name__ == "__main__":
-    learnMode = False
+    learnMode = True
     shoppingList = ['sausage', 'milk', 'banana']
     
+    startTime = time.time()
     newTraj, actions = runBaseline(shoppingList, learnMode=learnMode)
-    
-    with open("baseline_trajectory.json", "w") as f:
+    endTime = time.time()
+    training_time = endTime - startTime
+
+    print(f"Baseline IRL training time: {training_time} seconds")
+    with open("experiment/baseline_trajectory.json", "w") as f:
         json.dump([step.tolist() for step in newTraj], f)
-    with open("baseline_actions.json", "w") as f:
+    with open("experiment/baseline_actions.json", "w") as f:
         json.dump([int(a) for a in actions], f)
+
+    with open("experiment/baseline_training_metrics.json", "w") as f:
+        json.dump({"training_time": training_time}, f, indent=2)
     
 
     mask = np.full((THETA_SIZE), True)

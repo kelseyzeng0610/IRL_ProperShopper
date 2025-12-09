@@ -20,7 +20,7 @@ def getParser():
 
     return parser
 
-def makeMetrics(successRate, violations, avgNumSteps, avgNumSubgoals, avgStepsBetweenSubgoals):
+def makeMetrics(successRate, violations, avgNumSteps, violationTypes={}):
     return {
         'success_rate': successRate,
         'avg_violations_per_run': np.mean(violations),
@@ -28,8 +28,7 @@ def makeMetrics(successRate, violations, avgNumSteps, avgNumSubgoals, avgStepsBe
         'percent_violation_free': np.mean(violations == 0),
         'worst_violations': np.max(violations),
         'avg_num_steps': avgNumSteps,
-        'avg_num_subgoals': avgNumSubgoals,
-        'avg_steps_between_subgoals': avgStepsBetweenSubgoals,
+        'violation_types': violationTypes,
     }
 
 def evaluateExpertDemos(idx):
@@ -42,7 +41,7 @@ def evaluateExpertDemos(idx):
     numViolations = np.array([run['num_violations'] for run in expert_demos_metrics])
 
     avgNumSteps = np.mean([run['num_steps'] for run in expert_demos_metrics])
-    return makeMetrics(successRate, numViolations, avgNumSteps, -1, -1)
+    return makeMetrics(successRate, numViolations, avgNumSteps)
 
 def evaluateExpertDeterministic(idx):
     # computes metrics on the actual expert results where epsilon=0
@@ -55,8 +54,6 @@ def evaluateExpertDeterministic(idx):
         successRate=1.0 if expert_eval_metrics['success'] else 0.0,
         violations=np.array([expert_eval_metrics['num_violations']]),
         avgNumSteps=expert_eval_metrics['num_steps'],
-        avgNumSubgoals=-1,
-        avgStepsBetweenSubgoals=-1
     )
 
 def evaluateIRL(idx):
@@ -70,19 +67,30 @@ def evaluateIRL(idx):
             run_violation_types[v] = run_violation_types.get(v, 0) + count
     
     # TODO: also need subgoal metrics
-    metrics = makeMetrics(
+    return makeMetrics(
         successRate=np.mean(np.array([run['success'] for run in irl_metrics])),
         violations=np.array([run['num_violations'] for run in irl_metrics]),
         avgNumSteps=np.mean(np.array([run['num_steps'] for run in irl_metrics])),
-        avgNumSubgoals=-1,
-        avgStepsBetweenSubgoals=-1
+        violationTypes=run_violation_types
     )
-    metrics['violation_types'] = run_violation_types
-    return metrics
+
+def evaluateBaseline(idx):
+    with open(f'experiment/runs/run_{idx}/baseline_action_metrics_{idx}.json', 'r') as f:
+        baseline_metrics = json.load(f)
+    
+    vt = baseline_metrics.get('violation_types', {})
+    return makeMetrics(
+        successRate=1.0 if baseline_metrics['success'] else 0.0,
+        violations=np.array([baseline_metrics['num_violations']]),
+        avgNumSteps=baseline_metrics['num_steps'],
+        violationTypes=vt
+    )
+
+    
     
 
 def aggregateResults(resultsByRun):
-    modelKeys = ['demo_metrics', 'expert_metrics', 'irl_metrics', 'baseline_metrics']
+    modelKeys = ['expert_metrics', 'demo_metrics', 'baseline_metrics', 'irl_metrics']
     aggregated = {
         key: {
             'success_rate': np.mean([run[key]['success_rate'] for run in resultsByRun]),
@@ -91,8 +99,6 @@ def aggregateResults(resultsByRun):
             'percent_violation_free': np.mean([run[key]['percent_violation_free'] for run in resultsByRun]),
             'worst_violations': int(np.max([run[key]['worst_violations'] for run in resultsByRun])),
             'avg_num_steps': np.mean([run[key]['avg_num_steps'] for run in resultsByRun]),
-            'avg_num_subgoals': np.mean([run[key]['avg_num_subgoals'] for run in resultsByRun]),
-            'avg_steps_between_subgoals': np.mean([run[key]['avg_steps_between_subgoals'] for run in resultsByRun]),
         } if resultsByRun[0][key] != {} else {} for key in modelKeys
     }
     total_irl_violations = {}
@@ -101,8 +107,24 @@ def aggregateResults(resultsByRun):
         v_types = run['irl_metrics'].get('violation_types', {})
         for v, count in v_types.items():
             total_irl_violations[v] = total_irl_violations.get(v, 0) + count
+
+    baseline_irl_violations = {}
+    for run in resultsByRun:
+        v_types = run['baseline_metrics'].get('violation_types', {})
+        for v, count in v_types.items():
+            baseline_irl_violations[v] = baseline_irl_violations.get(v, 0) + count
     
     aggregated['irl_metrics']['total_violation_breakdown'] = total_irl_violations
+    aggregated['baseline_metrics']['total_violation_breakdown'] = baseline_irl_violations
+
+    # also load the training metrics and add that to the irl results
+    with open('experiment/training_metrics.json', 'r') as f:
+        training_metrics = json.load(f)
+    aggregated['irl_metrics']['training_metrics'] = training_metrics
+
+    with open('experiment/baseline_training_metrics.json', 'r') as f:
+        baseline_training_metrics = json.load(f)
+    aggregated['baseline_metrics']['training_metrics'] = baseline_training_metrics
 
     return aggregated
 
@@ -135,14 +157,14 @@ if __name__ == "__main__":
         irlMetrics = evaluateIRL(i)
 
         # compute metrics on baseline IRL
-        baselineMetrics = {} # TODO: need baseline 
+        baselineMetrics = evaluateBaseline(i)
 
         results.append({
             'run_id': i,
-            'demo_metrics': demoMetrics,
             'expert_metrics': expertMetrics,
+            'demo_metrics': demoMetrics,
+            'baseline_metrics': baselineMetrics,
             'irl_metrics': irlMetrics,
-            'baseline_metrics': baselineMetrics
         })
 
     # aggregate to get averages for each model
