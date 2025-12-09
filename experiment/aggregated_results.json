@@ -1,33 +1,374 @@
 {
-  "demo_metrics": {
-    "success_rate": 1.0,
-    "avg_violations_per_run": 0.3333333333333333,
-    "median_violations_per_run": 0.0,
-    "percent_violation_free": 0.7166666666666667,
-    "worst_violations": 2,
-    "avg_num_steps": 309.34999999999997,
-    "avg_num_subgoals": -1.0,
-    "avg_steps_between_subgoals": -1.0
-  },
   "expert_metrics": {
     "success_rate": 1.0,
     "avg_violations_per_run": 0.0,
     "median_violations_per_run": 0.0,
     "percent_violation_free": 1.0,
     "worst_violations": 0,
-    "avg_num_steps": 231.66666666666666,
-    "avg_num_subgoals": -1.0,
-    "avg_steps_between_subgoals": -1.0
+    "avg_num_steps": 247.12
+  },
+  "demo_metrics": {
+    "success_rate": 1.0,
+    "avg_violations_per_run": 0.352,
+    "median_violations_per_run": 0.0,
+    "percent_violation_free": 0.7119999999999999,
+    "worst_violations": 4,
+    "avg_num_steps": 327.096
+  },
+  "baseline_metrics": {
+    "success_rate": 0.0,
+    "avg_violations_per_run": 21.46,
+    "median_violations_per_run": 19.0,
+    "percent_violation_free": 0.0,
+    "worst_violations": 37,
+    "avg_num_steps": 722.62,
+    "total_violation_breakdown": {
+      "Player 0 ran into a checkout counter": 599,
+      "Player 0 ran into the brie cheese shelf": 95,
+      "Player 0 ran into a wall": 41,
+      "Player 0 ran into the swiss cheese shelf": 36,
+      "Player 0 took an item, brie cheese, that is not on their shopping list": 7,
+      "Player 0 took an item, swiss cheese, that is not on their shopping list": 8,
+      "Player 0 ran into the cheese wheel shelf": 47,
+      "Player 0 ran into the cart return": 116,
+      "Player 0 ran into the basket return": 96,
+      "Player 0 put the brie cheese on the swiss cheese shelf.": 2,
+      "Player 0 ran into the garlic shelf": 1,
+      "Player 0 put the swiss cheese on the brie cheese shelf.": 1,
+      "Player 0 took an item, sausage, that is not on their shopping list": 1,
+      "Player 0 ran into the steak shelf": 1,
+      "Player 0 took an item, broccoli, that is not on their shopping list": 1,
+      "Player 0 ran into the broccoli shelf": 2,
+      "Player 0 ran into the leek shelf": 2,
+      "Player 0 ran into the red bell pepper shelf": 2,
+      "Player 0 ran into the avocado shelf": 15
+    },
+    "training_metrics": {
+      "training_time": 465.35
+    }
   },
   "irl_metrics": {
-    "success_rate": 0.8916666666666666,
-    "avg_violations_per_run": 6.325,
-    "median_violations_per_run": 1.0,
-    "percent_violation_free": 0.325,
-    "worst_violations": 110,
-    "avg_num_steps": 337.475,
-    "avg_num_subgoals": -1.0,
-    "avg_steps_between_subgoals": -1.0
-  },
-  "baseline_metrics": {}
+    "success_rate": 0.986,
+    "avg_violations_per_run": 3.7059999999999995,
+    "median_violations_per_run": 0.5,
+    "percent_violation_free": 0.44,
+    "worst_violations": 166,
+    "avg_num_steps": 327.56399999999996,
+    "total_violation_breakdown": {
+      "Player 0 ran into the banana shelf": 20,
+      "Player 0 ran into the sausage shelf": 98,
+      "Player 0 ran into a checkout counter": 376,
+      "Player 0 ran into the oranges shelf": 10,
+      "Player 0 took more sausage than they needed": 5,
+      "Player 0 ran into the apples shelf": 55,
+      "Player 0 ran into the broccoli shelf": 20,
+      "Player 0 ran into the avocado shelf": 60,
+      "Player 0 ran into the basket return": 56,
+      "Player 0 ran into a wall": 195,
+      "Player 0 ran into the milk shelf": 15,
+      "Player 0 took an item, garlic, that is not on their shopping list": 10,
+      "Player 0 ran into the cart return": 27,
+      "Player 0 took an item, brie cheese, that is not on their shopping list": 10,
+      "Player 0 took more swiss cheese than they needed": 3,
+      "Player 0 ran into the swiss cheese shelf": 85,
+      "Player 0 ran into the yellow bell pepper shelf": 26,
+      "Player 0 ran into the steak shelf": 36,
+      "Player 0 ran into the cucumber shelf": 11,
+      "Player 0 ran into the brie cheese shelf": 143,
+      "Player 0 took an item, leek, that is not on their shopping list": 2,
+      "Player 0 ran into the red bell pepper shelf": 21,
+      "Player 0 ran into the chicken shelf": 23,
+      "Player 0 took more chicken than they needed": 3,
+      "Player 0 ran into the ham shelf": 35,
+      "Player 0 took an item, steak, that is not on their shopping list": 2,
+      "Player 0 ran into the garlic shelf": 131,
+      "Player 0 ran into the cheese wheel shelf": 101,
+      "Player 0 took more banana than they needed": 2,
+      "Player 0 took an item, oranges, that is not on their shopping list": 1,
+      "Player 0 ran into the carrot shelf": 29,
+      "Player 0 ran into the fresh fish counter": 82,
+      "Player 0 took an item, swiss cheese, that is not on their shopping list": 2,
+      "Player 0 took an item, cheese wheel, that is not on their shopping list": 6,
+      "Player 0 ran into the onion shelf": 24,
+      "Player 0 ran into the lettuce shelf": 21,
+      "Player 0 ran into the leek shelf": 57,
+      "Player 0 took an item, lettuce, that is not on their shopping list": 1,
+      "Player 0 took an item, red bell pepper, that is not on their shopping list": 3,
+      "Player 0 ran into the raspberry shelf": 3,
+      "Player 0 took more brie cheese than they needed": 6,
+      "Player 0 ran into the strawberry shelf": 5,
+      "Player 0 took more cheese wheel than they needed": 9,
+      "Player 0 took more milk than they needed": 2,
+      "Player 0 ran into the chocolate milk shelf": 5,
+      "Player 0 took more chocolate milk than they needed": 2,
+      "Player 0 took more leek than they needed": 1,
+      "Player 0 took more onion than they needed": 1,
+      "Player 0 took an item, apples, that is not on their shopping list": 1,
+      "Player 0 took an item, avocado, that is not on their shopping list": 2,
+      "Player 0 took more broccoli than they needed": 1,
+      "Player 0 took more steak than they needed": 1,
+      "Player 0 took more carrot than they needed": 3,
+      "Player 0 took more red bell pepper than they needed": 1,
+      "Player 0 took more ham than they needed": 1,
+      "Player 0 took an item, yellow bell pepper, that is not on their shopping list": 1,
+      "Player 0 took more avocado than they needed": 1
+    },
+    "training_metrics": {
+      "total_time_all_runs": 1937.3224852085114,
+      "avg_training_time_per_run": 429.5666951465607,
+      "avg_subgoals_per_run": 26.24,
+      "run_details": [
+        {
+          "run_id": 0,
+          "training_time": 444.21382999420166,
+          "num_subgoals": 30
+        },
+        {
+          "run_id": 1,
+          "training_time": 390.2031421661377,
+          "num_subgoals": 24
+        },
+        {
+          "run_id": 2,
+          "training_time": 446.86176800727844,
+          "num_subgoals": 28
+        },
+        {
+          "run_id": 3,
+          "training_time": 504.90245294570923,
+          "num_subgoals": 29
+        },
+        {
+          "run_id": 4,
+          "training_time": 440.50874495506287,
+          "num_subgoals": 26
+        },
+        {
+          "run_id": 5,
+          "training_time": 430.46499514579773,
+          "num_subgoals": 27
+        },
+        {
+          "run_id": 6,
+          "training_time": 489.3929400444031,
+          "num_subgoals": 30
+        },
+        {
+          "run_id": 7,
+          "training_time": 458.4557411670685,
+          "num_subgoals": 27
+        },
+        {
+          "run_id": 8,
+          "training_time": 370.1825940608978,
+          "num_subgoals": 23
+        },
+        {
+          "run_id": 9,
+          "training_time": 421.46833395957947,
+          "num_subgoals": 26
+        },
+        {
+          "run_id": 10,
+          "training_time": 550.0176689624786,
+          "num_subgoals": 31
+        },
+        {
+          "run_id": 11,
+          "training_time": 413.17513275146484,
+          "num_subgoals": 26
+        },
+        {
+          "run_id": 12,
+          "training_time": 435.3763840198517,
+          "num_subgoals": 27
+        },
+        {
+          "run_id": 13,
+          "training_time": 409.943727016449,
+          "num_subgoals": 26
+        },
+        {
+          "run_id": 14,
+          "training_time": 421.40901136398315,
+          "num_subgoals": 25
+        },
+        {
+          "run_id": 15,
+          "training_time": 383.74290585517883,
+          "num_subgoals": 23
+        },
+        {
+          "run_id": 16,
+          "training_time": 507.4405429363251,
+          "num_subgoals": 30
+        },
+        {
+          "run_id": 17,
+          "training_time": 385.15812611579895,
+          "num_subgoals": 24
+        },
+        {
+          "run_id": 18,
+          "training_time": 425.62603187561035,
+          "num_subgoals": 25
+        },
+        {
+          "run_id": 19,
+          "training_time": 459.11402106285095,
+          "num_subgoals": 29
+        },
+        {
+          "run_id": 20,
+          "training_time": 434.2883677482605,
+          "num_subgoals": 27
+        },
+        {
+          "run_id": 21,
+          "training_time": 532.993047952652,
+          "num_subgoals": 31
+        },
+        {
+          "run_id": 22,
+          "training_time": 471.9850778579712,
+          "num_subgoals": 28
+        },
+        {
+          "run_id": 23,
+          "training_time": 451.9238471984863,
+          "num_subgoals": 27
+        },
+        {
+          "run_id": 24,
+          "training_time": 504.46371388435364,
+          "num_subgoals": 31
+        },
+        {
+          "run_id": 25,
+          "training_time": 431.863906621933,
+          "num_subgoals": 25
+        },
+        {
+          "run_id": 26,
+          "training_time": 456.87506198883057,
+          "num_subgoals": 27
+        },
+        {
+          "run_id": 27,
+          "training_time": 487.66754508018494,
+          "num_subgoals": 29
+        },
+        {
+          "run_id": 28,
+          "training_time": 470.59825682640076,
+          "num_subgoals": 27
+        },
+        {
+          "run_id": 29,
+          "training_time": 396.6888339519501,
+          "num_subgoals": 23
+        },
+        {
+          "run_id": 30,
+          "training_time": 472.64660000801086,
+          "num_subgoals": 27
+        },
+        {
+          "run_id": 31,
+          "training_time": 422.32171297073364,
+          "num_subgoals": 26
+        },
+        {
+          "run_id": 32,
+          "training_time": 355.07029914855957,
+          "num_subgoals": 21
+        },
+        {
+          "run_id": 33,
+          "training_time": 477.69247102737427,
+          "num_subgoals": 27
+        },
+        {
+          "run_id": 34,
+          "training_time": 431.78194522857666,
+          "num_subgoals": 27
+        },
+        {
+          "run_id": 35,
+          "training_time": 479.22421503067017,
+          "num_subgoals": 29
+        },
+        {
+          "run_id": 36,
+          "training_time": 496.86849308013916,
+          "num_subgoals": 30
+        },
+        {
+          "run_id": 37,
+          "training_time": 319.9431688785553,
+          "num_subgoals": 20
+        },
+        {
+          "run_id": 38,
+          "training_time": 451.8398931026459,
+          "num_subgoals": 26
+        },
+        {
+          "run_id": 39,
+          "training_time": 441.174635887146,
+          "num_subgoals": 26
+        },
+        {
+          "run_id": 40,
+          "training_time": 419.8229730129242,
+          "num_subgoals": 25
+        },
+        {
+          "run_id": 41,
+          "training_time": 438.67342591285706,
+          "num_subgoals": 26
+        },
+        {
+          "run_id": 42,
+          "training_time": 407.5838580131531,
+          "num_subgoals": 24
+        },
+        {
+          "run_id": 43,
+          "training_time": 348.8484239578247,
+          "num_subgoals": 21
+        },
+        {
+          "run_id": 44,
+          "training_time": 355.46698021888733,
+          "num_subgoals": 22
+        },
+        {
+          "run_id": 45,
+          "training_time": 443.6617081165314,
+          "num_subgoals": 30
+        },
+        {
+          "run_id": 46,
+          "training_time": 374.19407176971436,
+          "num_subgoals": 25
+        },
+        {
+          "run_id": 47,
+          "training_time": 341.6402850151062,
+          "num_subgoals": 23
+        },
+        {
+          "run_id": 48,
+          "training_time": 314.3771572113037,
+          "num_subgoals": 24
+        },
+        {
+          "run_id": 49,
+          "training_time": 258.49668622016907,
+          "num_subgoals": 22
+        }
+      ]
+    }
+  }
 }

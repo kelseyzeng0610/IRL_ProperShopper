@@ -1,0 +1,88 @@
+[
+  {
+    "run_id": 0,
+    "num_steps": 432,
+    "num_violations": 37,
+    "violation_types": {
+      "Player 0 ran into the avocado shelf": 13,
+      "Player 0 ran into the cart return": 15,
+      "Player 0 took an item, avocado, that is not on their shopping list": 1,
+      "Player 0 ran into the basket return": 6,
+      "Player 0 ran into the garlic shelf": 1,
+      "Player 0 took an item, garlic, that is not on their shopping list": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 1,
+    "num_steps": 293,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 2,
+    "num_steps": 268,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 3,
+    "num_steps": 265,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 4,
+    "num_steps": 269,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 5,
+    "num_steps": 289,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 6,
+    "num_steps": 281,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the avocado shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 7,
+    "num_steps": 273,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 8,
+    "num_steps": 288,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 9,
+    "num_steps": 266,
+    "num_violations": 25,
+    "violation_types": {
+      "Player 0 ran into the basket return": 2,
+      "Player 0 ran into the avocado shelf": 4,
+      "Player 0 ran into the cart return": 1,
+      "Player 0 ran into the brie cheese shelf": 6,
+      "Player 0 ran into a wall": 4,
+      "Player 0 ran into a checkout counter": 8
+    },
+    "success": true
+  }
+]

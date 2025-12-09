@@ -758,7 +758,7 @@ if __name__ == "__main__":
             next_state = recv_socket_data(sock_game)  # get observation from env
             next_state = json.loads(next_state)
 
-            violationCount += len(next_state['violations'])
+            violationCount += 0 if next_state['violations'] is None else len(next_state['violations'])
             if violationCount > maxViolationsForExpertDemo and generateTrajectories:
                 # too many violations, it probably found a random spot that wasn't used in training and doesn't know what to do
                 print("too many violations, ending trajectory generation")

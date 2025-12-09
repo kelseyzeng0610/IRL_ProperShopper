@@ -1,0 +1,12 @@
+{
+  "run_id": 40,
+  "num_steps": 690,
+  "num_violations": 29,
+  "violation_types": {
+    "Player 0 ran into a checkout counter": 17,
+    "Player 0 ran into the cart return": 6,
+    "Player 0 ran into the basket return": 4,
+    "Player 0 ran into the brie cheese shelf": 2
+  },
+  "success": false
+}

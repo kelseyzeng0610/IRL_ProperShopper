@@ -1,0 +1,95 @@
+[
+  {
+    "run_id": 0,
+    "num_steps": 392,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the chicken shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 1,
+    "num_steps": 542,
+    "num_violations": 47,
+    "violation_types": {
+      "Player 0 ran into a wall": 5,
+      "Player 0 ran into the cheese wheel shelf": 13,
+      "Player 0 ran into the fresh fish counter": 14,
+      "Player 0 ran into the steak shelf": 6,
+      "Player 0 ran into the ham shelf": 9
+    },
+    "success": true
+  },
+  {
+    "run_id": 2,
+    "num_steps": 360,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the sausage shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 3,
+    "num_steps": 382,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 4,
+    "num_steps": 353,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the ham shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 5,
+    "num_steps": 358,
+    "num_violations": 2,
+    "violation_types": {
+      "Player 0 ran into the steak shelf": 1,
+      "Player 0 ran into the chicken shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 6,
+    "num_steps": 526,
+    "num_violations": 7,
+    "violation_types": {
+      "Player 0 ran into a checkout counter": 5,
+      "Player 0 ran into a wall": 2
+    },
+    "success": false
+  },
+  {
+    "run_id": 7,
+    "num_steps": 518,
+    "num_violations": 3,
+    "violation_types": {
+      "Player 0 ran into the ham shelf": 2,
+      "Player 0 ran into a checkout counter": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 8,
+    "num_steps": 394,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the chocolate milk shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 9,
+    "num_steps": 362,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  }
+]

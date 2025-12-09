@@ -1,0 +1,82 @@
+[
+  {
+    "run_id": 0,
+    "num_steps": 249,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 1,
+    "num_steps": 245,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 2,
+    "num_steps": 235,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the garlic shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 3,
+    "num_steps": 252,
+    "num_violations": 2,
+    "violation_types": {
+      "Player 0 ran into the garlic shelf": 1,
+      "Player 0 ran into the leek shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 4,
+    "num_steps": 235,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 5,
+    "num_steps": 254,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 6,
+    "num_steps": 242,
+    "num_violations": 2,
+    "violation_types": {
+      "Player 0 ran into the leek shelf": 1,
+      "Player 0 ran into the red bell pepper shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 7,
+    "num_steps": 247,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 8,
+    "num_steps": 273,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the garlic shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 9,
+    "num_steps": 249,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  }
+]

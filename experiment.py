@@ -8,10 +8,12 @@ from pathlib import Path
 from irl_agents_separate import getExpertTrajectoriesWithNoise, getSubgoals, learnSegments, generateLearnedTrajectory, loadLearnedAgents, saveLearnedAgents, plotSampledTrajectory, START_STATE
 import concurrent.futures
 import warnings
-import sys
+from irl_baseline import runBaseline
 
 def generateRandomLists(numLists=50, listSize=3):
     randomLists = buildRandomLists(numLists, listSize)
+    # make the first random list our default example
+    randomLists[0] = ['sausage', 'milk', 'banana']
     with open('experiment/random_shopping_lists.json', 'w') as f:
         json.dump(randomLists, f)
 
@@ -278,6 +280,36 @@ def runExpertForEvaluation(startIdx, endIdx, headless=False):
         envProcess.terminate()
         envProcess.wait() 
 
+def runBaselineEvaluation(allShoppingLists, startIdx, endIdx, headless=True):
+    for i in range(startIdx, endIdx):
+        args = ['python', 'socket_env.py', '--player_speed=0.25', f'--file=experiment/runs/run_{i}/start_state_{i}.txt']
+        if headless:
+            args.append('--headless')
+        envProcess = subprocess.Popen(args)
+
+        shoppingList = allShoppingLists[i]
+        traj, actions = runBaseline(shoppingList=shoppingList, thetaFile="experiment/baseline_theta.json", verbose=False)
+
+        actionsFile = f'experiment/runs/run_{i}/baseline_actions_{i}.json'
+        with open(f'experiment/runs/run_{i}/baseline_trajectory_{i}.json', 'w') as f:
+            json.dump([step.tolist() for step in traj], f)
+        with open(actionsFile, 'w') as f:
+            json.dump([int(a) for a in actions], f)
+
+        if not headless:
+            time.sleep(5)  # wait for the env to start up
+
+        genProcess = subprocess.run([
+            'python', 'run-generated-irl-trajectory.py',
+            f'--file={actionsFile}',
+            f'--output=experiment/runs/run_{i}/baseline_final_state_{i}.json',
+            f'--run_id={i}',
+            f'--metrics_file=experiment/runs/run_{i}/baseline_action_metrics_{i}.json',
+        ])
+
+        envProcess.terminate()
+        envProcess.wait()
+
 
 if __name__ == "__main__":
     parser = getParser()
@@ -315,12 +347,4 @@ if __name__ == "__main__":
         runExpertForEvaluation(startIdx=startIdx, endIdx=endIdx, headless=args.headless)
 
     if args.run_baseline:
-        raise Exception("Baseline not yet implemented")
-        # TODO: this is where we will run our baseline in the environment and record the evaluation metrics
-
-
-
-    
-        
-
-        
+        runBaselineEvaluation(randomLists, startIdx=startIdx, endIdx=endIdx, headless=args.headless)

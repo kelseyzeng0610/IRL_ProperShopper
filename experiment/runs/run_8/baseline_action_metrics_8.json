@@ -1,0 +1,9 @@
+{
+  "run_id": 8,
+  "num_steps": 748,
+  "num_violations": 15,
+  "violation_types": {
+    "Player 0 ran into a checkout counter": 15
+  },
+  "success": false
+}

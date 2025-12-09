@@ -1,62 +1,90 @@
 [
   {
     "run_id": 0,
-    "num_steps": 148,
-    "num_violations": 12,
-    "success": false
+    "num_steps": 247,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
   },
   {
     "run_id": 1,
-    "num_steps": 347,
-    "num_violations": 23,
-    "success": false
+    "num_steps": 283,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
   },
   {
     "run_id": 2,
-    "num_steps": 166,
-    "num_violations": 4,
-    "success": false
+    "num_steps": 272,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
   },
   {
     "run_id": 3,
-    "num_steps": 166,
-    "num_violations": 19,
-    "success": false
+    "num_steps": 267,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
   },
   {
     "run_id": 4,
-    "num_steps": 814,
-    "num_violations": 97,
+    "num_steps": 260,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the apples shelf": 1
+    },
     "success": true
   },
   {
     "run_id": 5,
-    "num_steps": 894,
-    "num_violations": 110,
+    "num_steps": 287,
+    "num_violations": 3,
+    "violation_types": {
+      "Player 0 ran into the sausage shelf": 1,
+      "Player 0 ran into the oranges shelf": 1,
+      "Player 0 ran into the apples shelf": 1
+    },
     "success": true
   },
   {
     "run_id": 6,
-    "num_steps": 331,
-    "num_violations": 20,
-    "success": false
+    "num_steps": 302,
+    "num_violations": 5,
+    "violation_types": {
+      "Player 0 ran into the chicken shelf": 1,
+      "Player 0 ran into the ham shelf": 1,
+      "Player 0 ran into the banana shelf": 1,
+      "Player 0 ran into a checkout counter": 2
+    },
+    "success": true
   },
   {
     "run_id": 7,
-    "num_steps": 826,
-    "num_violations": 90,
+    "num_steps": 261,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the steak shelf": 1
+    },
     "success": true
   },
   {
     "run_id": 8,
-    "num_steps": 146,
-    "num_violations": 9,
-    "success": false
+    "num_steps": 262,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
   },
   {
     "run_id": 9,
-    "num_steps": 174,
-    "num_violations": 6,
-    "success": false
+    "num_steps": 430,
+    "num_violations": 5,
+    "violation_types": {
+      "Player 0 ran into the steak shelf": 1,
+      "Player 0 took an item, steak, that is not on their shopping list": 1,
+      "Player 0 ran into the oranges shelf": 1,
+      "Player 0 ran into a checkout counter": 2
+    },
+    "success": true
   }
 ]

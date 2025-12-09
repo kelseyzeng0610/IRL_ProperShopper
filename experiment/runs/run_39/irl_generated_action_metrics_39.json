@@ -1,0 +1,99 @@
+[
+  {
+    "run_id": 0,
+    "num_steps": 304,
+    "num_violations": 3,
+    "violation_types": {
+      "Player 0 ran into the leek shelf": 1,
+      "Player 0 ran into a checkout counter": 2
+    },
+    "success": true
+  },
+  {
+    "run_id": 1,
+    "num_steps": 341,
+    "num_violations": 3,
+    "violation_types": {
+      "Player 0 ran into the garlic shelf": 1,
+      "Player 0 ran into a checkout counter": 2
+    },
+    "success": true
+  },
+  {
+    "run_id": 2,
+    "num_steps": 303,
+    "num_violations": 3,
+    "violation_types": {
+      "Player 0 ran into the carrot shelf": 1,
+      "Player 0 ran into a checkout counter": 2
+    },
+    "success": true
+  },
+  {
+    "run_id": 3,
+    "num_steps": 302,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 4,
+    "num_steps": 317,
+    "num_violations": 4,
+    "violation_types": {
+      "Player 0 ran into the basket return": 2,
+      "Player 0 ran into a wall": 2
+    },
+    "success": true
+  },
+  {
+    "run_id": 5,
+    "num_steps": 322,
+    "num_violations": 5,
+    "violation_types": {
+      "Player 0 took more carrot than they needed": 1,
+      "Player 0 ran into the swiss cheese shelf": 1,
+      "Player 0 ran into the cheese wheel shelf": 1,
+      "Player 0 ran into a checkout counter": 2
+    },
+    "success": true
+  },
+  {
+    "run_id": 6,
+    "num_steps": 309,
+    "num_violations": 4,
+    "violation_types": {
+      "Player 0 ran into the basket return": 2,
+      "Player 0 ran into a wall": 2
+    },
+    "success": true
+  },
+  {
+    "run_id": 7,
+    "num_steps": 321,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 8,
+    "num_steps": 496,
+    "num_violations": 7,
+    "violation_types": {
+      "Player 0 took more cheese wheel than they needed": 3,
+      "Player 0 ran into the cheese wheel shelf": 2,
+      "Player 0 ran into a checkout counter": 2
+    },
+    "success": true
+  },
+  {
+    "run_id": 9,
+    "num_steps": 306,
+    "num_violations": 3,
+    "violation_types": {
+      "Player 0 ran into the cheese wheel shelf": 1,
+      "Player 0 ran into a checkout counter": 2
+    },
+    "success": true
+  }
+]

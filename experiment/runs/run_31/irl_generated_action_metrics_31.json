@@ -1,0 +1,95 @@
+[
+  {
+    "run_id": 0,
+    "num_steps": 306,
+    "num_violations": 2,
+    "violation_types": {
+      "Player 0 ran into the broccoli shelf": 1,
+      "Player 0 ran into the cucumber shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 1,
+    "num_steps": 272,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the banana shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 2,
+    "num_steps": 293,
+    "num_violations": 2,
+    "violation_types": {
+      "Player 0 ran into the cucumber shelf": 1,
+      "Player 0 ran into the broccoli shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 3,
+    "num_steps": 279,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the banana shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 4,
+    "num_steps": 306,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the banana shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 5,
+    "num_steps": 299,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the banana shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 6,
+    "num_steps": 330,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the banana shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 7,
+    "num_steps": 291,
+    "num_violations": 2,
+    "violation_types": {
+      "Player 0 took more broccoli than they needed": 1,
+      "Player 0 ran into the banana shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 8,
+    "num_steps": 313,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the broccoli shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 9,
+    "num_steps": 286,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the broccoli shelf": 1
+    },
+    "success": true
+  }
+]

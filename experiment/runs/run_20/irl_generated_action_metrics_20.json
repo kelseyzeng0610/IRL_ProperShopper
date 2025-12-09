@@ -1,0 +1,86 @@
+[
+  {
+    "run_id": 0,
+    "num_steps": 250,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 1,
+    "num_steps": 267,
+    "num_violations": 12,
+    "violation_types": {
+      "Player 0 ran into the basket return": 4,
+      "Player 0 ran into the garlic shelf": 3,
+      "Player 0 ran into a checkout counter": 2,
+      "Player 0 ran into a wall": 3
+    },
+    "success": true
+  },
+  {
+    "run_id": 2,
+    "num_steps": 269,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 3,
+    "num_steps": 290,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 4,
+    "num_steps": 269,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 5,
+    "num_steps": 270,
+    "num_violations": 5,
+    "violation_types": {
+      "Player 0 ran into the basket return": 3,
+      "Player 0 ran into the garlic shelf": 1,
+      "Player 0 took an item, garlic, that is not on their shopping list": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 6,
+    "num_steps": 261,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 7,
+    "num_steps": 276,
+    "num_violations": 0,
+    "violation_types": {},
+    "success": true
+  },
+  {
+    "run_id": 8,
+    "num_steps": 253,
+    "num_violations": 2,
+    "violation_types": {
+      "Player 0 ran into the cheese wheel shelf": 1,
+      "Player 0 ran into the swiss cheese shelf": 1
+    },
+    "success": true
+  },
+  {
+    "run_id": 9,
+    "num_steps": 266,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the brie cheese shelf": 1
+    },
+    "success": true
+  }
+]
