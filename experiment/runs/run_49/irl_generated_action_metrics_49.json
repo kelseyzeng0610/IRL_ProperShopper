@@ -1,31 +1,52 @@
 [
   {
     "run_id": 0,
-    "num_steps": 215,
+    "num_steps": 217,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "red bell pepper",
+      "sausage",
+      "steak"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 1,
-    "num_steps": 214,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 220,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 took an item, leek, that is not on their shopping list": 1
+    },
+    "success": true,
+    "paid_items": [
+      "leek",
+      "red bell pepper",
+      "sausage",
+      "steak"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 2,
-    "num_steps": 215,
+    "num_steps": 217,
     "num_violations": 2,
     "violation_types": {
       "Player 0 ran into the sausage shelf": 1,
       "Player 0 ran into a checkout counter": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "red bell pepper",
+      "sausage",
+      "steak"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 3,
-    "num_steps": 385,
+    "num_steps": 386,
     "num_violations": 26,
     "violation_types": {
       "Player 0 ran into the basket return": 2,
@@ -33,57 +54,95 @@
       "Player 0 ran into a wall": 7,
       "Player 0 ran into a checkout counter": 13
     },
-    "success": false
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": []
   },
   {
     "run_id": 4,
-    "num_steps": 231,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 235,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 took more sausage than they needed": 1
+    },
+    "success": true,
+    "paid_items": [
+      "red bell pepper",
+      "sausage",
+      "steak"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 5,
-    "num_steps": 212,
+    "num_steps": 216,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "red bell pepper",
+      "sausage",
+      "steak"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 6,
-    "num_steps": 413,
+    "num_steps": 427,
     "num_violations": 4,
     "violation_types": {
       "Player 0 ran into the sausage shelf": 1,
       "Player 0 ran into a checkout counter": 3
     },
-    "success": true
+    "success": false,
+    "paid_items": [
+      "red bell pepper",
+      "sausage"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 7,
-    "num_steps": 377,
-    "num_violations": 2,
+    "num_steps": 391,
+    "num_violations": 3,
     "violation_types": {
+      "Player 0 took more sausage than they needed": 1,
       "Player 0 ran into a checkout counter": 2
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "red bell pepper",
+      "sausage",
+      "steak"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 8,
-    "num_steps": 212,
+    "num_steps": 216,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "red bell pepper",
+      "sausage",
+      "steak"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 9,
-    "num_steps": 344,
+    "num_steps": 355,
     "num_violations": 6,
     "violation_types": {
       "Player 0 ran into the red bell pepper shelf": 3,
       "Player 0 ran into the cucumber shelf": 1,
       "Player 0 ran into a checkout counter": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "red bell pepper"
+    ]
   }
 ]

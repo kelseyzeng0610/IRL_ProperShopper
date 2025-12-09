@@ -235,13 +235,13 @@ def loadLearnedAgents(shoppingList, file="learned_per_subgoal_agents.pkl", tol=0
             learned_agents.append((theta, learner, subgoal, initial_state))
     return learned_agents
 
-def generateLearnedTrajectory(learned_agents, trajectoryPath="generated_trajectory_per_subgoal.json", actionPath="generated_actions_per_subgoal.json", verbose=False):
+def generateLearnedTrajectory(learned_agents, trajectoryPath="generated_trajectory_per_subgoal.json", actionPath="generated_actions_per_subgoal.json", epsilon=0.05, verbose=False):
     if verbose:
         print("\n" + "="*60)
         print("GENERATING TRAJECTORY WITH PER-SUBGOAL AGENTS")
         print("="*60)
     
-    per_subgoal_trajectory, per_subgoal_actions = generatePerSubgoalTrajectory(learned_agents, maxLength=100, epsilon=0.05, verbose=verbose)
+    per_subgoal_trajectory, per_subgoal_actions = generatePerSubgoalTrajectory(learned_agents, maxLength=100, epsilon=epsilon, verbose=verbose)
 
     # Save trajectory
     trajectory_to_save = [step.tolist() for step in per_subgoal_trajectory]

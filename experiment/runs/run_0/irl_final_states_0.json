@@ -32,7 +32,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 95,
+          "budget": 90,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -52,9 +52,11 @@
           "contents_quant": [],
           "purchased_contents": [
             "sausage",
-            "banana"
+            "banana",
+            "apples"
           ],
           "purchased_quant": [
+            1,
             1,
             1
           ],
@@ -180,7 +182,7 @@
           "food": "apples",
           "price": 5,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/apples.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "apples"
@@ -610,7 +612,7 @@
         }
       ]
     },
-    "step": 242,
+    "step": 245,
     "gameOver": false,
     "violations": ""
   },
@@ -647,7 +649,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 96,
+          "budget": 84,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -669,7 +671,7 @@
             "sausage"
           ],
           "purchased_quant": [
-            1
+            4
           ],
           "width": 0.15,
           "height": 0.15
@@ -868,7 +870,7 @@
           "food": "sausage",
           "price": 4,
           "capacity": 12,
-          "quantity": 11,
+          "quantity": 8,
           "food_image": "images/food/sausage.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "sausage"
@@ -1223,7 +1225,7 @@
         }
       ]
     },
-    "step": 553,
+    "step": 578,
     "gameOver": false,
     "violations": ""
   },
@@ -1840,7 +1842,7 @@
         }
       ]
     },
-    "step": 233,
+    "step": 237,
     "gameOver": false,
     "violations": ""
   },
@@ -2457,7 +2459,7 @@
         }
       ]
     },
-    "step": 236,
+    "step": 238,
     "gameOver": false,
     "violations": ""
   },
@@ -2494,7 +2496,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 93,
+          "budget": 84,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -2515,9 +2517,11 @@
           "purchased_contents": [
             "sausage",
             "banana",
+            "oranges",
             "milk"
           ],
           "purchased_quant": [
+            2,
             1,
             1,
             1
@@ -2659,7 +2663,7 @@
           "food": "oranges",
           "price": 5,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/oranges.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "oranges"
@@ -2719,7 +2723,7 @@
           "food": "sausage",
           "price": 4,
           "capacity": 12,
-          "quantity": 11,
+          "quantity": 10,
           "food_image": "images/food/sausage.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "sausage"
@@ -3074,7 +3078,7 @@
         }
       ]
     },
-    "step": 225,
+    "step": 229,
     "gameOver": false,
     "violations": ""
   },
@@ -3689,7 +3693,7 @@
         }
       ]
     },
-    "step": 242,
+    "step": 244,
     "gameOver": false,
     "violations": ""
   },
@@ -3726,7 +3730,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 84,
+          "budget": 76,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -3748,7 +3752,7 @@
             "sausage"
           ],
           "purchased_quant": [
-            4
+            6
           ],
           "width": 0.15,
           "height": 0.15
@@ -3947,7 +3951,7 @@
           "food": "sausage",
           "price": 4,
           "capacity": 12,
-          "quantity": 8,
+          "quantity": 6,
           "food_image": "images/food/sausage.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "sausage"
@@ -4302,7 +4306,7 @@
         }
       ]
     },
-    "step": 422,
+    "step": 435,
     "gameOver": false,
     "violations": ""
   },
@@ -5573,7 +5577,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 93,
+          "budget": 89,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -5597,7 +5601,7 @@
             "milk"
           ],
           "purchased_quant": [
-            1,
+            2,
             1,
             1
           ],
@@ -5798,7 +5802,7 @@
           "food": "sausage",
           "price": 4,
           "capacity": 12,
-          "quantity": 11,
+          "quantity": 10,
           "food_image": "images/food/sausage.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "sausage"
@@ -6153,7 +6157,7 @@
         }
       ]
     },
-    "step": 224,
+    "step": 228,
     "gameOver": false,
     "violations": ""
   }

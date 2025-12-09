@@ -1,0 +1,15 @@
+{
+  "run_id": 99,
+  "num_steps": 231,
+  "num_violations": 3,
+  "violation_types": {
+    "Player 0 ran into the sausage shelf": 1,
+    "Player 0 ran into a checkout counter": 2
+  },
+  "success": false,
+  "paid_items": [],
+  "unpaid_items": [
+    "cheese wheel",
+    "sausage"
+  ]
+}

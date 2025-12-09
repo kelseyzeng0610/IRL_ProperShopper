@@ -1,0 +1,16 @@
+{
+  "run_id": 99,
+  "num_steps": 689,
+  "num_violations": 80,
+  "violation_types": {
+    "Player 0 ran into a wall": 33,
+    "Player 0 ran into the fresh fish counter": 32,
+    "Player 0 ran into the cucumber shelf": 3,
+    "Player 0 ran into the yellow bell pepper shelf": 3,
+    "Player 0 ran into the onion shelf": 4,
+    "Player 0 ran into the lettuce shelf": 5
+  },
+  "success": false,
+  "paid_items": [],
+  "unpaid_items": []
+}

@@ -17,7 +17,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 0,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -32,7 +32,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 78,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -41,25 +41,25 @@
       "baskets": [
         {
           "position": [
-            3.45,
-            3.75
+            2.5,
+            3.98
           ],
-          "direction": 0,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
             "avocado",
             "cheese wheel",
             "apples"
           ],
-          "contents_quant": [
+          "purchased_quant": [
             1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -612,7 +612,7 @@
         }
       ]
     },
-    "step": 259,
+    "step": 262,
     "gameOver": false,
     "violations": ""
   },
@@ -634,7 +634,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 3,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -649,7 +649,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 81,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -658,23 +658,23 @@
       "baskets": [
         {
           "position": [
-            2.55,
+            2.5,
             4.280000000000001
           ],
-          "direction": 3,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
             "avocado",
             "cheese wheel"
           ],
-          "contents_quant": [
+          "purchased_quant": [
             2,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -1227,7 +1227,7 @@
         }
       ]
     },
-    "step": 251,
+    "step": 253,
     "gameOver": false,
     "violations": ""
   },
@@ -1249,7 +1249,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 0,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -1264,7 +1264,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 58,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -1273,25 +1273,27 @@
       "baskets": [
         {
           "position": [
-            3.750000000000001,
-            3.75
+            2.8000000000000007,
+            3.98
           ],
-          "direction": 0,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
             "avocado",
             "cheese wheel",
+            "swiss cheese",
             "apples"
           ],
-          "contents_quant": [
+          "purchased_quant": [
             1,
+            2,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -1579,7 +1581,7 @@
           "food": "swiss cheese",
           "price": 5,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/cheese_02.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "swiss cheese"
@@ -1594,7 +1596,7 @@
           "food": "cheese wheel",
           "price": 15,
           "capacity": 12,
-          "quantity": 11,
+          "quantity": 10,
           "food_image": "images/food/cheese_03.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "cheese wheel"
@@ -1844,7 +1846,7 @@
         }
       ]
     },
-    "step": 258,
+    "step": 265,
     "gameOver": false,
     "violations": ""
   },
@@ -1866,7 +1868,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 0,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -1881,7 +1883,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 78,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -1890,23 +1892,25 @@
       "baskets": [
         {
           "position": [
-            3.45,
-            3.75
+            2.5,
+            3.98
           ],
-          "direction": 0,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
+            "avocado",
             "cheese wheel",
             "apples"
           ],
-          "contents_quant": [
+          "purchased_quant": [
+            1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -2329,7 +2333,7 @@
           "food": "avocado",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/avocado.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "avocado"
@@ -2459,7 +2463,7 @@
         }
       ]
     },
-    "step": 261,
+    "step": 262,
     "gameOver": false,
     "violations": ""
   },
@@ -2481,7 +2485,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 0,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -2496,7 +2500,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 78,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -2505,25 +2509,25 @@
       "baskets": [
         {
           "position": [
-            3.45,
-            3.75
+            2.5,
+            3.98
           ],
-          "direction": 0,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
             "avocado",
             "cheese wheel",
             "apples"
           ],
-          "contents_quant": [
+          "purchased_quant": [
             1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -3076,7 +3080,7 @@
         }
       ]
     },
-    "step": 255,
+    "step": 256,
     "gameOver": false,
     "violations": ""
   },
@@ -3098,7 +3102,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 0,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -3113,7 +3117,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 78,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -3122,25 +3126,25 @@
       "baskets": [
         {
           "position": [
-            3.45,
-            3.75
+            2.5,
+            3.98
           ],
-          "direction": 0,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
             "avocado",
             "cheese wheel",
             "apples"
           ],
-          "contents_quant": [
+          "purchased_quant": [
             1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -3693,7 +3697,7 @@
         }
       ]
     },
-    "step": 230,
+    "step": 231,
     "gameOver": false,
     "violations": ""
   },
@@ -3746,8 +3750,12 @@
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [],
-          "contents_quant": [],
+          "contents": [
+            "avocado"
+          ],
+          "contents_quant": [
+            1
+          ],
           "purchased_contents": [],
           "purchased_quant": [],
           "width": 0.15,
@@ -4172,7 +4180,7 @@
           "food": "avocado",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/avocado.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "avocado"
@@ -4302,7 +4310,7 @@
         }
       ]
     },
-    "step": 428,
+    "step": 433,
     "gameOver": false,
     "violations": ""
   },
@@ -4324,7 +4332,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 0,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -4339,7 +4347,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 78,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -4348,25 +4356,25 @@
       "baskets": [
         {
           "position": [
-            3.45,
-            3.75
+            2.5,
+            3.98
           ],
-          "direction": 0,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
             "avocado",
             "cheese wheel",
             "apples"
           ],
-          "contents_quant": [
+          "purchased_quant": [
             1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -4919,7 +4927,7 @@
         }
       ]
     },
-    "step": 277,
+    "step": 279,
     "gameOver": false,
     "violations": ""
   },
@@ -5536,7 +5544,7 @@
         }
       ]
     },
-    "step": 416,
+    "step": 418,
     "gameOver": false,
     "violations": ""
   },
@@ -5558,7 +5566,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 0,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -5573,7 +5581,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 73,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -5582,23 +5590,27 @@
       "baskets": [
         {
           "position": [
-            3.45,
-            3.75
+            2.5,
+            3.98
           ],
-          "direction": 0,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
+            "avocado",
             "cheese wheel",
+            "swiss cheese",
             "apples"
           ],
-          "contents_quant": [
+          "purchased_quant": [
+            1,
+            1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -5886,7 +5898,7 @@
           "food": "swiss cheese",
           "price": 5,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/cheese_02.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "swiss cheese"
@@ -6021,7 +6033,7 @@
           "food": "avocado",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/avocado.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "avocado"
@@ -6151,7 +6163,7 @@
         }
       ]
     },
-    "step": 239,
+    "step": 244,
     "gameOver": false,
     "violations": ""
   }

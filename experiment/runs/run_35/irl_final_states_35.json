@@ -612,7 +612,7 @@
         }
       ]
     },
-    "step": 456,
+    "step": 463,
     "gameOver": false,
     "violations": ""
   },
@@ -634,7 +634,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 3,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -649,7 +649,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 89,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -658,25 +658,27 @@
       "baskets": [
         {
           "position": [
-            2.55,
+            2.5,
             3.98
           ],
-          "direction": 3,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
             "cucumber",
+            "avocado",
             "red bell pepper",
             "apples"
           ],
-          "contents_quant": [
+          "purchased_quant": [
+            1,
             1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -1099,7 +1101,7 @@
           "food": "avocado",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/avocado.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "avocado"
@@ -1229,7 +1231,7 @@
         }
       ]
     },
-    "step": 294,
+    "step": 301,
     "gameOver": false,
     "violations": ""
   },
@@ -1846,7 +1848,7 @@
         }
       ]
     },
-    "step": 479,
+    "step": 489,
     "gameOver": false,
     "violations": ""
   },
@@ -1868,7 +1870,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 3,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -1883,7 +1885,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 91,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -1892,25 +1894,25 @@
       "baskets": [
         {
           "position": [
-            2.55,
+            2.5,
             3.98
           ],
-          "direction": 3,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
             "cucumber",
             "red bell pepper",
             "apples"
           ],
-          "contents_quant": [
+          "purchased_quant": [
             1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -2463,7 +2465,7 @@
         }
       ]
     },
-    "step": 321,
+    "step": 322,
     "gameOver": false,
     "violations": ""
   },
@@ -2485,7 +2487,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 3,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -2500,7 +2502,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 91,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -2509,25 +2511,25 @@
       "baskets": [
         {
           "position": [
-            2.55,
+            2.5,
             3.98
           ],
-          "direction": 3,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
             "cucumber",
             "red bell pepper",
             "apples"
           ],
-          "contents_quant": [
+          "purchased_quant": [
             1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -3080,7 +3082,7 @@
         }
       ]
     },
-    "step": 295,
+    "step": 296,
     "gameOver": false,
     "violations": ""
   },
@@ -3102,7 +3104,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 3,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -3117,7 +3119,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 91,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -3126,25 +3128,25 @@
       "baskets": [
         {
           "position": [
-            2.55,
+            2.5,
             3.98
           ],
-          "direction": 3,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
             "cucumber",
             "red bell pepper",
             "apples"
           ],
-          "contents_quant": [
+          "purchased_quant": [
             1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -3697,7 +3699,7 @@
         }
       ]
     },
-    "step": 298,
+    "step": 299,
     "gameOver": false,
     "violations": ""
   },
@@ -3719,7 +3721,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 3,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -3734,7 +3736,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 91,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -3743,23 +3745,25 @@
       "baskets": [
         {
           "position": [
-            2.55,
+            2.5,
             3.98
           ],
-          "direction": 3,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
             "cucumber",
-            "red bell pepper"
+            "red bell pepper",
+            "apples"
           ],
-          "contents_quant": [
+          "purchased_quant": [
+            1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -3882,7 +3886,7 @@
           "food": "apples",
           "price": 5,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/apples.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "apples"
@@ -4312,7 +4316,7 @@
         }
       ]
     },
-    "step": 308,
+    "step": 313,
     "gameOver": false,
     "violations": ""
   },
@@ -4334,7 +4338,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 3,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -4349,7 +4353,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 96,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -4358,23 +4362,23 @@
       "baskets": [
         {
           "position": [
-            2.55,
+            2.5,
             4.280000000000001
           ],
-          "direction": 3,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
             "cucumber",
             "red bell pepper"
           ],
-          "contents_quant": [
+          "purchased_quant": [
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -4927,7 +4931,7 @@
         }
       ]
     },
-    "step": 306,
+    "step": 307,
     "gameOver": false,
     "violations": ""
   },
@@ -4949,7 +4953,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 3,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -4964,7 +4968,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 87,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -4973,25 +4977,27 @@
       "baskets": [
         {
           "position": [
-            2.55,
+            2.5,
             3.98
           ],
-          "direction": 3,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
             "cucumber",
             "red bell pepper",
+            "garlic",
             "apples"
           ],
-          "contents_quant": [
+          "purchased_quant": [
             1,
             2,
+            1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -5339,7 +5345,7 @@
           "food": "garlic",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/garlic.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "garlic"
@@ -5544,7 +5550,7 @@
         }
       ]
     },
-    "step": 319,
+    "step": 324,
     "gameOver": false,
     "violations": ""
   },
@@ -5566,7 +5572,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 3,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -5581,7 +5587,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 91,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -5590,23 +5596,25 @@
       "baskets": [
         {
           "position": [
-            2.55,
+            2.5,
             3.98
           ],
-          "direction": 3,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
+            "cucumber",
             "red bell pepper",
             "apples"
           ],
-          "contents_quant": [
+          "purchased_quant": [
+            1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -6059,7 +6067,7 @@
           "food": "cucumber",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/cucumber.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "cucumber"
@@ -6159,7 +6167,7 @@
         }
       ]
     },
-    "step": 292,
+    "step": 297,
     "gameOver": false,
     "violations": ""
   }

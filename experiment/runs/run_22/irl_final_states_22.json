@@ -612,7 +612,7 @@
         }
       ]
     },
-    "step": 274,
+    "step": 278,
     "gameOver": false,
     "violations": ""
   },
@@ -1229,7 +1229,7 @@
         }
       ]
     },
-    "step": 275,
+    "step": 277,
     "gameOver": false,
     "violations": ""
   },
@@ -1251,7 +1251,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 2,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -1266,7 +1266,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 90,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -1275,25 +1275,27 @@
       "baskets": [
         {
           "position": [
-            3.4,
-            4.05
+            2.5,
+            4.28
           ],
-          "direction": 2,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
+            "garlic",
             "leek",
             "steak",
             "chocolate milk"
           ],
-          "contents_quant": [
+          "purchased_quant": [
+            1,
             1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -1641,7 +1643,7 @@
           "food": "garlic",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/garlic.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "garlic"
@@ -1846,7 +1848,7 @@
         }
       ]
     },
-    "step": 260,
+    "step": 263,
     "gameOver": false,
     "violations": ""
   },
@@ -2500,7 +2502,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 92,
+          "budget": 90,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -2521,9 +2523,11 @@
           "purchased_contents": [
             "leek",
             "steak",
-            "chocolate milk"
+            "chocolate milk",
+            "milk"
           ],
           "purchased_quant": [
+            1,
             1,
             1,
             1
@@ -2575,7 +2579,7 @@
           "food": "milk",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/milk.png",
           "shelf_image": "images/Shelves/fridge.png",
           "food_name": "milk"
@@ -3080,7 +3084,7 @@
         }
       ]
     },
-    "step": 292,
+    "step": 305,
     "gameOver": false,
     "violations": ""
   },
@@ -3117,7 +3121,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 93,
+          "budget": 90,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -3136,10 +3140,14 @@
           "contents": [],
           "contents_quant": [],
           "purchased_contents": [
+            "leek",
             "steak",
-            "chocolate milk"
+            "chocolate milk",
+            "milk"
           ],
           "purchased_quant": [
+            1,
+            1,
             1,
             1
           ],
@@ -3205,7 +3213,7 @@
           "food": "milk",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/milk.png",
           "shelf_image": "images/Shelves/fridge.png",
           "food_name": "milk"
@@ -3505,7 +3513,7 @@
           "food": "leek",
           "price": 1,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/leek_onion.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "leek"
@@ -3695,7 +3703,7 @@
         }
       ]
     },
-    "step": 272,
+    "step": 278,
     "gameOver": false,
     "violations": ""
   },
@@ -4929,7 +4937,7 @@
         }
       ]
     },
-    "step": 280,
+    "step": 286,
     "gameOver": false,
     "violations": ""
   },
@@ -4966,7 +4974,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 92,
+          "budget": 90,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -4987,9 +4995,11 @@
           "purchased_contents": [
             "leek",
             "steak",
-            "chocolate milk"
+            "chocolate milk",
+            "milk"
           ],
           "purchased_quant": [
+            1,
             1,
             1,
             1
@@ -5056,7 +5066,7 @@
           "food": "milk",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/milk.png",
           "shelf_image": "images/Shelves/fridge.png",
           "food_name": "milk"
@@ -5546,7 +5556,7 @@
         }
       ]
     },
-    "step": 252,
+    "step": 256,
     "gameOver": false,
     "violations": ""
   },
@@ -5583,7 +5593,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 95,
+          "budget": 93,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -5607,7 +5617,7 @@
           ],
           "purchased_quant": [
             1,
-            2
+            3
           ],
           "width": 0.15,
           "height": 0.15
@@ -5686,7 +5696,7 @@
           "food": "chocolate milk",
           "price": 2,
           "capacity": 12,
-          "quantity": 10,
+          "quantity": 9,
           "food_image": "images/food/milk_chocolate.png",
           "shelf_image": "images/Shelves/fridge.png",
           "food_name": "chocolate milk"
@@ -6161,7 +6171,7 @@
         }
       ]
     },
-    "step": 454,
+    "step": 472,
     "gameOver": false,
     "violations": ""
   }

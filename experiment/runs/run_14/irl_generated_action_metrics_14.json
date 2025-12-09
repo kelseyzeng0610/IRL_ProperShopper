@@ -1,84 +1,150 @@
 [
   {
     "run_id": 0,
-    "num_steps": 299,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 306,
+    "num_violations": 2,
+    "violation_types": {
+      "Player 0 took an item, steak, that is not on their shopping list": 1,
+      "Player 0 took an item, sausage, that is not on their shopping list": 1
+    },
+    "success": true,
+    "paid_items": [
+      "chicken",
+      "ham",
+      "steak",
+      "sausage",
+      "raspberry"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 1,
-    "num_steps": 306,
+    "num_steps": 316,
     "num_violations": 2,
     "violation_types": {
       "Player 0 ran into the chicken shelf": 1,
       "Player 0 ran into the ham shelf": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [
+      "chicken"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 2,
-    "num_steps": 310,
+    "num_steps": 313,
     "num_violations": 1,
     "violation_types": {
       "Player 0 ran into the chicken shelf": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [
+      "chicken"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 3,
-    "num_steps": 309,
+    "num_steps": 315,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "chicken",
+      "ham",
+      "raspberry"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 4,
-    "num_steps": 466,
-    "num_violations": 7,
+    "num_steps": 476,
+    "num_violations": 8,
     "violation_types": {
+      "Player 0 took more ham than they needed": 1,
       "Player 0 ran into the ham shelf": 5,
       "Player 0 ran into a checkout counter": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "chicken",
+      "ham"
+    ]
   },
   {
     "run_id": 5,
-    "num_steps": 293,
+    "num_steps": 297,
     "num_violations": 1,
     "violation_types": {
       "Player 0 ran into the ham shelf": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [
+      "chicken",
+      "ham"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 6,
-    "num_steps": 313,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 320,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 took more chicken than they needed": 1
+    },
+    "success": true,
+    "paid_items": [
+      "chicken",
+      "ham",
+      "raspberry"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 7,
-    "num_steps": 302,
-    "num_violations": 1,
+    "num_steps": 308,
+    "num_violations": 2,
     "violation_types": {
+      "Player 0 took more chicken than they needed": 1,
       "Player 0 ran into the banana shelf": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "chicken",
+      "ham",
+      "raspberry"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 8,
-    "num_steps": 286,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 290,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 took an item, steak, that is not on their shopping list": 1
+    },
+    "success": true,
+    "paid_items": [
+      "chicken",
+      "ham",
+      "steak",
+      "raspberry"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 9,
-    "num_steps": 335,
+    "num_steps": 341,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "chicken",
+      "ham",
+      "raspberry"
+    ],
+    "unpaid_items": []
   }
 ]

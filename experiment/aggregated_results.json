@@ -48,70 +48,83 @@
     }
   },
   "irl_metrics": {
-    "success_rate": 0.986,
-    "avg_violations_per_run": 3.7059999999999995,
-    "median_violations_per_run": 0.5,
-    "percent_violation_free": 0.44,
-    "worst_violations": 166,
-    "avg_num_steps": 327.56399999999996,
+    "success_rate": 0.5920000000000001,
+    "avg_violations_per_run": 4.362,
+    "median_violations_per_run": 1.5,
+    "percent_violation_free": 0.22,
+    "worst_violations": 168,
+    "avg_num_steps": 332.76800000000003,
     "total_violation_breakdown": {
       "Player 0 ran into the banana shelf": 20,
+      "Player 0 took an item, apples, that is not on their shopping list": 10,
       "Player 0 ran into the sausage shelf": 98,
+      "Player 0 took more sausage than they needed": 22,
       "Player 0 ran into a checkout counter": 376,
+      "Player 0 took an item, oranges, that is not on their shopping list": 10,
       "Player 0 ran into the oranges shelf": 10,
-      "Player 0 took more sausage than they needed": 5,
       "Player 0 ran into the apples shelf": 55,
-      "Player 0 ran into the broccoli shelf": 20,
       "Player 0 ran into the avocado shelf": 60,
+      "Player 0 ran into the broccoli shelf": 20,
       "Player 0 ran into the basket return": 56,
       "Player 0 ran into a wall": 195,
+      "Player 0 took an item, avocado, that is not on their shopping list": 36,
+      "Player 0 took more apples than they needed": 2,
+      "Player 0 took more broccoli than they needed": 2,
       "Player 0 ran into the milk shelf": 15,
-      "Player 0 took an item, garlic, that is not on their shopping list": 10,
+      "Player 0 took an item, garlic, that is not on their shopping list": 43,
+      "Player 0 took an item, broccoli, that is not on their shopping list": 13,
+      "Player 0 took an item, cucumber, that is not on their shopping list": 8,
       "Player 0 ran into the cart return": 27,
-      "Player 0 took an item, brie cheese, that is not on their shopping list": 10,
-      "Player 0 took more swiss cheese than they needed": 3,
+      "Player 0 took an item, brie cheese, that is not on their shopping list": 25,
+      "Player 0 took more swiss cheese than they needed": 12,
       "Player 0 ran into the swiss cheese shelf": 85,
       "Player 0 ran into the yellow bell pepper shelf": 26,
+      "Player 0 took an item, chicken, that is not on their shopping list": 7,
       "Player 0 ran into the steak shelf": 36,
       "Player 0 ran into the cucumber shelf": 11,
+      "Player 0 took an item, carrot, that is not on their shopping list": 6,
+      "Player 0 took an item, sausage, that is not on their shopping list": 18,
+      "Player 0 took more lettuce than they needed": 2,
       "Player 0 ran into the brie cheese shelf": 143,
-      "Player 0 took an item, leek, that is not on their shopping list": 2,
+      "Player 0 took an item, leek, that is not on their shopping list": 12,
+      "Player 0 took an item, red bell pepper, that is not on their shopping list": 17,
       "Player 0 ran into the red bell pepper shelf": 21,
+      "Player 0 took more chicken than they needed": 8,
       "Player 0 ran into the chicken shelf": 23,
-      "Player 0 took more chicken than they needed": 3,
       "Player 0 ran into the ham shelf": 35,
-      "Player 0 took an item, steak, that is not on their shopping list": 2,
+      "Player 0 took more ham than they needed": 9,
+      "Player 0 took an item, steak, that is not on their shopping list": 16,
+      "Player 0 took an item, swiss cheese, that is not on their shopping list": 8,
       "Player 0 ran into the garlic shelf": 131,
       "Player 0 ran into the cheese wheel shelf": 101,
-      "Player 0 took more banana than they needed": 2,
-      "Player 0 took an item, oranges, that is not on their shopping list": 1,
+      "Player 0 took more banana than they needed": 10,
       "Player 0 ran into the carrot shelf": 29,
+      "Player 0 took more brie cheese than they needed": 17,
       "Player 0 ran into the fresh fish counter": 82,
-      "Player 0 took an item, swiss cheese, that is not on their shopping list": 2,
-      "Player 0 took an item, cheese wheel, that is not on their shopping list": 6,
+      "Player 0 took an item, cheese wheel, that is not on their shopping list": 18,
       "Player 0 ran into the onion shelf": 24,
       "Player 0 ran into the lettuce shelf": 21,
       "Player 0 ran into the leek shelf": 57,
-      "Player 0 took an item, lettuce, that is not on their shopping list": 1,
-      "Player 0 took an item, red bell pepper, that is not on their shopping list": 3,
+      "Player 0 took more raspberry than they needed": 2,
       "Player 0 ran into the raspberry shelf": 3,
-      "Player 0 took more brie cheese than they needed": 6,
+      "Player 0 took an item, banana, that is not on their shopping list": 2,
       "Player 0 ran into the strawberry shelf": 5,
-      "Player 0 took more cheese wheel than they needed": 9,
-      "Player 0 took more milk than they needed": 2,
+      "Player 0 took more cheese wheel than they needed": 16,
+      "Player 0 took an item, strawberry, that is not on their shopping list": 4,
+      "Player 0 took more red bell pepper than they needed": 3,
+      "Player 0 took more garlic than they needed": 8,
+      "Player 0 took more milk than they needed": 4,
+      "Player 0 took more avocado than they needed": 6,
+      "Player 0 took an item, milk, that is not on their shopping list": 3,
+      "Player 0 took more chocolate milk than they needed": 4,
       "Player 0 ran into the chocolate milk shelf": 5,
-      "Player 0 took more chocolate milk than they needed": 2,
-      "Player 0 took more leek than they needed": 1,
-      "Player 0 took more onion than they needed": 1,
-      "Player 0 took an item, apples, that is not on their shopping list": 1,
-      "Player 0 took an item, avocado, that is not on their shopping list": 2,
-      "Player 0 took more broccoli than they needed": 1,
-      "Player 0 took more steak than they needed": 1,
-      "Player 0 took more carrot than they needed": 3,
-      "Player 0 took more red bell pepper than they needed": 1,
-      "Player 0 took more ham than they needed": 1,
-      "Player 0 took an item, yellow bell pepper, that is not on their shopping list": 1,
-      "Player 0 took more avocado than they needed": 1
+      "Player 0 took more leek than they needed": 6,
+      "Player 0 took an item, yellow bell pepper, that is not on their shopping list": 2,
+      "Player 0 took more onion than they needed": 3,
+      "Player 0 took more yellow bell pepper than they needed": 1,
+      "Player 0 took more steak than they needed": 8,
+      "Player 0 took more carrot than they needed": 7,
+      "Player 0 took an item, chocolate milk, that is not on their shopping list": 1
     },
     "training_metrics": {
       "total_time_all_runs": 1937.3224852085114,
@@ -369,6 +382,336 @@
           "num_subgoals": 22
         }
       ]
+    },
+    "error_analysis_summary": {
+      "summary": {
+        "total_failed_to_pay": 75,
+        "total_failed_to_get_all_items": 100,
+        "avg_items_in_basket_when_failed_to_pay": 1.8694316436251919,
+        "avg_missing_items_when_failed_to_get_all_items": 1.4936507936507937
+      },
+      "per_run_details": {
+        "0": {
+          "num_times_failed_to_pay": 0,
+          "avg_items_in_basket_when_failed_to_pay": 0.0,
+          "num_times_failed_to_get_all_items": 4,
+          "avg_missing_items_when_failed_to_get_all_items": 1.5
+        },
+        "1": {
+          "num_times_failed_to_pay": 0,
+          "avg_items_in_basket_when_failed_to_pay": 0.0,
+          "num_times_failed_to_get_all_items": 1,
+          "avg_missing_items_when_failed_to_get_all_items": 1.0
+        },
+        "2": {
+          "num_times_failed_to_pay": 2,
+          "avg_items_in_basket_when_failed_to_pay": 3.0,
+          "num_times_failed_to_get_all_items": 1,
+          "avg_missing_items_when_failed_to_get_all_items": 1.0
+        },
+        "3": {
+          "num_times_failed_to_pay": 5,
+          "avg_items_in_basket_when_failed_to_pay": 2.0,
+          "num_times_failed_to_get_all_items": 0,
+          "avg_missing_items_when_failed_to_get_all_items": 0.0
+        },
+        "4": {
+          "num_times_failed_to_pay": 7,
+          "avg_items_in_basket_when_failed_to_pay": 2.2857142857142856,
+          "num_times_failed_to_get_all_items": 0,
+          "avg_missing_items_when_failed_to_get_all_items": 0.0
+        },
+        "5": {
+          "num_times_failed_to_pay": 2,
+          "avg_items_in_basket_when_failed_to_pay": 1.5,
+          "num_times_failed_to_get_all_items": 1,
+          "avg_missing_items_when_failed_to_get_all_items": 1.0
+        },
+        "6": {
+          "num_times_failed_to_pay": 2,
+          "avg_items_in_basket_when_failed_to_pay": 1.5,
+          "num_times_failed_to_get_all_items": 1,
+          "avg_missing_items_when_failed_to_get_all_items": 1.0
+        },
+        "7": {
+          "num_times_failed_to_pay": 1,
+          "avg_items_in_basket_when_failed_to_pay": 3.0,
+          "num_times_failed_to_get_all_items": 2,
+          "avg_missing_items_when_failed_to_get_all_items": 1.5
+        },
+        "8": {
+          "num_times_failed_to_pay": 1,
+          "avg_items_in_basket_when_failed_to_pay": 1.0,
+          "num_times_failed_to_get_all_items": 3,
+          "avg_missing_items_when_failed_to_get_all_items": 2.0
+        },
+        "9": {
+          "num_times_failed_to_pay": 0,
+          "avg_items_in_basket_when_failed_to_pay": 0.0,
+          "num_times_failed_to_get_all_items": 1,
+          "avg_missing_items_when_failed_to_get_all_items": 2.0
+        },
+        "10": {
+          "num_times_failed_to_pay": 0,
+          "avg_items_in_basket_when_failed_to_pay": 0.0,
+          "num_times_failed_to_get_all_items": 0,
+          "avg_missing_items_when_failed_to_get_all_items": 0.0
+        },
+        "11": {
+          "num_times_failed_to_pay": 3,
+          "avg_items_in_basket_when_failed_to_pay": 1.0,
+          "num_times_failed_to_get_all_items": 2,
+          "avg_missing_items_when_failed_to_get_all_items": 1.5
+        },
+        "12": {
+          "num_times_failed_to_pay": 2,
+          "avg_items_in_basket_when_failed_to_pay": 3.0,
+          "num_times_failed_to_get_all_items": 2,
+          "avg_missing_items_when_failed_to_get_all_items": 1.5
+        },
+        "13": {
+          "num_times_failed_to_pay": 8,
+          "avg_items_in_basket_when_failed_to_pay": 1.75,
+          "num_times_failed_to_get_all_items": 2,
+          "avg_missing_items_when_failed_to_get_all_items": 1.5
+        },
+        "14": {
+          "num_times_failed_to_pay": 1,
+          "avg_items_in_basket_when_failed_to_pay": 2.0,
+          "num_times_failed_to_get_all_items": 3,
+          "avg_missing_items_when_failed_to_get_all_items": 1.3333333333333333
+        },
+        "15": {
+          "num_times_failed_to_pay": 0,
+          "avg_items_in_basket_when_failed_to_pay": 0.0,
+          "num_times_failed_to_get_all_items": 2,
+          "avg_missing_items_when_failed_to_get_all_items": 1.5
+        },
+        "16": {
+          "num_times_failed_to_pay": 0,
+          "avg_items_in_basket_when_failed_to_pay": 0.0,
+          "num_times_failed_to_get_all_items": 0,
+          "avg_missing_items_when_failed_to_get_all_items": 0.0
+        },
+        "17": {
+          "num_times_failed_to_pay": 2,
+          "avg_items_in_basket_when_failed_to_pay": 3.0,
+          "num_times_failed_to_get_all_items": 2,
+          "avg_missing_items_when_failed_to_get_all_items": 2.0
+        },
+        "18": {
+          "num_times_failed_to_pay": 0,
+          "avg_items_in_basket_when_failed_to_pay": 0.0,
+          "num_times_failed_to_get_all_items": 4,
+          "avg_missing_items_when_failed_to_get_all_items": 1.0
+        },
+        "19": {
+          "num_times_failed_to_pay": 0,
+          "avg_items_in_basket_when_failed_to_pay": 0.0,
+          "num_times_failed_to_get_all_items": 1,
+          "avg_missing_items_when_failed_to_get_all_items": 1.0
+        },
+        "20": {
+          "num_times_failed_to_pay": 1,
+          "avg_items_in_basket_when_failed_to_pay": 1.0,
+          "num_times_failed_to_get_all_items": 1,
+          "avg_missing_items_when_failed_to_get_all_items": 2.0
+        },
+        "21": {
+          "num_times_failed_to_pay": 4,
+          "avg_items_in_basket_when_failed_to_pay": 1.5,
+          "num_times_failed_to_get_all_items": 1,
+          "avg_missing_items_when_failed_to_get_all_items": 1.0
+        },
+        "22": {
+          "num_times_failed_to_pay": 0,
+          "avg_items_in_basket_when_failed_to_pay": 0.0,
+          "num_times_failed_to_get_all_items": 1,
+          "avg_missing_items_when_failed_to_get_all_items": 2.0
+        },
+        "23": {
+          "num_times_failed_to_pay": 0,
+          "avg_items_in_basket_when_failed_to_pay": 0.0,
+          "num_times_failed_to_get_all_items": 6,
+          "avg_missing_items_when_failed_to_get_all_items": 1.3333333333333333
+        },
+        "24": {
+          "num_times_failed_to_pay": 1,
+          "avg_items_in_basket_when_failed_to_pay": 2.0,
+          "num_times_failed_to_get_all_items": 2,
+          "avg_missing_items_when_failed_to_get_all_items": 1.0
+        },
+        "25": {
+          "num_times_failed_to_pay": 0,
+          "avg_items_in_basket_when_failed_to_pay": 0.0,
+          "num_times_failed_to_get_all_items": 5,
+          "avg_missing_items_when_failed_to_get_all_items": 1.6
+        },
+        "26": {
+          "num_times_failed_to_pay": 6,
+          "avg_items_in_basket_when_failed_to_pay": 1.5,
+          "num_times_failed_to_get_all_items": 0,
+          "avg_missing_items_when_failed_to_get_all_items": 0.0
+        },
+        "27": {
+          "num_times_failed_to_pay": 1,
+          "avg_items_in_basket_when_failed_to_pay": 1.0,
+          "num_times_failed_to_get_all_items": 1,
+          "avg_missing_items_when_failed_to_get_all_items": 1.0
+        },
+        "28": {
+          "num_times_failed_to_pay": 1,
+          "avg_items_in_basket_when_failed_to_pay": 1.0,
+          "num_times_failed_to_get_all_items": 1,
+          "avg_missing_items_when_failed_to_get_all_items": 1.0
+        },
+        "29": {
+          "num_times_failed_to_pay": 1,
+          "avg_items_in_basket_when_failed_to_pay": 2.0,
+          "num_times_failed_to_get_all_items": 5,
+          "avg_missing_items_when_failed_to_get_all_items": 1.0
+        },
+        "30": {
+          "num_times_failed_to_pay": 1,
+          "avg_items_in_basket_when_failed_to_pay": 1.0,
+          "num_times_failed_to_get_all_items": 4,
+          "avg_missing_items_when_failed_to_get_all_items": 1.25
+        },
+        "31": {
+          "num_times_failed_to_pay": 0,
+          "avg_items_in_basket_when_failed_to_pay": 0.0,
+          "num_times_failed_to_get_all_items": 3,
+          "avg_missing_items_when_failed_to_get_all_items": 2.0
+        },
+        "32": {
+          "num_times_failed_to_pay": 1,
+          "avg_items_in_basket_when_failed_to_pay": 3.0,
+          "num_times_failed_to_get_all_items": 2,
+          "avg_missing_items_when_failed_to_get_all_items": 1.5
+        },
+        "33": {
+          "num_times_failed_to_pay": 2,
+          "avg_items_in_basket_when_failed_to_pay": 2.5,
+          "num_times_failed_to_get_all_items": 2,
+          "avg_missing_items_when_failed_to_get_all_items": 1.5
+        },
+        "34": {
+          "num_times_failed_to_pay": 0,
+          "avg_items_in_basket_when_failed_to_pay": 0.0,
+          "num_times_failed_to_get_all_items": 2,
+          "avg_missing_items_when_failed_to_get_all_items": 1.5
+        },
+        "35": {
+          "num_times_failed_to_pay": 0,
+          "avg_items_in_basket_when_failed_to_pay": 0.0,
+          "num_times_failed_to_get_all_items": 1,
+          "avg_missing_items_when_failed_to_get_all_items": 2.0
+        },
+        "36": {
+          "num_times_failed_to_pay": 0,
+          "avg_items_in_basket_when_failed_to_pay": 0.0,
+          "num_times_failed_to_get_all_items": 1,
+          "avg_missing_items_when_failed_to_get_all_items": 2.0
+        },
+        "37": {
+          "num_times_failed_to_pay": 4,
+          "avg_items_in_basket_when_failed_to_pay": 2.25,
+          "num_times_failed_to_get_all_items": 0,
+          "avg_missing_items_when_failed_to_get_all_items": 0.0
+        },
+        "38": {
+          "num_times_failed_to_pay": 0,
+          "avg_items_in_basket_when_failed_to_pay": 0.0,
+          "num_times_failed_to_get_all_items": 4,
+          "avg_missing_items_when_failed_to_get_all_items": 2.0
+        },
+        "39": {
+          "num_times_failed_to_pay": 6,
+          "avg_items_in_basket_when_failed_to_pay": 2.1666666666666665,
+          "num_times_failed_to_get_all_items": 0,
+          "avg_missing_items_when_failed_to_get_all_items": 0.0
+        },
+        "40": {
+          "num_times_failed_to_pay": 0,
+          "avg_items_in_basket_when_failed_to_pay": 0.0,
+          "num_times_failed_to_get_all_items": 1,
+          "avg_missing_items_when_failed_to_get_all_items": 1.0
+        },
+        "41": {
+          "num_times_failed_to_pay": 2,
+          "avg_items_in_basket_when_failed_to_pay": 1.5,
+          "num_times_failed_to_get_all_items": 3,
+          "avg_missing_items_when_failed_to_get_all_items": 1.6666666666666667
+        },
+        "42": {
+          "num_times_failed_to_pay": 1,
+          "avg_items_in_basket_when_failed_to_pay": 1.0,
+          "num_times_failed_to_get_all_items": 4,
+          "avg_missing_items_when_failed_to_get_all_items": 1.25
+        },
+        "43": {
+          "num_times_failed_to_pay": 1,
+          "avg_items_in_basket_when_failed_to_pay": 3.0,
+          "num_times_failed_to_get_all_items": 1,
+          "avg_missing_items_when_failed_to_get_all_items": 2.0
+        },
+        "44": {
+          "num_times_failed_to_pay": 1,
+          "avg_items_in_basket_when_failed_to_pay": 1.0,
+          "num_times_failed_to_get_all_items": 5,
+          "avg_missing_items_when_failed_to_get_all_items": 1.8
+        },
+        "45": {
+          "num_times_failed_to_pay": 2,
+          "avg_items_in_basket_when_failed_to_pay": 2.5,
+          "num_times_failed_to_get_all_items": 5,
+          "avg_missing_items_when_failed_to_get_all_items": 1.6
+        },
+        "46": {
+          "num_times_failed_to_pay": 0,
+          "avg_items_in_basket_when_failed_to_pay": 0.0,
+          "num_times_failed_to_get_all_items": 5,
+          "avg_missing_items_when_failed_to_get_all_items": 1.4
+        },
+        "47": {
+          "num_times_failed_to_pay": 0,
+          "avg_items_in_basket_when_failed_to_pay": 0.0,
+          "num_times_failed_to_get_all_items": 0,
+          "avg_missing_items_when_failed_to_get_all_items": 0.0
+        },
+        "48": {
+          "num_times_failed_to_pay": 2,
+          "avg_items_in_basket_when_failed_to_pay": 2.0,
+          "num_times_failed_to_get_all_items": 1,
+          "avg_missing_items_when_failed_to_get_all_items": 2.0
+        },
+        "49": {
+          "num_times_failed_to_pay": 1,
+          "avg_items_in_basket_when_failed_to_pay": 1.0,
+          "num_times_failed_to_get_all_items": 1,
+          "avg_missing_items_when_failed_to_get_all_items": 2.0
+        }
+      }
+    }
+  },
+  "deterministic_irl_metrics": {
+    "success_rate": 0.96,
+    "avg_violations_per_run": 1.7,
+    "median_violations_per_run": 0.0,
+    "percent_violation_free": 0.92,
+    "worst_violations": 80,
+    "avg_num_steps": 265.08,
+    "total_violation_breakdown": {
+      "Player 0 ran into a wall": 33,
+      "Player 0 ran into the fresh fish counter": 32,
+      "Player 0 ran into the cucumber shelf": 3,
+      "Player 0 ran into the yellow bell pepper shelf": 3,
+      "Player 0 ran into the onion shelf": 4,
+      "Player 0 ran into the lettuce shelf": 5,
+      "Player 0 ran into the milk shelf": 1,
+      "Player 0 ran into the sausage shelf": 1,
+      "Player 0 ran into a checkout counter": 2,
+      "Player 0 ran into the banana shelf": 1
     }
   }
 }

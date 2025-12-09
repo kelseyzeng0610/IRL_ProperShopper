@@ -89,7 +89,7 @@ def runBaseline(shoppingList, learnMode=False, thetaFile="experiment/baseline_th
 
 
 if __name__ == "__main__":
-    learnMode = True
+    learnMode = False
     shoppingList = ['sausage', 'milk', 'banana']
     
     startTime = time.time()

@@ -17,7 +17,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 3,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -32,7 +32,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 86,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -41,23 +41,29 @@
       "baskets": [
         {
           "position": [
-            2.55,
+            2.5,
             3.98
           ],
-          "direction": 3,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
+            "carrot",
+            "garlic",
             "brie cheese",
+            "oranges",
             "banana"
           ],
-          "contents_quant": [
+          "purchased_quant": [
+            1,
+            1,
+            1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -195,7 +201,7 @@
           "food": "oranges",
           "price": 5,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/oranges.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "oranges"
@@ -405,7 +411,7 @@
           "food": "garlic",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/garlic.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "garlic"
@@ -450,7 +456,7 @@
           "food": "carrot",
           "price": 1,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/carrot.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "carrot"
@@ -610,7 +616,7 @@
         }
       ]
     },
-    "step": 293,
+    "step": 302,
     "gameOver": false,
     "violations": ""
   },
@@ -632,7 +638,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 3,
+          "direction": 0,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -656,10 +662,10 @@
       "baskets": [
         {
           "position": [
-            0.4500000000000049,
-            12.680000000000021
+            1.350000000000005,
+            12.45000000000002
           ],
-          "direction": 3,
+          "direction": 0,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
@@ -1219,7 +1225,7 @@
         }
       ]
     },
-    "step": 318,
+    "step": 321,
     "gameOver": false,
     "violations": ""
   },
@@ -1241,7 +1247,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 3,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -1256,7 +1262,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 89,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -1265,25 +1271,29 @@
       "baskets": [
         {
           "position": [
-            2.55,
+            2.5,
             3.98
           ],
-          "direction": 3,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
             "carrot",
+            "red bell pepper",
+            "garlic",
             "brie cheese",
             "banana"
           ],
-          "contents_quant": [
+          "purchased_quant": [
+            1,
+            1,
             1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -1631,7 +1641,7 @@
           "food": "garlic",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/garlic.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "garlic"
@@ -1661,7 +1671,7 @@
           "food": "red bell pepper",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/bell_pepper_red.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "red bell pepper"
@@ -1836,7 +1846,7 @@
         }
       ]
     },
-    "step": 286,
+    "step": 293,
     "gameOver": false,
     "violations": ""
   },
@@ -1858,7 +1868,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 3,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -1873,7 +1883,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 91,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -1882,25 +1892,27 @@
       "baskets": [
         {
           "position": [
-            2.55,
+            2.5,
             3.98
           ],
-          "direction": 3,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
             "carrot",
+            "garlic",
             "brie cheese",
             "banana"
           ],
-          "contents_quant": [
+          "purchased_quant": [
+            1,
             1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -2248,7 +2260,7 @@
           "food": "garlic",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/garlic.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "garlic"
@@ -2453,7 +2465,7 @@
         }
       ]
     },
-    "step": 297,
+    "step": 300,
     "gameOver": false,
     "violations": ""
   },
@@ -2475,7 +2487,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 3,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -2490,7 +2502,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 91,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -2499,25 +2511,27 @@
       "baskets": [
         {
           "position": [
-            2.55,
+            2.5,
             4.28
           ],
-          "direction": 3,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
             "carrot",
+            "garlic",
             "brie cheese",
             "banana"
           ],
-          "contents_quant": [
+          "purchased_quant": [
+            1,
             1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -2865,7 +2879,7 @@
           "food": "garlic",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/garlic.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "garlic"
@@ -3070,7 +3084,7 @@
         }
       ]
     },
-    "step": 287,
+    "step": 290,
     "gameOver": false,
     "violations": ""
   },
@@ -3709,7 +3723,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 3,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -3724,7 +3738,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 94,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -3733,23 +3747,23 @@
       "baskets": [
         {
           "position": [
-            2.55,
+            2.5,
             4.280000000000001
           ],
-          "direction": 3,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
             "carrot",
             "brie cheese"
           ],
-          "contents_quant": [
+          "purchased_quant": [
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -4302,7 +4316,7 @@
         }
       ]
     },
-    "step": 303,
+    "step": 311,
     "gameOver": false,
     "violations": ""
   },
@@ -4324,7 +4338,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 3,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -4339,7 +4353,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 93,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -4348,25 +4362,25 @@
       "baskets": [
         {
           "position": [
-            2.55,
+            2.5,
             3.98
           ],
-          "direction": 3,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
             "carrot",
             "brie cheese",
             "banana"
           ],
-          "contents_quant": [
+          "purchased_quant": [
             1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -4919,7 +4933,7 @@
         }
       ]
     },
-    "step": 309,
+    "step": 316,
     "gameOver": false,
     "violations": ""
   },
@@ -4941,7 +4955,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 3,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -4956,7 +4970,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 91,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -4965,25 +4979,27 @@
       "baskets": [
         {
           "position": [
-            2.55,
+            2.5,
             3.98
           ],
-          "direction": 3,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
+            "red bell pepper",
             "carrot",
             "brie cheese",
             "banana"
           ],
-          "contents_quant": [
+          "purchased_quant": [
+            1,
             1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -5361,7 +5377,7 @@
           "food": "red bell pepper",
           "price": 2,
           "capacity": 12,
-          "quantity": 12,
+          "quantity": 11,
           "food_image": "images/food/bell_pepper_red.png",
           "shelf_image": "images/Shelves/shelf.png",
           "food_name": "red bell pepper"
@@ -5536,7 +5552,7 @@
         }
       ]
     },
-    "step": 297,
+    "step": 300,
     "gameOver": false,
     "violations": ""
   },
@@ -5558,7 +5574,7 @@
           "width": 0.6,
           "height": 0.4,
           "sprite_path": null,
-          "direction": 3,
+          "direction": 1,
           "curr_cart": -1,
           "curr_basket": 0,
           "shopping_list": [
@@ -5573,7 +5589,7 @@
           ],
           "holding_food": null,
           "bought_holding_food": false,
-          "budget": 100,
+          "budget": 93,
           "bagged_items": [],
           "bagged_quant": []
         }
@@ -5582,25 +5598,25 @@
       "baskets": [
         {
           "position": [
-            2.55,
+            2.5,
             4.28
           ],
-          "direction": 3,
+          "direction": 1,
           "capacity": 6,
           "owner": 0,
           "last_held": 0,
-          "contents": [
+          "contents": [],
+          "contents_quant": [],
+          "purchased_contents": [
             "carrot",
             "brie cheese",
             "banana"
           ],
-          "contents_quant": [
+          "purchased_quant": [
             1,
             1,
             1
           ],
-          "purchased_contents": [],
-          "purchased_quant": [],
           "width": 0.15,
           "height": 0.15
         }
@@ -6153,7 +6169,7 @@
         }
       ]
     },
-    "step": 302,
+    "step": 304,
     "gameOver": false,
     "violations": ""
   }

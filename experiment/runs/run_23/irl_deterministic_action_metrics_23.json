@@ -1,0 +1,13 @@
+{
+  "run_id": 99,
+  "num_steps": 234,
+  "num_violations": 0,
+  "violation_types": {},
+  "success": true,
+  "paid_items": [
+    "leek",
+    "swiss cheese",
+    "chocolate milk"
+  ],
+  "unpaid_items": []
+}

@@ -1,86 +1,158 @@
 [
   {
     "run_id": 0,
-    "num_steps": 341,
-    "num_violations": 2,
+    "num_steps": 344,
+    "num_violations": 3,
     "violation_types": {
-      "Player 0 ran into the avocado shelf": 2
+      "Player 0 ran into the avocado shelf": 2,
+      "Player 0 took an item, strawberry, that is not on their shopping list": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [
+      "broccoli",
+      "strawberry"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 1,
-    "num_steps": 318,
+    "num_steps": 321,
     "num_violations": 1,
     "violation_types": {
       "Player 0 ran into the avocado shelf": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [
+      "broccoli"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 2,
-    "num_steps": 311,
-    "num_violations": 1,
+    "num_steps": 316,
+    "num_violations": 2,
     "violation_types": {
+      "Player 0 took an item, avocado, that is not on their shopping list": 1,
       "Player 0 ran into the strawberry shelf": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "broccoli",
+      "avocado",
+      "brie cheese",
+      "raspberry"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 3,
-    "num_steps": 313,
+    "num_steps": 314,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "broccoli",
+      "brie cheese",
+      "raspberry"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 4,
-    "num_steps": 498,
-    "num_violations": 5,
+    "num_steps": 512,
+    "num_violations": 8,
     "violation_types": {
+      "Player 0 took more brie cheese than they needed": 4,
       "Player 0 ran into the brie cheese shelf": 2,
-      "Player 0 took more brie cheese than they needed": 1,
       "Player 0 ran into a checkout counter": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "broccoli",
+      "brie cheese"
+    ]
   },
   {
     "run_id": 5,
-    "num_steps": 300,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 305,
+    "num_violations": 2,
+    "violation_types": {
+      "Player 0 took more brie cheese than they needed": 1,
+      "Player 0 took more raspberry than they needed": 1
+    },
+    "success": true,
+    "paid_items": [
+      "broccoli",
+      "brie cheese",
+      "raspberry"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 6,
-    "num_steps": 301,
-    "num_violations": 1,
+    "num_steps": 308,
+    "num_violations": 3,
     "violation_types": {
+      "Player 0 took an item, avocado, that is not on their shopping list": 2,
       "Player 0 ran into the banana shelf": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "avocado",
+      "broccoli",
+      "brie cheese",
+      "raspberry"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 7,
-    "num_steps": 325,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 330,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 took an item, avocado, that is not on their shopping list": 1
+    },
+    "success": true,
+    "paid_items": [
+      "broccoli",
+      "avocado",
+      "brie cheese",
+      "raspberry"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 8,
-    "num_steps": 318,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 325,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 took an item, banana, that is not on their shopping list": 1
+    },
+    "success": true,
+    "paid_items": [
+      "broccoli",
+      "brie cheese",
+      "raspberry",
+      "banana"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 9,
-    "num_steps": 327,
-    "num_violations": 1,
+    "num_steps": 334,
+    "num_violations": 2,
     "violation_types": {
+      "Player 0 took an item, strawberry, that is not on their shopping list": 1,
       "Player 0 ran into the apples shelf": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "broccoli",
+      "brie cheese",
+      "raspberry",
+      "strawberry"
+    ],
+    "unpaid_items": []
   }
 ]

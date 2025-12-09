@@ -56,7 +56,7 @@ def evaluateExpertDeterministic(idx):
         avgNumSteps=expert_eval_metrics['num_steps'],
     )
 
-def evaluateIRL(idx):
+def evaluateIRL(idx, shoppingList):
     # compute metrics on the IRL-generated trajectories
     with open(f'experiment/runs/run_{idx}/irl_generated_action_metrics_{idx}.json', 'r') as f:
         irl_metrics = json.load(f)
@@ -66,13 +66,30 @@ def evaluateIRL(idx):
         for v, count in types.items():
             run_violation_types[v] = run_violation_types.get(v, 0) + count
     
-    # TODO: also need subgoal metrics
-    return makeMetrics(
+    metrics = makeMetrics(
         successRate=np.mean(np.array([run['success'] for run in irl_metrics])),
         violations=np.array([run['num_violations'] for run in irl_metrics]),
         avgNumSteps=np.mean(np.array([run['num_steps'] for run in irl_metrics])),
         violationTypes=run_violation_types
     )
+
+    # error analysis
+    errorInfo = {}
+    for run in irl_metrics:
+        if not run['success']:
+            runErrorInfo = {'failed_to_pay': [], 'wrong_items': []}
+            paidItems = run.get('paid_items', [])
+            unpaidItems = run.get('unpaid_items', [])
+            if len(unpaidItems) > 0:
+                runErrorInfo['failed_to_pay'] = [item for item in shoppingList if item in unpaidItems]
+            elif len(paidItems) > 0:
+                runErrorInfo['wrong_items'] = [item for item in paidItems if item in shoppingList]
+
+            errorInfo[run['run_id']] = runErrorInfo
+    metrics['error_analysis'] = errorInfo
+
+    return metrics
+
 
 def evaluateBaseline(idx):
     with open(f'experiment/runs/run_{idx}/baseline_action_metrics_{idx}.json', 'r') as f:
@@ -86,19 +103,30 @@ def evaluateBaseline(idx):
         violationTypes=vt
     )
 
-    
+def evaluateDeterministicHIRL(idx, shoppingList):
+    with open(f'experiment/runs/run_{idx}/irl_deterministic_action_metrics_{idx}.json', 'r') as f:
+        hirl_metrics = json.load(f)
+
+    metrics = makeMetrics(
+        successRate=1.0 if hirl_metrics['success'] else 0.0,
+        violations=np.array([hirl_metrics['num_violations']]),
+        avgNumSteps=hirl_metrics['num_steps'],
+        violationTypes=hirl_metrics['violation_types']
+    )
+
+    return metrics
     
 
 def aggregateResults(resultsByRun):
-    modelKeys = ['expert_metrics', 'demo_metrics', 'baseline_metrics', 'irl_metrics']
+    modelKeys = ['expert_metrics', 'demo_metrics', 'baseline_metrics', 'irl_metrics', 'deterministic_irl_metrics']
     aggregated = {
         key: {
-            'success_rate': np.mean([run[key]['success_rate'] for run in resultsByRun]),
-            'avg_violations_per_run': np.mean([run[key]['avg_violations_per_run'] for run in resultsByRun]),
-            'median_violations_per_run': np.median([run[key]['median_violations_per_run'] for run in resultsByRun]),
-            'percent_violation_free': np.mean([run[key]['percent_violation_free'] for run in resultsByRun]),
+            'success_rate': float(np.mean([run[key]['success_rate'] for run in resultsByRun])),
+            'avg_violations_per_run': float(np.mean([run[key]['avg_violations_per_run'] for run in resultsByRun])),
+            'median_violations_per_run': float(np.median([run[key]['median_violations_per_run'] for run in resultsByRun])),
+            'percent_violation_free': float(np.mean([run[key]['percent_violation_free'] for run in resultsByRun])),
             'worst_violations': int(np.max([run[key]['worst_violations'] for run in resultsByRun])),
-            'avg_num_steps': np.mean([run[key]['avg_num_steps'] for run in resultsByRun]),
+            'avg_num_steps': float(np.mean([run[key]['avg_num_steps'] for run in resultsByRun])),
         } if resultsByRun[0][key] != {} else {} for key in modelKeys
     }
     total_irl_violations = {}
@@ -113,9 +141,16 @@ def aggregateResults(resultsByRun):
         v_types = run['baseline_metrics'].get('violation_types', {})
         for v, count in v_types.items():
             baseline_irl_violations[v] = baseline_irl_violations.get(v, 0) + count
+
+    deterministic_irl_violations = {}
+    for run in resultsByRun:
+        v_types = run['deterministic_irl_metrics'].get('violation_types', {})
+        for v, count in v_types.items():
+            deterministic_irl_violations[v] = deterministic_irl_violations.get(v, 0) + count
     
     aggregated['irl_metrics']['total_violation_breakdown'] = total_irl_violations
     aggregated['baseline_metrics']['total_violation_breakdown'] = baseline_irl_violations
+    aggregated['deterministic_irl_metrics']['total_violation_breakdown'] = deterministic_irl_violations
 
     # also load the training metrics and add that to the irl results
     with open('experiment/training_metrics.json', 'r') as f:
@@ -125,6 +160,41 @@ def aggregateResults(resultsByRun):
     with open('experiment/baseline_training_metrics.json', 'r') as f:
         baseline_training_metrics = json.load(f)
     aggregated['baseline_metrics']['training_metrics'] = baseline_training_metrics
+
+    aggregatedIRLErrorAnalysis = {}
+    for run in resultsByRun:
+        numTimesFailedToPay, numTimesFailedToGetAllItems = 0, 0
+        itemsInBasketWhenFailedToPay, itemsInBasketWhenMissingItems = [], []
+        for run_id, errorInfo in run['irl_metrics']['error_analysis'].items():
+            numItemsInBasket = len(errorInfo['failed_to_pay'])
+            if numItemsInBasket > 0:
+                numTimesFailedToPay += 1
+                itemsInBasketWhenFailedToPay.append(numItemsInBasket)
+
+            numWrongItems = len(errorInfo['wrong_items'])
+            if numWrongItems > 0:
+                numTimesFailedToGetAllItems += 1
+                itemsInBasketWhenMissingItems.append(numWrongItems)
+
+        aggregatedIRLErrorAnalysis[run['run_id']] = {
+            'num_times_failed_to_pay': int(numTimesFailedToPay),
+            'avg_items_in_basket_when_failed_to_pay': float(np.mean(itemsInBasketWhenFailedToPay)) if len(itemsInBasketWhenFailedToPay) > 0 else 0.0,
+            'num_times_failed_to_get_all_items': int(numTimesFailedToGetAllItems),
+            'avg_missing_items_when_failed_to_get_all_items': float(np.mean(itemsInBasketWhenMissingItems)) if len(itemsInBasketWhenMissingItems) > 0 else 0.0,
+        }
+
+    aggregated['irl_metrics']['error_analysis_summary'] = {
+        'summary': {
+            'total_failed_to_pay': int(np.sum([run['num_times_failed_to_pay'] for run in aggregatedIRLErrorAnalysis.values()])),
+            'total_failed_to_get_all_items': int(np.sum([run['num_times_failed_to_get_all_items'] for run in aggregatedIRLErrorAnalysis.values()])),
+            'avg_items_in_basket_when_failed_to_pay': float(np.mean([run['avg_items_in_basket_when_failed_to_pay'] for run in aggregatedIRLErrorAnalysis.values() if run['avg_items_in_basket_when_failed_to_pay'] > 0])),
+            'avg_missing_items_when_failed_to_get_all_items': float(np.mean([run['avg_missing_items_when_failed_to_get_all_items'] for run in aggregatedIRLErrorAnalysis.values() if run['avg_missing_items_when_failed_to_get_all_items'] > 0])),
+        },
+        'per_run_details': aggregatedIRLErrorAnalysis
+    }
+
+
+            
 
     return aggregated
 
@@ -144,6 +214,7 @@ if __name__ == "__main__":
     print(f"Aggregating experiment results from run {startIdx} to {endIdx - 1}")
     results = []
     for i in range(startIdx, endIdx):
+        shoppingList = randomLists[i]
         # These will all be computed metrics for a single shopping list / run
         # Then we need to aggregate them at the end to get the overall metrics
 
@@ -153,8 +224,11 @@ if __name__ == "__main__":
         # compute metrics on expert with epsilon=0
         expertMetrics = evaluateExpertDeterministic(i)
 
-        # compute metrics on irl-generated trajectories
-        irlMetrics = evaluateIRL(i)
+        # compute metrics on irl-generated trajectories with noise
+        irlMetrics = evaluateIRL(i, shoppingList)
+
+        # compute metrics on irl-generated trajectories with epsilon=0
+        detIRLMetrics = evaluateDeterministicHIRL(i, shoppingList)
 
         # compute metrics on baseline IRL
         baselineMetrics = evaluateBaseline(i)
@@ -165,6 +239,7 @@ if __name__ == "__main__":
             'demo_metrics': demoMetrics,
             'baseline_metrics': baselineMetrics,
             'irl_metrics': irlMetrics,
+            'deterministic_irl_metrics': detIRLMetrics,
         })
 
     # aggregate to get averages for each model

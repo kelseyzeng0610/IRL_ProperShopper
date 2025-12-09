@@ -1,85 +1,154 @@
 [
   {
     "run_id": 0,
-    "num_steps": 239,
+    "num_steps": 240,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "brie cheese",
+      "ham",
+      "oranges"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 1,
-    "num_steps": 249,
-    "num_violations": 1,
+    "num_steps": 252,
+    "num_violations": 2,
     "violation_types": {
-      "Player 0 ran into the apples shelf": 1
+      "Player 0 ran into the apples shelf": 1,
+      "Player 0 took an item, apples, that is not on their shopping list": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "brie cheese",
+      "ham",
+      "oranges",
+      "apples"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 2,
-    "num_steps": 264,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 269,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 took more brie cheese than they needed": 1
+    },
+    "success": true,
+    "paid_items": [
+      "brie cheese",
+      "ham",
+      "oranges"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 3,
-    "num_steps": 266,
+    "num_steps": 269,
     "num_violations": 1,
     "violation_types": {
       "Player 0 ran into the ham shelf": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [
+      "brie cheese",
+      "ham"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 4,
-    "num_steps": 264,
+    "num_steps": 266,
     "num_violations": 2,
     "violation_types": {
-      "Player 0 ran into the chicken shelf": 1,
-      "Player 0 ran into the ham shelf": 1
+      "Player 0 ran into the ham shelf": 1,
+      "Player 0 ran into the chicken shelf": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [
+      "brie cheese",
+      "ham"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 5,
-    "num_steps": 263,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 268,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 took an item, apples, that is not on their shopping list": 1
+    },
+    "success": true,
+    "paid_items": [
+      "brie cheese",
+      "ham",
+      "oranges",
+      "apples"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 6,
-    "num_steps": 251,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 258,
+    "num_violations": 3,
+    "violation_types": {
+      "Player 0 took an item, steak, that is not on their shopping list": 1,
+      "Player 0 took an item, sausage, that is not on their shopping list": 1,
+      "Player 0 took an item, apples, that is not on their shopping list": 1
+    },
+    "success": true,
+    "paid_items": [
+      "brie cheese",
+      "ham",
+      "steak",
+      "sausage",
+      "oranges",
+      "apples"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 7,
-    "num_steps": 253,
+    "num_steps": 256,
     "num_violations": 2,
     "violation_types": {
-      "Player 0 ran into the steak shelf": 1,
-      "Player 0 ran into the chicken shelf": 1
+      "Player 0 ran into the chicken shelf": 1,
+      "Player 0 ran into the steak shelf": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [
+      "brie cheese",
+      "ham"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 8,
-    "num_steps": 510,
+    "num_steps": 522,
     "num_violations": 4,
     "violation_types": {
       "Player 0 ran into the ham shelf": 2,
       "Player 0 ran into a checkout counter": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "brie cheese"
+    ]
   },
   {
     "run_id": 9,
-    "num_steps": 251,
+    "num_steps": 254,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "brie cheese",
+      "ham",
+      "oranges"
+    ],
+    "unpaid_items": []
   }
 ]

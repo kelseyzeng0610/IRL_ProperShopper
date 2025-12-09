@@ -1,95 +1,161 @@
 [
   {
     "run_id": 0,
-    "num_steps": 306,
-    "num_violations": 2,
-    "violation_types": {
-      "Player 0 ran into the broccoli shelf": 1,
-      "Player 0 ran into the cucumber shelf": 1
-    },
-    "success": true
-  },
-  {
-    "run_id": 1,
-    "num_steps": 272,
-    "num_violations": 1,
-    "violation_types": {
-      "Player 0 ran into the banana shelf": 1
-    },
-    "success": true
-  },
-  {
-    "run_id": 2,
-    "num_steps": 293,
+    "num_steps": 308,
     "num_violations": 2,
     "violation_types": {
       "Player 0 ran into the cucumber shelf": 1,
       "Player 0 ran into the broccoli shelf": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "broccoli",
+      "yellow bell pepper",
+      "banana"
+    ],
+    "unpaid_items": []
+  },
+  {
+    "run_id": 1,
+    "num_steps": 275,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 ran into the banana shelf": 1
+    },
+    "success": true,
+    "paid_items": [
+      "broccoli",
+      "yellow bell pepper",
+      "banana"
+    ],
+    "unpaid_items": []
+  },
+  {
+    "run_id": 2,
+    "num_steps": 297,
+    "num_violations": 3,
+    "violation_types": {
+      "Player 0 ran into the broccoli shelf": 1,
+      "Player 0 ran into the cucumber shelf": 1,
+      "Player 0 took an item, apples, that is not on their shopping list": 1
+    },
+    "success": false,
+    "paid_items": [
+      "broccoli",
+      "banana",
+      "apples"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 3,
-    "num_steps": 279,
-    "num_violations": 1,
+    "num_steps": 285,
+    "num_violations": 2,
     "violation_types": {
+      "Player 0 took an item, avocado, that is not on their shopping list": 1,
       "Player 0 ran into the banana shelf": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "broccoli",
+      "yellow bell pepper",
+      "avocado",
+      "banana"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 4,
-    "num_steps": 306,
-    "num_violations": 1,
+    "num_steps": 312,
+    "num_violations": 2,
     "violation_types": {
+      "Player 0 took more yellow bell pepper than they needed": 1,
       "Player 0 ran into the banana shelf": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "broccoli",
+      "yellow bell pepper",
+      "banana"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 5,
-    "num_steps": 299,
-    "num_violations": 1,
+    "num_steps": 304,
+    "num_violations": 2,
     "violation_types": {
+      "Player 0 took an item, cucumber, that is not on their shopping list": 1,
       "Player 0 ran into the banana shelf": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "broccoli",
+      "yellow bell pepper",
+      "cucumber",
+      "banana"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 6,
-    "num_steps": 330,
-    "num_violations": 1,
+    "num_steps": 335,
+    "num_violations": 2,
     "violation_types": {
-      "Player 0 ran into the banana shelf": 1
+      "Player 0 ran into the banana shelf": 1,
+      "Player 0 took an item, oranges, that is not on their shopping list": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "broccoli",
+      "yellow bell pepper",
+      "banana",
+      "oranges"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 7,
-    "num_steps": 291,
+    "num_steps": 293,
     "num_violations": 2,
     "violation_types": {
       "Player 0 took more broccoli than they needed": 1,
       "Player 0 ran into the banana shelf": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "broccoli",
+      "yellow bell pepper",
+      "banana"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 8,
-    "num_steps": 313,
+    "num_steps": 315,
     "num_violations": 1,
     "violation_types": {
       "Player 0 ran into the broccoli shelf": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [
+      "broccoli",
+      "banana"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 9,
-    "num_steps": 286,
+    "num_steps": 290,
     "num_violations": 1,
     "violation_types": {
       "Player 0 ran into the broccoli shelf": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [
+      "broccoli",
+      "banana"
+    ],
+    "unpaid_items": []
   }
 ]

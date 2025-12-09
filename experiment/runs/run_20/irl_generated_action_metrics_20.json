@@ -1,14 +1,20 @@
 [
   {
     "run_id": 0,
-    "num_steps": 250,
+    "num_steps": 252,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "avocado",
+      "brie cheese",
+      "cheese wheel"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 1,
-    "num_steps": 267,
+    "num_steps": 271,
     "num_violations": 12,
     "violation_types": {
       "Player 0 ran into the basket return": 4,
@@ -16,71 +22,130 @@
       "Player 0 ran into a checkout counter": 2,
       "Player 0 ran into a wall": 3
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": []
   },
   {
     "run_id": 2,
-    "num_steps": 269,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 277,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 took more avocado than they needed": 1
+    },
+    "success": true,
+    "paid_items": [
+      "avocado",
+      "brie cheese",
+      "cheese wheel"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 3,
-    "num_steps": 290,
+    "num_steps": 292,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "avocado",
+      "brie cheese",
+      "cheese wheel"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 4,
-    "num_steps": 269,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 274,
+    "num_violations": 2,
+    "violation_types": {
+      "Player 0 took an item, swiss cheese, that is not on their shopping list": 1,
+      "Player 0 took more cheese wheel than they needed": 1
+    },
+    "success": true,
+    "paid_items": [
+      "avocado",
+      "brie cheese",
+      "cheese wheel",
+      "swiss cheese"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 5,
-    "num_steps": 270,
-    "num_violations": 5,
+    "num_steps": 274,
+    "num_violations": 6,
     "violation_types": {
       "Player 0 ran into the basket return": 3,
       "Player 0 ran into the garlic shelf": 1,
-      "Player 0 took an item, garlic, that is not on their shopping list": 1
+      "Player 0 took an item, garlic, that is not on their shopping list": 1,
+      "Player 0 took an item, red bell pepper, that is not on their shopping list": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "avocado",
+      "garlic",
+      "red bell pepper"
+    ]
   },
   {
     "run_id": 6,
-    "num_steps": 261,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 265,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 took more brie cheese than they needed": 1
+    },
+    "success": true,
+    "paid_items": [
+      "avocado",
+      "brie cheese",
+      "cheese wheel"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 7,
-    "num_steps": 276,
+    "num_steps": 278,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "avocado",
+      "brie cheese",
+      "cheese wheel"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 8,
-    "num_steps": 253,
-    "num_violations": 2,
+    "num_steps": 257,
+    "num_violations": 3,
     "violation_types": {
-      "Player 0 ran into the cheese wheel shelf": 1,
-      "Player 0 ran into the swiss cheese shelf": 1
+      "Player 0 took more avocado than they needed": 1,
+      "Player 0 ran into the swiss cheese shelf": 1,
+      "Player 0 ran into the cheese wheel shelf": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [
+      "avocado",
+      "brie cheese"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 9,
-    "num_steps": 266,
+    "num_steps": 271,
     "num_violations": 1,
     "violation_types": {
       "Player 0 ran into the brie cheese shelf": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "avocado",
+      "brie cheese",
+      "cheese wheel"
+    ],
+    "unpaid_items": []
   }
 ]

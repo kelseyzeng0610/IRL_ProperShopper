@@ -5,6 +5,7 @@ from utils import recv_socket_data
 import numpy as np
 from socket_agent_expert import hasBasket
 import argparse
+from irl_agents_separate import BASKET_LOCATION, REGISTER_LOCATION, getItemLocations, getTargetLocations
 
 def update_violation_metrics(metrics, actual_state):
     """Helper to update violation counts and types."""
@@ -26,7 +27,6 @@ action_commands = {
     3: 'WEST',
     4: "INTERACT",
 }
-BASKET_LOCATION = [3.5, 18.5]
 
 def load_generated_actions(filename):
     with open(filename, "r") as f:
@@ -56,7 +56,7 @@ def turn(action, sock_game, metrics):
 # wrapper around the actual action execution to get rid of some of the issues.
 # removes the turning aspect and always executes the movement actions directly.
 # for interact actions, turns to face the object first.
-def execute_action_with_turning(action, current_state, metrics):
+def execute_action_with_turning(action, current_state, metrics, targetLocations):
     current_direction = current_state['observation']['players'][0]['direction']
     current_position = current_state['observation']['players'][0]['position']
     has_basket = hasBasket(current_state)
@@ -75,6 +75,18 @@ def execute_action_with_turning(action, current_state, metrics):
             actual_state, newMetrics = turn(required_direction, sock_game, newMetrics)
             current_direction = actual_state['observation']['players'][0]['direction']
     elif action == 4 and has_basket:
+        # TODO: need to turn to face the shelf - can we just face north? no we can't because of the register
+        distToRegister = np.linalg.norm(np.array(current_position) - np.array(REGISTER_LOCATION))
+        distToShoppingItems = [np.linalg.norm(np.array(current_position) - np.array(loc)) for loc in targetLocations]
+        closestItemDist = np.min(distToShoppingItems)
+        
+        if closestItemDist < distToRegister and current_direction != 0:
+            actual_state, newMetrics = turn(0, sock_game, newMetrics)
+            current_direction = actual_state['observation']['players'][0]['direction']
+        elif distToRegister < closestItemDist and current_direction != 1:
+            actual_state, newMetrics = turn(1, sock_game, newMetrics)
+            current_direction = actual_state['observation']['players'][0]['direction']
+
         # do the interact twice - simulation env is finnicky
         sock_game.send(str.encode("0 INTERACT"))
         actual_state = recv_socket_data(sock_game)
@@ -141,6 +153,11 @@ if __name__ == "__main__":
         action='store_true',
         help="whether the generated trajectory was successful",
     )
+    parser.add_argument(
+        "--shopping_list",
+        type=str,
+        help="file containing shopping list"
+    )
     args = parser.parse_args()
     filename = args.file
     output_file = args.output
@@ -163,8 +180,12 @@ if __name__ == "__main__":
         'success': False,
     }
 
+    shoppingList = args.shopping_list.split(',')
+    itemLocations = getItemLocations()
+    targetLocations = getTargetLocations(itemLocations=itemLocations, shoppingList=shoppingList)
+
     for action in generated_actions:
-        current_state, metrics, gameOver = execute_action_with_turning(action, current_state, metrics)
+        current_state, metrics, gameOver = execute_action_with_turning(action, current_state, metrics, targetLocations[1:4])
         if gameOver:
             print("Game over detected, stopping execution of further actions.")
             break
@@ -174,7 +195,18 @@ if __name__ == "__main__":
         json.dump(current_state, f, indent=2)
     print(f"Finished executing actions, wrote final state to {output_file}")
 
-    metrics['success'] = success and not gameOver
+    # metrics['success'] = success and not gameOver
+    
+
+    # actual success is if we have all items in the basket and paid for
+    if gameOver or len(current_state['observation']['baskets']) == 0:
+        metrics['success'] = False
+    else:
+        basket_paid_contents = current_state['observation']['baskets'][0]['purchased_contents']
+        metrics['success'] = all(item in basket_paid_contents for item in shoppingList)
+        metrics['paid_items'] = basket_paid_contents
+        metrics['unpaid_items'] = current_state['observation']['baskets'][0]['contents']
+    
     with open(metrics_file, "w") as f:
         json.dump(metrics, f, indent=2)
     print(f"Wrote metrics to {metrics_file}")

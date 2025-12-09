@@ -1,54 +1,80 @@
 [
   {
     "run_id": 0,
-    "num_steps": 304,
-    "num_violations": 3,
+    "num_steps": 307,
+    "num_violations": 4,
     "violation_types": {
+      "Player 0 took an item, red bell pepper, that is not on their shopping list": 1,
       "Player 0 ran into the leek shelf": 1,
       "Player 0 ran into a checkout counter": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "avocado",
+      "carrot",
+      "red bell pepper"
+    ]
   },
   {
     "run_id": 1,
-    "num_steps": 341,
-    "num_violations": 3,
+    "num_steps": 351,
+    "num_violations": 4,
     "violation_types": {
+      "Player 0 took an item, garlic, that is not on their shopping list": 1,
       "Player 0 ran into the garlic shelf": 1,
       "Player 0 ran into a checkout counter": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "avocado",
+      "carrot",
+      "garlic"
+    ]
   },
   {
     "run_id": 2,
-    "num_steps": 303,
+    "num_steps": 305,
     "num_violations": 3,
     "violation_types": {
       "Player 0 ran into the carrot shelf": 1,
       "Player 0 ran into a checkout counter": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "avocado"
+    ]
   },
   {
     "run_id": 3,
-    "num_steps": 302,
+    "num_steps": 303,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "avocado",
+      "carrot",
+      "cheese wheel"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 4,
-    "num_steps": 317,
+    "num_steps": 324,
     "num_violations": 4,
     "violation_types": {
       "Player 0 ran into the basket return": 2,
       "Player 0 ran into a wall": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": []
   },
   {
     "run_id": 5,
-    "num_steps": 322,
+    "num_steps": 325,
     "num_violations": 5,
     "violation_types": {
       "Player 0 took more carrot than they needed": 1,
@@ -56,44 +82,72 @@
       "Player 0 ran into the cheese wheel shelf": 1,
       "Player 0 ran into a checkout counter": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "avocado",
+      "carrot",
+      "cheese wheel"
+    ]
   },
   {
     "run_id": 6,
-    "num_steps": 309,
+    "num_steps": 310,
     "num_violations": 4,
     "violation_types": {
       "Player 0 ran into the basket return": 2,
       "Player 0 ran into a wall": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": []
   },
   {
     "run_id": 7,
-    "num_steps": 321,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 326,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 took an item, brie cheese, that is not on their shopping list": 1
+    },
+    "success": true,
+    "paid_items": [
+      "avocado",
+      "carrot",
+      "cheese wheel",
+      "brie cheese"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 8,
-    "num_steps": 496,
-    "num_violations": 7,
+    "num_steps": 509,
+    "num_violations": 9,
     "violation_types": {
-      "Player 0 took more cheese wheel than they needed": 3,
+      "Player 0 took more cheese wheel than they needed": 5,
       "Player 0 ran into the cheese wheel shelf": 2,
       "Player 0 ran into a checkout counter": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "avocado",
+      "carrot",
+      "cheese wheel"
+    ]
   },
   {
     "run_id": 9,
-    "num_steps": 306,
+    "num_steps": 309,
     "num_violations": 3,
     "violation_types": {
       "Player 0 ran into the cheese wheel shelf": 1,
       "Player 0 ran into a checkout counter": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "avocado",
+      "carrot"
+    ]
   }
 ]

@@ -1,87 +1,153 @@
 [
   {
     "run_id": 0,
-    "num_steps": 277,
+    "num_steps": 281,
     "num_violations": 1,
     "violation_types": {
       "Player 0 ran into the steak shelf": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [
+      "cucumber",
+      "steak"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 1,
-    "num_steps": 292,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 298,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 took an item, broccoli, that is not on their shopping list": 1
+    },
+    "success": true,
+    "paid_items": [
+      "cucumber",
+      "broccoli",
+      "steak",
+      "chicken"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 2,
-    "num_steps": 270,
+    "num_steps": 272,
     "num_violations": 2,
     "violation_types": {
-      "Player 0 ran into the avocado shelf": 1,
-      "Player 0 ran into the broccoli shelf": 1
+      "Player 0 ran into the broccoli shelf": 1,
+      "Player 0 ran into the avocado shelf": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [
+      "cucumber"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 3,
-    "num_steps": 466,
-    "num_violations": 5,
+    "num_steps": 479,
+    "num_violations": 9,
     "violation_types": {
+      "Player 0 took an item, broccoli, that is not on their shopping list": 1,
+      "Player 0 took an item, avocado, that is not on their shopping list": 1,
+      "Player 0 took more steak than they needed": 1,
+      "Player 0 took more chicken than they needed": 1,
       "Player 0 ran into the chicken shelf": 3,
       "Player 0 ran into a checkout counter": 2
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "broccoli",
+      "cucumber",
+      "avocado",
+      "steak",
+      "chicken"
+    ]
   },
   {
     "run_id": 4,
-    "num_steps": 283,
+    "num_steps": 288,
     "num_violations": 1,
     "violation_types": {
       "Player 0 took more chicken than they needed": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "cucumber",
+      "steak",
+      "chicken"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 5,
-    "num_steps": 270,
+    "num_steps": 272,
     "num_violations": 1,
     "violation_types": {
       "Player 0 took more steak than they needed": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "cucumber",
+      "steak",
+      "chicken"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 6,
-    "num_steps": 296,
+    "num_steps": 300,
     "num_violations": 2,
     "violation_types": {
-      "Player 0 ran into the steak shelf": 1,
-      "Player 0 ran into the sausage shelf": 1
+      "Player 0 ran into the sausage shelf": 1,
+      "Player 0 ran into the steak shelf": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "cucumber",
+      "steak",
+      "chicken"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 7,
-    "num_steps": 294,
+    "num_steps": 300,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "cucumber",
+      "steak",
+      "chicken"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 8,
-    "num_steps": 292,
+    "num_steps": 294,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "cucumber",
+      "steak",
+      "chicken"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 9,
-    "num_steps": 287,
+    "num_steps": 291,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "cucumber",
+      "steak",
+      "chicken"
+    ],
+    "unpaid_items": []
   }
 ]

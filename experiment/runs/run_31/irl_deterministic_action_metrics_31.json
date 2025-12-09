@@ -1,0 +1,15 @@
+{
+  "run_id": 99,
+  "num_steps": 266,
+  "num_violations": 1,
+  "violation_types": {
+    "Player 0 ran into the banana shelf": 1
+  },
+  "success": true,
+  "paid_items": [
+    "broccoli",
+    "yellow bell pepper",
+    "banana"
+  ],
+  "unpaid_items": []
+}

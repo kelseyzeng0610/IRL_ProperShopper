@@ -159,7 +159,7 @@ def sampleIRLTrajectories(allShoppingLists, startIdx, endIdx, numSamples=10):
         with open(f'experiment/runs/run_{i}/noisy_trajectories_{i}.pkl', 'rb') as f:
             expertTrajectories = pickle.load(f)
         
-        # Generate m sample trajectories
+        # Generate m sample trajectories with noise
         sampleTrajectories, sampleActions = [], []
         for m in range(numSamples):
             trajectoryPath = f'experiment/runs/run_{i}/irl_generated_trajectory_{i}_sample_{m}.json'
@@ -168,6 +168,7 @@ def sampleIRLTrajectories(allShoppingLists, startIdx, endIdx, numSamples=10):
                 learned_agents, 
                 trajectoryPath=trajectoryPath,
                 actionPath=actionPath,
+                epsilon=0.05,
             )
 
             # instead of keeping actions and trajectories in separate files, we can just make a list.
@@ -187,6 +188,17 @@ def sampleIRLTrajectories(allShoppingLists, startIdx, endIdx, numSamples=10):
             pickle.dump(sampleTrajectories, f)
         with open(f'experiment/runs/run_{i}/irl_generated_actions_{i}.json', 'w') as f:
             json.dump(sampleActions, f, indent=2)
+
+        # then, generate deterministically
+        trajectoryPath = f'experiment/runs/run_{i}/irl_generated_trajectory_{i}_deterministic.json'
+        actionPath = f'experiment/runs/run_{i}/irl_generated_actions_{i}_deterministic.json'
+        deterministicTrajectory = generateLearnedTrajectory(
+            learned_agents, 
+            trajectoryPath=trajectoryPath,
+            actionPath=actionPath,
+            epsilon=0.0,
+        )
+        plotSampledTrajectory(deterministicTrajectory, expertTrajectories, subgoals, START_STATE, imgPath=f'experiment/runs/run_{i}/irl_deterministic_trajectory_{i}.png', showPlot=False)
 
 
 def runHIRLSamples(allShoppingLists, startIdx, endIdx, headless=False, numSamples=10):
@@ -229,6 +241,7 @@ def runHIRLSamples(allShoppingLists, startIdx, endIdx, headless=False, numSample
                 f'--output={finalStateFile}',
                 f'--run_id={m}',
                 f'--metrics_file={metricsFile}',
+                f'--shopping_list={",".join(allShoppingLists[i])}'
             ]
             if success:
                 args.append('--success')
@@ -257,10 +270,50 @@ def runHIRLSamples(allShoppingLists, startIdx, endIdx, headless=False, numSample
             json.dump(allMetrics, f, indent=2)
         with open(f'experiment/runs/run_{i}/irl_final_states_{i}.json', 'w') as f:
             json.dump(finalStates, f, indent=2)
-        
+
+        # evaluate the deterministic ones
+        deterministicActionsFile = f'experiment/runs/run_{i}/irl_generated_actions_{i}_deterministic.json'
+        deterministicFinalStateFile = f'experiment/runs/run_{i}/irl_deterministic_final_state_{i}.json'
+        deterministicMetricsFile = f'experiment/runs/run_{i}/irl_deterministic_action_metrics_{i}.json'
+        args = [
+            'python', 'run-generated-irl-trajectory.py',
+            f'--file={deterministicActionsFile}',
+            f'--output={deterministicFinalStateFile}',
+            f'--run_id=99',
+            f'--metrics_file={deterministicMetricsFile}',
+            f'--shopping_list={",".join(allShoppingLists[i])}'
+        ]
+        subprocess.run(args)
 
         envProcess.terminate()
         envProcess.wait()
+
+def recomputeHIRLMetrics(allShoppingLists, startIdx, endIdx, numSamples=10):
+    # load the final state and compute the success metric again because there was a bug
+    for i in range(startIdx, endIdx):
+        shoppingList = allShoppingLists[i]
+        finalStatesFile = f'experiment/runs/run_{i}/irl_final_states_{i}.json'
+        metricsFile = f'experiment/runs/run_{i}/irl_generated_action_metrics_{i}.json'
+        with open(finalStatesFile, 'r') as f:
+            finalStates = json.load(f)
+
+        with open(metricsFile, 'r') as f:
+            allMetrics = json.load(f)
+
+        for m in range(numSamples):
+            finalState = finalStates[m]
+            purchased_contents = finalState['observation']['baskets'][0]['purchased_contents'] if len(finalState['observation']['baskets']) > 0 else []
+            unpurchased_contents = finalState['observation']['baskets'][0]['contents'] if len(finalState['observation']['baskets']) > 0 else []
+
+            # success if everything in the shopping list is purchased
+            success = all(item in purchased_contents for item in shoppingList)
+
+            allMetrics[m]['success'] = success
+            allMetrics[m]['paid_items'] = purchased_contents
+            allMetrics[m]['unpaid_items'] = unpurchased_contents
+
+        with open(metricsFile, 'w') as f:
+            json.dump(allMetrics, f, indent=2)
 
 def runExpertForEvaluation(startIdx, endIdx, headless=False):
     for i in range(startIdx, endIdx):
@@ -342,6 +395,9 @@ if __name__ == "__main__":
 
     if args.run_hirl_samples:
         runHIRLSamples(randomLists, startIdx=startIdx, endIdx=endIdx, headless=args.headless)
+
+    if args.recompute_hirl_metrics:
+        recomputeHIRLMetrics(randomLists, startIdx=startIdx, endIdx=endIdx)
 
     if args.record_expert:
         runExpertForEvaluation(startIdx=startIdx, endIdx=endIdx, headless=args.headless)

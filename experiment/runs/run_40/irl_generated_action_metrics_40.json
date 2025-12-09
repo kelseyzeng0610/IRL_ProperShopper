@@ -1,79 +1,144 @@
 [
   {
     "run_id": 0,
-    "num_steps": 432,
-    "num_violations": 37,
+    "num_steps": 436,
+    "num_violations": 38,
     "violation_types": {
       "Player 0 ran into the avocado shelf": 13,
       "Player 0 ran into the cart return": 15,
       "Player 0 took an item, avocado, that is not on their shopping list": 1,
       "Player 0 ran into the basket return": 6,
       "Player 0 ran into the garlic shelf": 1,
-      "Player 0 took an item, garlic, that is not on their shopping list": 1
+      "Player 0 took an item, garlic, that is not on their shopping list": 1,
+      "Player 0 took an item, leek, that is not on their shopping list": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": [
+      "avocado",
+      "garlic",
+      "leek"
+    ]
   },
   {
     "run_id": 1,
-    "num_steps": 293,
+    "num_steps": 295,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "broccoli",
+      "swiss cheese",
+      "cheese wheel"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 2,
-    "num_steps": 268,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 274,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 took more swiss cheese than they needed": 1
+    },
+    "success": true,
+    "paid_items": [
+      "broccoli",
+      "swiss cheese",
+      "cheese wheel"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 3,
-    "num_steps": 265,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 271,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 took more swiss cheese than they needed": 1
+    },
+    "success": true,
+    "paid_items": [
+      "broccoli",
+      "swiss cheese",
+      "cheese wheel"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 4,
-    "num_steps": 269,
+    "num_steps": 276,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "broccoli",
+      "swiss cheese",
+      "cheese wheel"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 5,
-    "num_steps": 289,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 297,
+    "num_violations": 2,
+    "violation_types": {
+      "Player 0 took an item, avocado, that is not on their shopping list": 1,
+      "Player 0 took more swiss cheese than they needed": 1
+    },
+    "success": true,
+    "paid_items": [
+      "avocado",
+      "broccoli",
+      "swiss cheese",
+      "cheese wheel"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 6,
-    "num_steps": 281,
+    "num_steps": 284,
     "num_violations": 1,
     "violation_types": {
       "Player 0 ran into the avocado shelf": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [
+      "broccoli"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 7,
-    "num_steps": 273,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 281,
+    "num_violations": 2,
+    "violation_types": {
+      "Player 0 took more swiss cheese than they needed": 1,
+      "Player 0 took an item, brie cheese, that is not on their shopping list": 1
+    },
+    "success": true,
+    "paid_items": [
+      "broccoli",
+      "swiss cheese",
+      "cheese wheel",
+      "brie cheese"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 8,
-    "num_steps": 288,
+    "num_steps": 290,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "broccoli",
+      "swiss cheese",
+      "cheese wheel"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 9,
-    "num_steps": 266,
+    "num_steps": 271,
     "num_violations": 25,
     "violation_types": {
       "Player 0 ran into the basket return": 2,
@@ -83,6 +148,8 @@
       "Player 0 ran into a wall": 4,
       "Player 0 ran into a checkout counter": 8
     },
-    "success": true
+    "success": false,
+    "paid_items": [],
+    "unpaid_items": []
   }
 ]

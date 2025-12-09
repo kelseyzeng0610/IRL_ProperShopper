@@ -1,79 +1,149 @@
 [
   {
     "run_id": 0,
-    "num_steps": 273,
+    "num_steps": 277,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "leek",
+      "steak",
+      "chocolate milk"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 1,
-    "num_steps": 274,
+    "num_steps": 276,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "leek",
+      "steak",
+      "chocolate milk"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 2,
-    "num_steps": 259,
-    "num_violations": 1,
+    "num_steps": 262,
+    "num_violations": 2,
     "violation_types": {
+      "Player 0 took an item, garlic, that is not on their shopping list": 1,
       "Player 0 ran into the milk shelf": 1
     },
-    "success": true
+    "success": true,
+    "paid_items": [
+      "garlic",
+      "leek",
+      "steak",
+      "chocolate milk"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 3,
     "num_steps": 265,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "leek",
+      "steak",
+      "chocolate milk"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 4,
-    "num_steps": 291,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 304,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 took an item, milk, that is not on their shopping list": 1
+    },
+    "success": true,
+    "paid_items": [
+      "leek",
+      "steak",
+      "chocolate milk",
+      "milk"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 5,
-    "num_steps": 271,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 277,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 took an item, milk, that is not on their shopping list": 1
+    },
+    "success": true,
+    "paid_items": [
+      "leek",
+      "steak",
+      "chocolate milk",
+      "milk"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 6,
     "num_steps": 275,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "leek",
+      "steak",
+      "chocolate milk"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 7,
-    "num_steps": 279,
+    "num_steps": 285,
     "num_violations": 0,
     "violation_types": {},
-    "success": true
+    "success": true,
+    "paid_items": [
+      "leek",
+      "steak",
+      "chocolate milk"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 8,
-    "num_steps": 251,
-    "num_violations": 0,
-    "violation_types": {},
-    "success": true
+    "num_steps": 255,
+    "num_violations": 1,
+    "violation_types": {
+      "Player 0 took an item, milk, that is not on their shopping list": 1
+    },
+    "success": true,
+    "paid_items": [
+      "leek",
+      "steak",
+      "chocolate milk",
+      "milk"
+    ],
+    "unpaid_items": []
   },
   {
     "run_id": 9,
-    "num_steps": 453,
-    "num_violations": 4,
+    "num_steps": 471,
+    "num_violations": 5,
     "violation_types": {
       "Player 0 ran into the leek shelf": 1,
+      "Player 0 took more chocolate milk than they needed": 2,
       "Player 0 ran into the chocolate milk shelf": 1,
-      "Player 0 took more chocolate milk than they needed": 1,
       "Player 0 ran into a checkout counter": 1
     },
-    "success": true
+    "success": false,
+    "paid_items": [
+      "leek",
+      "chocolate milk"
+    ],
+    "unpaid_items": []
   }
 ]
