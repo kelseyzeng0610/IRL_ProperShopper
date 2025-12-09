@@ -59,7 +59,7 @@ def makeSuccessMetricsPlot(aggregated_results, modelNames):
     ax.set_title('Success and Violation-Free Rates by Model Type')
     ax.set_xticks(x)
     ax.set_ylim(0, 1.1)
-    ax.set_xticklabels(modelTypes)
+    ax.set_xticklabels(modelTypes, rotation=45, ha='right')
     ax.legend(loc="upper center",)
 
     for bars in [successBars, violationFreeBars]:
@@ -90,7 +90,7 @@ def makeViolationMetricsPlot(aggregated_results, modelNames):
     ax.set_xlabel('Model Type')
     ax.set_title('Violation Metrics by Model Type')
     ax.set_xticks(x)
-    ax.set_xticklabels(modelTypes)
+    ax.set_xticklabels(modelTypes, rotation=45, ha='right')
     ax.legend(loc="upper center",)
 
     for bars, values in [(avgBars, avgViolations), (medianBars, medianViolations), (maxBarsClipped, maxViolations)]:
@@ -186,9 +186,11 @@ def makeViolationDetailPlot(aggregated_results, modelNames):
     # plot 4: violation details per model
     baselineDetails = aggregated_results['baseline_metrics']['total_violation_breakdown']
     irlDetails = aggregated_results['irl_metrics']['total_violation_breakdown']
+    detIRLDetails = aggregated_results['deterministic_irl_metrics']['total_violation_breakdown']
 
     baselineViolationsByType = getViolationBuckets(baselineDetails)
     irlViolationsByType = getViolationBuckets(irlDetails)
+    detIRLViolationsByType = getViolationBuckets(detIRLDetails)
 
     # Get violation type labels
     violationTypes = [
@@ -205,13 +207,15 @@ def makeViolationDetailPlot(aggregated_results, modelNames):
     # Get counts for each violation type
     baselineCounts = [baselineViolationsByType[vt] for vt in ViolationType if vt != ViolationType.NONE]
     irlCounts = [irlViolationsByType[vt] for vt in ViolationType if vt != ViolationType.NONE]
+    detIRLCounts = [detIRLViolationsByType[vt] for vt in ViolationType if vt != ViolationType.NONE]
 
-    barWidth = 0.35
+    barWidth = 0.25
     x = np.arange(len(violationTypes))
 
     fig, ax = plt.subplots(figsize=(12, 6))
-    baselineBars = ax.bar(x - barWidth/2, baselineCounts, width=barWidth, label=modelNames['baseline_metrics'])
-    irlBars = ax.bar(x + barWidth/2, irlCounts, width=barWidth, label=modelNames['irl_metrics'])
+    baselineBars = ax.bar(x - barWidth, baselineCounts, width=barWidth, label=modelNames['baseline_metrics'])
+    irlBars = ax.bar(x, irlCounts, width=barWidth, label=modelNames['irl_metrics'])
+    detIRLBars = ax.bar(x + barWidth, detIRLCounts, width=barWidth, label=modelNames['deterministic_irl_metrics'])
 
     ax.set_ylabel('Total Violations')
     ax.set_xlabel('Violation Type')
@@ -221,7 +225,7 @@ def makeViolationDetailPlot(aggregated_results, modelNames):
     ax.legend(loc="upper right")
 
     # Add value labels on bars
-    for bars in [baselineBars, irlBars]:
+    for bars in [baselineBars, irlBars, detIRLBars]:
         for bar in bars:
             height = bar.get_height()
             if height > 0:
@@ -230,6 +234,57 @@ def makeViolationDetailPlot(aggregated_results, modelNames):
     plt.tight_layout()
     plt.savefig("presentation-plots/violation_details.png")
     plt.close()
+
+def makePartialSuccessPlot(aggregated_results, modelNames):
+    irl_summary = aggregated_results['irl_metrics']['error_analysis_summary']['summary']
+    
+    total_failed_to_pay = irl_summary['total_failed_to_pay']
+    total_failed_to_get_all_items = irl_summary['total_failed_to_get_all_items']
+    
+    avg_items_when_failed_to_pay = irl_summary['avg_items_in_basket_when_failed_to_pay']
+    avg_missing_items = irl_summary['avg_missing_items_when_failed_to_get_all_items']
+    
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
+    
+    categories1 = ['Failed to\nPay', 'Failed to Get\nAll Items']
+    counts = [total_failed_to_pay, total_failed_to_get_all_items]
+    x1 = np.arange(len(categories1))
+    
+    bars1 = ax1.bar(x1, counts, width=0.6, color=['#ff7f0e', '#2ca02c'])
+    ax1.set_ylabel('Number of Runs')
+    ax1.set_xlabel('Failure Type')
+    ax1.set_title('Partial Success: Failure Counts')
+    ax1.set_xticks(x1)
+    ax1.set_xticklabels(categories1)
+    
+    for bar in bars1:
+        height = bar.get_height()
+        if height > 0:
+            ax1.text(bar.get_x() + bar.get_width()/2, height + 0.5, f"{int(height)}", 
+                    ha='center', va='bottom', fontsize=10)
+    
+    categories2 = ['Avg Items in Basket\n(When Failed to Pay)', 'Avg Missing Items\n(When Failed to Get All)']
+    averages = [avg_items_when_failed_to_pay, avg_missing_items]
+    x2 = np.arange(len(categories2))
+    
+    bars2 = ax2.bar(x2, averages, width=0.6, color=['#ff7f0e', '#2ca02c'])
+    ax2.set_ylabel('Average Count')
+    ax2.set_xlabel('Metric Type')
+    ax2.set_ylim(0, 2.0)
+    ax2.set_title('Partial Success: Item Details')
+    ax2.set_xticks(x2)
+    ax2.set_xticklabels(categories2)
+    
+    for bar in bars2:
+        height = bar.get_height()
+        if height > 0:
+            ax2.text(bar.get_x() + bar.get_width()/2, height + 0.05, f"{height:.2f}", 
+                    ha='center', va='bottom', fontsize=10)
+    
+    plt.tight_layout()
+    plt.savefig("presentation-plots/partial_success.png")
+    plt.close()
+
 
 if __name__ == "__main__":
     # load trajectories
@@ -248,13 +303,15 @@ if __name__ == "__main__":
         "expert_metrics": "Expert Deterministic",
         "demo_metrics": "Expert Demonstrations",
         "baseline_metrics": "Single IRL Agent Baseline",
-        "irl_metrics": "HIRL Segmentation Pipeline",
+        "irl_metrics": "HIRL Pipeline with noise",
+        "deterministic_irl_metrics": "HIRL Deterministic Pipeline",
     }
 
     makeSuccessMetricsPlot(aggregated_results, modelNames)
     makeViolationMetricsPlot(aggregated_results, modelNames)
     makeEfficiencyPlot(aggregated_results, modelNames)
     makeViolationDetailPlot(aggregated_results, modelNames)
+    makePartialSuccessPlot(aggregated_results, modelNames)
 
     
 
