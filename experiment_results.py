@@ -56,23 +56,37 @@ def evaluateExpertDeterministic(idx):
         avgNumSteps=expert_eval_metrics['num_steps'],
     )
 
-def evaluateIRL(idx):
+def evaluateIRL(idx, shoppingList):
     # compute metrics on the IRL-generated trajectories
     with open(f'experiment/runs/run_{idx}/irl_generated_action_metrics_{idx}.json', 'r') as f:
         irl_metrics = json.load(f)
     run_violation_types = {}
+    numItemsBought = 0
+    numItemsPickedUpNotBought = 0
     for run in irl_metrics:
         types = run.get('violation_types', {})
         for v, count in types.items():
             run_violation_types[v] = run_violation_types.get(v, 0) + count
+        paidItems = run.get('paid_items', [])
+        unpaidItems = run.get('unpaid_items', [])
+        numItemsBought += len([item for item in shoppingList if item in paidItems])
+        numItemsPickedUpNotBought += len([item for item in shoppingList if item in unpaidItems])
     
     # TODO: also need subgoal metrics
-    return makeMetrics(
+    metrics = makeMetrics(
         successRate=np.mean(np.array([run['success'] for run in irl_metrics])),
         violations=np.array([run['num_violations'] for run in irl_metrics]),
         avgNumSteps=np.mean(np.array([run['num_steps'] for run in irl_metrics])),
         violationTypes=run_violation_types
     )
+    metrics['num_items_bought'] = numItemsBought
+    metrics['num_items_picked_up_not_bought'] = numItemsPickedUpNotBought
+    metrics['avg_items_bought'] = numItemsBought / len(irl_metrics)
+    metrics['avg_items_picked_up_not_bought'] = numItemsPickedUpNotBought / len(irl_metrics)
+    metrics['num_items_picked_up_at_all'] = numItemsBought + numItemsPickedUpNotBought
+    return metrics
+
+    # 
 
 def evaluateBaseline(idx):
     with open(f'experiment/runs/run_{idx}/baseline_action_metrics_{idx}.json', 'r') as f:
@@ -126,6 +140,15 @@ def aggregateResults(resultsByRun):
         baseline_training_metrics = json.load(f)
     aggregated['baseline_metrics']['training_metrics'] = baseline_training_metrics
 
+    aggregated['irl_metrics']['items_bought'] = {
+        'avg_items_bought': np.mean([run['irl_metrics'].get('avg_items_bought', 0) for run in resultsByRun]),
+        'avg_items_picked_up_not_bought': np.mean([run['irl_metrics'].get('avg_items_picked_up_not_bought', 0) for run in resultsByRun]),
+        'avg_items_picked_up_at_all': np.mean([run['irl_metrics'].get('num_items_picked_up_at_all', 0) for run in resultsByRun]) / 10,
+        'items_bought_by_run': [run['irl_metrics'].get('num_items_bought', 0) for run in resultsByRun],
+        'items_picked_up_not_bought_by_run': [run['irl_metrics'].get('num_items_picked_up_not_bought', 0) for run in resultsByRun],
+        'items_picked_up_at_all_by_run': [run['irl_metrics'].get('num_items_picked_up_at_all', 0) for run in resultsByRun],
+    }
+
     return aggregated
 
 
@@ -144,6 +167,7 @@ if __name__ == "__main__":
     print(f"Aggregating experiment results from run {startIdx} to {endIdx - 1}")
     results = []
     for i in range(startIdx, endIdx):
+        shoppingList = randomLists[i]
         # These will all be computed metrics for a single shopping list / run
         # Then we need to aggregate them at the end to get the overall metrics
 
@@ -154,7 +178,7 @@ if __name__ == "__main__":
         expertMetrics = evaluateExpertDeterministic(i)
 
         # compute metrics on irl-generated trajectories
-        irlMetrics = evaluateIRL(i)
+        irlMetrics = evaluateIRL(i, shoppingList)
 
         # compute metrics on baseline IRL
         baselineMetrics = evaluateBaseline(i)

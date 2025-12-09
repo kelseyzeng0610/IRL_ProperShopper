@@ -41,6 +41,11 @@ def getParser():
         help="whether to run the HIRL-generated trajectories for evaluation",
     )
     parser.add_argument(
+        '--recompute_hirl_metrics',
+        action='store_true',
+        help="whether to recompute metrics for HIRL-generated trajectories",
+    )
+    parser.add_argument(
         '--record_expert',
         action='store_true',
         help="whether to record expert model behavior for evaluation",

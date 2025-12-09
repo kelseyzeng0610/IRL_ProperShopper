@@ -159,7 +159,7 @@ def sampleIRLTrajectories(allShoppingLists, startIdx, endIdx, numSamples=10):
         with open(f'experiment/runs/run_{i}/noisy_trajectories_{i}.pkl', 'rb') as f:
             expertTrajectories = pickle.load(f)
         
-        # Generate m sample trajectories
+        # Generate m sample trajectories with noise
         sampleTrajectories, sampleActions = [], []
         for m in range(numSamples):
             trajectoryPath = f'experiment/runs/run_{i}/irl_generated_trajectory_{i}_sample_{m}.json'
@@ -168,6 +168,7 @@ def sampleIRLTrajectories(allShoppingLists, startIdx, endIdx, numSamples=10):
                 learned_agents, 
                 trajectoryPath=trajectoryPath,
                 actionPath=actionPath,
+                epsilon=0.05,
             )
 
             # instead of keeping actions and trajectories in separate files, we can just make a list.
@@ -187,6 +188,17 @@ def sampleIRLTrajectories(allShoppingLists, startIdx, endIdx, numSamples=10):
             pickle.dump(sampleTrajectories, f)
         with open(f'experiment/runs/run_{i}/irl_generated_actions_{i}.json', 'w') as f:
             json.dump(sampleActions, f, indent=2)
+
+        # then, generate deterministically
+        trajectoryPath = f'experiment/runs/run_{i}/irl_generated_trajectory_{i}_deterministic.json'
+        actionPath = f'experiment/runs/run_{i}/irl_generated_actions_{i}_deterministic.json'
+        deterministicTrajectory = generateLearnedTrajectory(
+            learned_agents, 
+            trajectoryPath=trajectoryPath,
+            actionPath=actionPath,
+            epsilon=0.0,
+        )
+        plotSampledTrajectory(deterministicTrajectory, expertTrajectories, subgoals, START_STATE, imgPath=f'experiment/runs/run_{i}/irl_deterministic_trajectory_{i}.png', showPlot=False)
 
 
 def runHIRLSamples(allShoppingLists, startIdx, endIdx, headless=False, numSamples=10):
@@ -229,6 +241,7 @@ def runHIRLSamples(allShoppingLists, startIdx, endIdx, headless=False, numSample
                 f'--output={finalStateFile}',
                 f'--run_id={m}',
                 f'--metrics_file={metricsFile}',
+                f'--shopping_list={",".join(allShoppingLists[i])}'
             ]
             if success:
                 args.append('--success')
@@ -261,6 +274,26 @@ def runHIRLSamples(allShoppingLists, startIdx, endIdx, headless=False, numSample
 
         envProcess.terminate()
         envProcess.wait()
+
+def recomputeHIRLMetrics(allShoppingLists, startIdx, endIdx, numSamples=10):
+    # load the final state and compute the success metric again because there was a bug
+    for i in range(startIdx, endIdx):
+        shoppingList = allShoppingLists[i]
+        finalStatesFile = f'experiment/runs/run_{i}/irl_final_states_{i}.json'
+        metricsFile = f'experiment/runs/run_{i}/irl_generated_action_metrics_{i}.json'
+        with open(finalStatesFile, 'r') as f:
+            finalStates = json.load(f)
+
+        with open(metricsFile, 'r') as f:
+            allMetrics = json.load(f)
+
+        for m in range(numSamples):
+            finalState = finalStates[m]
+            basket_contents = finalState['observation']['baskets'][0]['purchased_contents'] if len(finalState['observation']['baskets']) > 0 else []
+            allMetrics[m]['success'] = all(item in basket_contents for item in shoppingList)
+
+        with open(metricsFile, 'w') as f:
+            json.dump(allMetrics, f, indent=2)
 
 def runExpertForEvaluation(startIdx, endIdx, headless=False):
     for i in range(startIdx, endIdx):
@@ -338,10 +371,13 @@ if __name__ == "__main__":
         trainHIRL(randomLists, startIdx=startIdx, endIdx=endIdx, verbose=verbose, max_workers=12)
 
     if args.sample_irl_trajectories:
-        sampleIRLTrajectories(randomLists, startIdx=startIdx, endIdx=endIdx)
+        sampleIRLTrajectories(randomLists, startIdx=startIdx, endIdx=endIdx, numSamples=1)
 
     if args.run_hirl_samples:
-        runHIRLSamples(randomLists, startIdx=startIdx, endIdx=endIdx, headless=args.headless)
+        runHIRLSamples(randomLists, startIdx=startIdx, endIdx=endIdx, headless=args.headless, numSamples=1)
+
+    if args.recompute_hirl_metrics:
+        recomputeHIRLMetrics(randomLists, startIdx=startIdx, endIdx=endIdx)
 
     if args.record_expert:
         runExpertForEvaluation(startIdx=startIdx, endIdx=endIdx, headless=args.headless)
