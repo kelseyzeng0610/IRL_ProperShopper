@@ -20,6 +20,7 @@ def update_violation_metrics(metrics, actual_state):
     for v in current_violations:
         metrics['violation_types'][v] = metrics['violation_types'].get(v, 0) + 1
     return metrics
+
 action_commands = {
     0: 'NORTH',
     1: 'SOUTH',
@@ -42,6 +43,9 @@ def get_required_direction(player_pos, object_pos):
     else:
         return 1 if dy > 0 else 0
     
+
+# handle turning actions
+# there isnt really a reason this needs to be its own function but it makes more sense later when calling it
 def turn(action, sock_game, metrics):
     newMetrics = metrics.copy()
     turn_command = f"0 {action_commands[action]}"
@@ -54,8 +58,8 @@ def turn(action, sock_game, metrics):
     return actual_state, newMetrics
 
 # wrapper around the actual action execution to get rid of some of the issues.
-# removes the turning aspect and always executes the movement actions directly.
-# for interact actions, turns to face the object first.
+# removes the turning aspect and always executes the movement actions directly by sending a turn action in the env when changing direction.
+# for interact actions, turns to face the object first to remove that layer of complexity.
 def execute_action_with_turning(action, current_state, metrics, targetLocations):
     current_direction = current_state['observation']['players'][0]['direction']
     current_position = current_state['observation']['players'][0]['position']
@@ -63,7 +67,7 @@ def execute_action_with_turning(action, current_state, metrics, targetLocations)
 
     newMetrics = metrics.copy()
 
-    # if movement is different than current direction, turn first
+    # if movement is different than current direction, turn first so that we do what our irl world model is expecting where every action actually moves the agent in that direction
     if action in [0, 1, 2, 3] and current_direction != action:
         actual_state, newMetrics = turn(action, sock_game, newMetrics)
         current_direction = actual_state['observation']['players'][0]['direction']
@@ -75,19 +79,21 @@ def execute_action_with_turning(action, current_state, metrics, targetLocations)
             actual_state, newMetrics = turn(required_direction, sock_game, newMetrics)
             current_direction = actual_state['observation']['players'][0]['direction']
     elif action == 4 and has_basket:
-        # TODO: need to turn to face the shelf - can we just face north? no we can't because of the register
         distToRegister = np.linalg.norm(np.array(current_position) - np.array(REGISTER_LOCATION))
         distToShoppingItems = [np.linalg.norm(np.array(current_position) - np.array(loc)) for loc in targetLocations]
         closestItemDist = np.min(distToShoppingItems)
         
+        # trying to figure out where we should turn based on whats close
+        # if the closest item on a shelf is closer than the register, assume we are trying to pick up the item from the shelf and turn north (we always approach shelves from below because that's how the expert did it)
         if closestItemDist < distToRegister and current_direction != 0:
             actual_state, newMetrics = turn(0, sock_game, newMetrics)
             current_direction = actual_state['observation']['players'][0]['direction']
         elif distToRegister < closestItemDist and current_direction != 1:
+            # but if the register is closer then we want to face south because we always go to the top register and need to turn downwards, again this is also because that's how the expert does it so the irl agent learned to do the same
             actual_state, newMetrics = turn(1, sock_game, newMetrics)
             current_direction = actual_state['observation']['players'][0]['direction']
 
-        # do the interact twice - simulation env is finnicky
+        # do the interact twice - simulation env is finnicky and doesn't register the first time
         sock_game.send(str.encode("0 INTERACT"))
         actual_state = recv_socket_data(sock_game)
         actual_state = json.loads(actual_state)
@@ -100,11 +106,12 @@ def execute_action_with_turning(action, current_state, metrics, targetLocations)
         newMetrics = update_violation_metrics(newMetrics, actual_state)
         newMetrics['num_steps'] += 1
 
+        # so we can stop sending actions if we left the store 
         gameOver = 'Player 0 exited through an entrance' in actual_state['violations']
 
         return actual_state, newMetrics, gameOver
     
-    # the real action
+    # the real action from the list after any pre-actions are done
     command = f"0 {action_commands[action]}"
     sock_game.send(str.encode(command))
     actual_state = recv_socket_data(sock_game)
@@ -156,7 +163,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--shopping_list",
         type=str,
-        help="file containing shopping list"
+        help="file containing shopping list",
+        default="sausage,milk,banana"
     )
     args = parser.parse_args()
     filename = args.file

@@ -4,6 +4,9 @@ import json
 import time
 from irl_agents_separate import getItemLocations, getTargetLocations, makeGetNextState, load_expert_trajectories, BASKET_LOCATION, REGISTER_LOCATION, START_STATE, FINAL_GOAL_LOCATION, THETA_SIZE, plotSampledTrajectory
 
+# our phi for the separate irl agents is pretty simple and probably won't give this baseline agent a fair chance at succeeding
+# so we augment it a bit with some extra info like distances to all of the objects of importance
+# we don't tell it that these are subgoals, they are always part of the feature so hopefully it can learn some amount of info to hit subgoals along the way
 def augmentStep(step, targetLocations):
     x, y = step[:2]
     hasBasket, hasItem1, hasItem2, hasItem3, hasPaid = step[2:]

@@ -5,6 +5,8 @@ import json
 import pickle
 import matplotlib.pyplot as plt
 
+# TODO: i think most of this is dead code now
+
 def get_xy(gameState):
     playerPos = gameState["observation"]["players"][0]["position"]
     return (playerPos[0], playerPos[1])

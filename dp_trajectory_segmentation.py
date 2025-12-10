@@ -1,5 +1,11 @@
 import numpy as np
 
+# at a high level, this attempts to assign each subgoal to a point in the trajectory, so that we can figure out where to segment the trajectory.
+# because the trajectory has noise and can also loop back on itself, we had issues with a greedy approach.
+# therefore we implement a dynamic programming function that tries to compute the optimal assignment of subgoals to trajectory points,
+# such that the total distance between subgoals and their assigned points is minimized, and also ensures that the ordering of subgoals is maintained.
+
+
 def constructDPTable(trajectory, subgoals):
     # Dynamic programming approach to optimally segment the expert trajectories by subgoals.
     # Consider a trajectory T = [t1, t2, ..., tn] and subgoals S = [s1, s2, ..., sm]
@@ -13,7 +19,7 @@ def constructDPTable(trajectory, subgoals):
     # to trajectory steps 1..(k) for some k < i. 
     n, m = len(trajectory), len(subgoals)
     dp = np.full((n, m+1), np.inf)
-    parentIdx = np.full((n, m+1), -1) # this will store the parent index we came from, so we can reconstruct the assignment
+    parentIdx = np.full((n, m+1), -1) # this will store the parent index we came from, so we can reconstruct the assignment later
 
     # Base case - anything for 0 subgoals is 0 cost
     dp[:, 0] = 0
@@ -56,7 +62,7 @@ def segmentTrajectoryBySubgoals(trajectory, subgoals):
 if __name__ == "__main__":
     # Testing the DP segmentation
 
-    # simple case with no ambiguity
+    # simple example
     trajectory = np.array([[0.01, 0.0], [1.1, 0.0], [2.0, 0.0], [2.1, 0.95]])
     subgoals = np.array([[1.0, 0.0], [2.0, 1.0]])
     assignment = segmentTrajectoryBySubgoals(trajectory, subgoals)
@@ -69,11 +75,11 @@ if __name__ == "__main__":
     # the second time it hit that point in the trajectory was actually closer so it chose that whole segment.
     trajectory = np.array([
         [0.0, 0.0], 
-        [1.1, 0.1], # the first time we get close to subgoal 1, we should be a bit "off"
+        [1.1, 0.1], # the first time we get close to subgoal 1, we should be a bit off due to random noise
         [2.0, 0.0], 
         [3.0, 0.0], # the second subgoal
         [2.0, 0.0], 
-        [1.0, 0.0], # the third subgoal, but this time we are closer to it. our first subgoal should NOT be assigned to this even though this point is closer to it than the second point of the trajectory.
+        [1.0, 0.0], # the third subgoal, but this time we are closer to it than the first time
         [1.0, 1.0], # the last subgoal
     ])
     subgoals = np.array([[1.0, 0.0], [3.0, 0.0], [1.0, 0.0], [1.0, 1.0]])
