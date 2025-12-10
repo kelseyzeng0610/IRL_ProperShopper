@@ -22,6 +22,7 @@ Additional detail about available processes:
     - `python run-generated-irl-trajectory.py`
         - this script will load the pre-generated trajectory from our HIRL pipeline and execute it in the shopping environment.
             - Optionally, the list of actions can be overridden by passing in a new file location such as `--file=mynewactions.json`. 
+            - As an example, you can run `python run-generated-irl-trajectory.py --file=irl-deterministic-example-actions.json` to run the generated trajectory from the irl pipeline without added noise.
         - If you just ran step 1, the training / generation process will have created a file called `generated_actions_per_subgoal.json`. This is the default value here for the --file arg, so you can omit that flag and it will run whatever is in that file. 
         - Or you can save a trajectory to a new file and pass it in with the --file argument. But the easiest way is just to omit the --file flag and run `python run-generated-irl-trajectory.py` which will automatically load the default file location.
 
