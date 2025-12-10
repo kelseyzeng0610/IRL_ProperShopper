@@ -6,7 +6,9 @@ import pickle
 import matplotlib.pyplot as plt
 from irl_agent import shoppingActionMap, load_expert_trajectories
 from dp_trajectory_segmentation import segmentTrajectoryBySubgoals
+import argparse
 
+# constants
 BASKET_LOCATION = np.array([3.5, 18.5])
 REGISTER_LOCATION = np.array([2.75, 3.75])
 
@@ -15,6 +17,9 @@ FINAL_GOAL_LOCATION = np.asarray([2.75, 3.75, 1.0, 1.0, 1.0, 1.0, 1.0])
 
 THETA_SIZE = 7
 
+# this loads from an example state object to build a lookup of item to a modified location that we target
+# which is based on how it was done by the q-learning expert
+# this is needed for our getNextState function
 def getItemLocations():
     with open('sample-start-state.json', 'r') as f:
         sampleState = json.load(f)
@@ -31,6 +36,8 @@ def getItemLocations():
         itemLocations[item] = targetPosition
     return itemLocations
 
+# define possible target locations as basket, each shelf item, or register
+# needed when computing next states from state action pair
 def getTargetLocations(itemLocations, shoppingList):
     targetLocations = [BASKET_LOCATION]
     for item in shoppingList:
@@ -38,21 +45,28 @@ def getTargetLocations(itemLocations, shoppingList):
     targetLocations.append(REGISTER_LOCATION)
     return targetLocations
 
+# this is essentially a transition function that takes a state action pair and returns a new state
+# we need this for the irl agent because it wasn't feasible to use the actual env for this
+# we actually added a revert command to the env in an attempt to use the env for actually probing the env with an action to get the next state
+# but it was very slow and made training time a lot longer
+# instead we just implement the logic here- important consideration though is this doesn't encode obstacles
+# just assumes any movement will actually move the agent
 def makeGetNextState(targets):
+    # wrap the function so it takes a state action pair
     def getNextState(state, action):
         currentPosition, hasItems = state[:2], state[2:]
         if action == 4:
-            # Now, we need to know if we are trying to pick up the basket or interact with a shelf
-            # interaction - if we are within a threshold of the basket location, we pick it up. else nothing
+            # Now, we need to know if we are trying to pick up the basket or interact with a shelf, so we use the target locations to guess
             distances = np.linalg.norm(targets - currentPosition, axis=1)
             closest_target_idx = np.argmin(distances)
             closest_target = targets[closest_target_idx]
-            # assumes whatever item is closest is the intended target
+            # assumes whatever item is closest is the intended target - if we are within a threshold of the item then change the state to reflect having it
             if np.allclose(currentPosition, closest_target, atol=0.75):
                 newState = state.copy()
                 newState[closest_target_idx + 2] = 1.0 # pick up something
                 return newState
             else:
+                # otherwise if we are too far away then interactions fail and don't change state
                 return state
         else:
             # normal movement, flags doesn't change
@@ -65,10 +79,15 @@ def makeGetNextState(targets):
 def makeLearner(theta, initialState, subgoal, tol, shoppingList):
     def make_phi(goal):
         def phi(state):
-            # phi is xdist, ydist, current flags (not distances)
+            # this takes in a state object from the trajectories file which is [x coordinate, y coordinate, hasBasket, hasItem1, hasItem2, hasItem3, hasPaid]
+            # and has to return our phi representation which is slightly different: [x distance to goal, y distance to goal, hasBasket, hasItem1, hasItem2, hasItem3, hasPaid]
+            # so we take the goal location in the wrapper and use it to compute phi
+            # compute distance to goal in x,y directions and just directly use the flags
             return np.concatenate([np.abs(goal[:2] - state[:2]), state[2:]])
         return phi
     
+    # need to tell max ent when the game is over
+    # define it as when we are close enough to the goal
     def make_game_over(goal, tolerance):
         def game_over(state):
             return np.allclose(state, goal, atol=tolerance)
@@ -93,6 +112,7 @@ def makeLearner(theta, initialState, subgoal, tol, shoppingList):
 def segmentTrajectoriesBySubgoal(expertTrajectories, subgoals):
     segments_by_subgoal = [[] for _ in range(len(subgoals))]
     for trajectory in expertTrajectories:
+        # use the dp algo to segment the trajectory into subgoal segments
         assignment = segmentTrajectoryBySubgoals(np.array(trajectory), subgoals)
         startIdx = 0
         for j, trajectoryIdx in enumerate(assignment):
@@ -102,6 +122,7 @@ def segmentTrajectoriesBySubgoal(expertTrajectories, subgoals):
 
     return segments_by_subgoal
 
+# core of the learning process - train irl agent for each subgoal
 def trainPerSubgoalMaxEnt(segments_by_subgoal, subgoals, initialXY, shoppingList, tol=0.2, num_iterations=200, verbose=True):    
     learned_agents = []
     for i, (subgoal, segments) in enumerate(zip(subgoals, segments_by_subgoal)):
@@ -111,6 +132,7 @@ def trainPerSubgoalMaxEnt(segments_by_subgoal, subgoals, initialXY, shoppingList
         
         if len(segments) == 0:
             if verbose:
+                # TODO: i don't think we need this anymore
                 print(f"  Warning: No segments found for subgoal {i}, skipping")
             learned_agents.append(None)
             continue
@@ -146,7 +168,6 @@ def generatePerSubgoalTrajectory(learned_agents, maxLength=200, epsilon=0.05, ve
         if len(full_trajectory) > 0:
             learner.initialState = full_trajectory[-1]
         
-        # Generate segment trajectory
         segment, actions = learner.greedy_trajectory(maxLength=maxLength, epsilon=epsilon, recordActions=True)
         
         # Add to full trajectory (skip first point if not the first segment to avoid duplication)
@@ -163,9 +184,9 @@ def generatePerSubgoalTrajectory(learned_agents, maxLength=200, epsilon=0.05, ve
     return full_trajectory, full_actions
 
 def getExpertTrajectoriesWithNoise(filePath, noise=0.05):
-    # Mask the shape so only x,y get noise
+    # the mask controls what parts of the state get noise added, and we don't want our flags to be noisy
     mask = np.full((THETA_SIZE), True)
-    mask[[0,1]] = False
+    mask[[0,1]] = False # false means add noise there
 
     expertTrajectories = load_expert_trajectories(filePath, noise=noise, maskShape=mask)
     return expertTrajectories
@@ -194,6 +215,7 @@ def getSubgoals(expertTrajectories):
 
     return subgoals, segments_by_subgoal
 
+# main learning function entry point
 def learnSegments(subgoals, segments_by_subgoal, shoppingList, tol=0.2, verbose=True):
     if verbose:
         print("\n" + "="*60)
@@ -300,12 +322,19 @@ def plotSampledTrajectory(sampleTrajectory, expertTrajectories, subgoals, startS
         plt.close()
 
 
-# If you want to train agent from scratch, set to True
-learnMode = False
 
 if __name__ == "__main__":
     # Set random seed for reproducibility
     np.random.seed(142)
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--learn_mode',
+        action='store_true',
+        help="whether to train agents from scratch",
+    )
+    args = parser.parse_args()
+    learnMode = args.learn_mode
 
     expertTrajectories = getExpertTrajectoriesWithNoise("trajectories.pkl")
     subgoals, segments_by_subgoal = getSubgoals(expertTrajectories)

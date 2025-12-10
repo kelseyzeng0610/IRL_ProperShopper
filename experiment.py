@@ -88,64 +88,46 @@ def trainSingleHIRL(i, shoppingList, verbose=False):
         'num_subgoals': len(subgoals),
     }
 
-def trainHIRL(allShoppingLists, startIdx, endIdx, max_workers, parallel=True, verbose=False):
+def trainHIRL(allShoppingLists, startIdx, endIdx, max_workers, verbose=False):
     total_runs = endIdx - startIdx
-    if parallel:
-        startTime = time.time()
-        print(f"\nStarting parallel training for {total_runs} runs with {max_workers} workers...")
-        results = []
-        with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) as executor:
-            futures = []
-            for i in range(startIdx, endIdx):
-                futures.append(executor.submit(trainSingleHIRL, i, allShoppingLists[i], verbose=verbose))
-            
-            completed = 0
-            for future in concurrent.futures.as_completed(futures):
-                result = future.result()
-                results.append(result)
-                completed += 1
-                elapsed = time.time() - startTime
-                print(f"Progress: {completed}/{total_runs} complete ({100*completed/total_runs:.1f}%) - Run {result['run_id']} finished - Elapsed: {elapsed:.1f}s")
-        endTime = time.time()
-        
-        # Calculate and save aggregate metrics
-        total_training_time = sum(r['training_time'] for r in results)
-        avg_training_time = total_training_time / len(results) if results else 0
-        avg_subgoals = sum(r['num_subgoals'] for r in results) / len(results) if results else 0
-        
-        metrics = {
-            'total_time_all_runs': endTime - startTime,
-            'avg_training_time_per_run': avg_training_time,
-            'avg_subgoals_per_run': avg_subgoals,
-            'run_details': sorted(results, key=lambda x: x['run_id'])
-        }
-        
-        with open('experiment/training_metrics.json', 'w') as f:
-            json.dump(metrics, f, indent=2)
-            
-        print(f"All HIRL training completed in {endTime - startTime:.2f} seconds")
-        print(f"Average training time per run: {avg_training_time:.2f}s")
-        print(f"Average number of subgoals: {avg_subgoals:.2f}")
-    else:
-        # Sequential fallback
-        results = []
+    startTime = time.time()
+    print(f"\nStarting parallel training for {total_runs} runs with {max_workers} workers...")
+    results = []
+    with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) as executor:
+        futures = []
         for i in range(startIdx, endIdx):
-            result = trainSingleHIRL(i, allShoppingLists[i], verbose=verbose)
+            futures.append(executor.submit(trainSingleHIRL, i, allShoppingLists[i], verbose=verbose))
+        
+        completed = 0
+        for future in concurrent.futures.as_completed(futures):
+            result = future.result()
             results.append(result)
-            
-        # Calculate and save aggregate metrics for sequential run too
-        avg_training_time = sum(r['training_time'] for r in results) / len(results) if results else 0
-        avg_subgoals = sum(r['num_subgoals'] for r in results) / len(results) if results else 0
+            completed += 1
+            elapsed = time.time() - startTime
+            # TODO below is a bit deceiving because it shows the elapsed time since the start of all runs instead of just the elapsed time for this particular training run
+            print(f"Progress: {completed}/{total_runs} complete ({100*completed/total_runs:.1f}%) - Run {result['run_id']} finished - Elapsed: {elapsed:.1f}s")
+    endTime = time.time()
+    
+    # Calculate and save aggregate metrics
+    total_training_time = sum(r['training_time'] for r in results)
+    avg_training_time = total_training_time / len(results) if results else 0
+    avg_subgoals = sum(r['num_subgoals'] for r in results) / len(results) if results else 0
+    
+    metrics = {
+        'total_time_all_runs': endTime - startTime,
+        'avg_training_time_per_run': avg_training_time,
+        'avg_subgoals_per_run': avg_subgoals,
+        'run_details': sorted(results, key=lambda x: x['run_id'])
+    }
+    
+    # dump metrics to be used later
+    with open('experiment/training_metrics.json', 'w') as f:
+        json.dump(metrics, f, indent=2)
         
-        metrics = {
-            'total_time_all_runs': sum(r['training_time'] for r in results), # approximate for sequential
-            'avg_training_time_per_run': avg_training_time,
-            'avg_subgoals_per_run': avg_subgoals,
-            'run_details': results
-        }
-        
-        with open('experiment/training_metrics.json', 'w') as f:
-            json.dump(metrics, f, indent=2)
+    print(f"All HIRL training completed in {endTime - startTime:.2f} seconds")
+    print(f"Average training time per run: {avg_training_time:.2f}s")
+    print(f"Average number of subgoals: {avg_subgoals:.2f}")
+
 
 def sampleIRLTrajectories(allShoppingLists, startIdx, endIdx, numSamples=10):
     for i in range(startIdx, endIdx):
@@ -164,6 +146,7 @@ def sampleIRLTrajectories(allShoppingLists, startIdx, endIdx, numSamples=10):
         for m in range(numSamples):
             trajectoryPath = f'experiment/runs/run_{i}/irl_generated_trajectory_{i}_sample_{m}.json'
             actionPath = f'experiment/runs/run_{i}/irl_generated_actions_{i}_sample_{m}.json'
+            # TODO: can we just return the trajectory/actions instead of doing all this file i/o?
             sampleTrajectory = generateLearnedTrajectory(
                 learned_agents, 
                 trajectoryPath=trajectoryPath,
@@ -246,7 +229,7 @@ def runHIRLSamples(allShoppingLists, startIdx, endIdx, headless=False, numSample
             if success:
                 args.append('--success')
             
-            subprocess.run(args)  # Runs and waits for completion before next iteration
+            subprocess.run(args)
 
             # remove the temporary actions file
             Path(tmpFile).unlink()
@@ -290,6 +273,7 @@ def runHIRLSamples(allShoppingLists, startIdx, endIdx, headless=False, numSample
 
 def recomputeHIRLMetrics(allShoppingLists, startIdx, endIdx, numSamples=10):
     # load the final state and compute the success metric again because there was a bug
+    # TODO: I don't think we need this once the metric stuff is fixed
     for i in range(startIdx, endIdx):
         shoppingList = allShoppingLists[i]
         finalStatesFile = f'experiment/runs/run_{i}/irl_final_states_{i}.json'
@@ -315,6 +299,7 @@ def recomputeHIRLMetrics(allShoppingLists, startIdx, endIdx, numSamples=10):
         with open(metricsFile, 'w') as f:
             json.dump(allMetrics, f, indent=2)
 
+# run the expert without noise as our best possible scenario
 def runExpertForEvaluation(startIdx, endIdx, headless=False):
     for i in range(startIdx, endIdx):
         args = ['python', 'socket_env.py', '--player_speed=0.25', f'--file=experiment/runs/run_{i}/start_state_{i}.txt']
@@ -341,6 +326,7 @@ def runBaselineEvaluation(allShoppingLists, startIdx, endIdx, headless=True):
         envProcess = subprocess.Popen(args)
 
         shoppingList = allShoppingLists[i]
+        # TODO: this is a better design than above, we can just have the stuff we need returned to us and write it to file ourselves if we want
         traj, actions = runBaseline(shoppingList=shoppingList, thetaFile="experiment/baseline_theta.json", verbose=False)
 
         actionsFile = f'experiment/runs/run_{i}/baseline_actions_{i}.json'
@@ -350,7 +336,7 @@ def runBaselineEvaluation(allShoppingLists, startIdx, endIdx, headless=True):
             json.dump([int(a) for a in actions], f)
 
         if not headless:
-            time.sleep(5)  # wait for the env to start up
+            time.sleep(5)
 
         genProcess = subprocess.run([
             'python', 'run-generated-irl-trajectory.py',

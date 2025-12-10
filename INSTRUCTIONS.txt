@@ -1,0 +1,51 @@
+In this file are instructions for how to run the different processes of our IRL proper shopper project.
+
+The main things you may want to run are in step 1 (training / trajectory generation process) or step 2 (executing a trajectory in the shopping environment). Additional detail is provided below but the short and simple version of how to run it is:
+1. For training / trajectory generation run `python irl_agents_separate.py` or `python irl_agents_separate.py --learn_mode` (for full re-training). Viewing this file is a natural entry point to our HIRL implementations.
+2. For running a sampled trajectory according to the learned reward function run `python socket_env.py --player_speed=0.25 --file=start-state.txt` and `python run-generated-irl-trajectory.py`.
+
+Greater detail is given below on additional optional parameters or tweaks.
+
+Note: you may have to rerun `pip install -r requirements.txt` if your virtual env is missing packages.
+Before running any of the training or experiment steps, you should ensure that matplotlib is installed and working, or else visualizations of generated trajectories will not work (they can still be run in the propershopper environment, though).
+
+
+Additional detail about available processes:
+1. If you want to run a sample training process for our HIRL pipeline **from scratch** on a predefined shopping list, and then view a sample generated trajectory, you will want to run `python irl_agents_separate.py --learn_mode`.
+    - If instead, you want to skip the training process (it can take several minutes) and run with our pre-trained theta values, you should run `python irl_agents_separate.py`, omitting the --learn_mode flag. If the flag is not present, the script will skip the learning process, and instead load the pretrained agents from file, and then sample a trajectory.
+    - Running with the --learn_mode flag will load pre-generated expert demos from `trajectories.pkl` and run them through the segmentation process, then train an IRL agent for each segment of the task, and save the learned reward parameters.
+    - It will then sample a new trajectory according to its learned theta values, and create a plot (this should automatically open on your machine before the process terminates, but it should also save to a file called `per_subgoal_agents_trajectory.png`). You will need matplotlib installed to view this.
+    - You may also notice that the line that calls `generateLearnedTrajectory` passes in a non-zero epsilon. You can switch to the deterministic mode by setting epsilon to 0 (line 332 in irl_agents_separate.py), as discussed in our presentation.
+
+2. If you want to execute a sample trajectory from the HIRL pipeline in the actual shopping environment, you can run the following in two terminal tabs:
+    - `python socket_env.py --player_speed=0.25 --file=start-state.txt` - note that we require two modifications, the first being changing the player's step size via the --player_speed flag (our model assumes a step size of 0.25 and thus will break if the step size is different in the environment) and a file containing the start state (all this does is change the shopping list and snap the agent's starting position to a value rounded to 0.25, so that all of our steps are in increments of 0.25)
+    - `python run-generated-irl-trajectory.py`
+        - this script will load the pre-generated trajectory from our HIRL pipeline and execute it in the shopping environment.
+            - Optionally, the list of actions can be overridden by passing in a new file location such as `--file=mynewactions.json`. 
+            - As an example, you can run `python run-generated-irl-trajectory.py --file=irl-deterministic-example-actions.json` to run the generated trajectory from the irl pipeline without added noise.
+        - If you just ran step 1, the training / generation process will have created a file called `generated_actions_per_subgoal.json`. This is the default value here for the --file arg, so you can omit that flag and it will run whatever is in that file. 
+        - Or you can save a trajectory to a new file and pass it in with the --file argument. But the easiest way is just to omit the --file flag and run `python run-generated-irl-trajectory.py` which will automatically load the default file location.
+
+3. You probably won't want to run the experiments because it takes ~1 hour on my machine for all 50 lists, but if you are curious, the code to run the experiments is available in two files:
+    - `experiment.py` contains the code that executes the experiment and generates the data from which we draw conclusions. It runs all of the steps of the experiment we described in our presentation, but each step requires a different flag to be passed in.
+        - See launch.json for ways you can run the individual steps of the experiment - and you can even launch it from the vscode debugger just by choosing the corresponding launch configuration from the dropdown and clicking the green arrow.
+    - `experiment_results.py` contains the code that aggregates all of the raw data and prints out a file `aggregated_results.json` with higher level metrics for each of our models.
+    - If you do decide to run it, I highly suggest reducing the number of lists via --num_lists - see launch.json. You may also need to tweak a param `num_workers` in `experiment.py` based on how many cores your machine has. It runs processes in parallel and spawns 12 concurrent processes, but this may be too many for a machine with fewer cores.
+
+4. Other things you could run, but probably aren't necessary since the crux of the project is steps 1 and 2:
+    - `python irl_baseline.py`: runs the baseline, single IRL agent attempting to learn the full task. Will certainly fail to generate a successful trajectory. It also has a boolean variable called learnMode which was not exposed via command line argument, but can be overwritten in the .py file if you want to switch between full training or just sampling from saved theta values.
+    - `python socket_agent_expert.py`: runs our expert and records trajectories (also requires `python socket_env.py --player_speed=0.25 --file=start-state.txt` to be running). This uses a copy of Michael's Q-Learning agent as the expert from homework 4, which is saved in IRLExpertAgent.py. No meaningful immprovements were done to this expert since the last individual assignment.
+
+
+
+Some general info on the project layout that may be helpful for grading:
+- socket_agent_expert.py was used to generate expert demonstrations, and saves them to a pkl file for loading later. This is mostly just a copy of Michael's socket_agent_training.py from the last individual homework, with some tweaks so that we can save the sequences of states/actions as our demos.
+- hirl.py and max_entropy_irl.py contain the main 2 components used in our pipeline. hirl.py contains the class we use to run segmentation, and max_entropy_irl.py has our implementation of an irl agent. It learns with the max entropy approach and at generation time we use a greedy approach (we found better results that way).
+- irl_baseline.py uses the max entropy code, and implements a single irl agent for the full task, without segmentation. this is our baseline model that we hope to beat.
+- irl_agents_separate.py puts together the segmentation from hirl.py and the irl agents from max_entropy_irl.py, and trains the full pipeline.
+- experiment.py runs / trains all of the models and (depending on what flags are passed in) samples new trajectories for execution and evaluation.
+- run-generated-irl-trajectory.py runs a file containing a list of actions in the environment. This is how we actually execute the agent's sampled actions in the store. Also records violations and other info about the run for later use.
+- experiment_results.py computes metrics from saved output files from running the experiment.
+- dp_trajectory_segmentation.py has code to help with segmenting trajectories by subgoals, since trajectories will not actually go through subgoal locations perfectly. More info on that subproblem in that file.
+- experiment_utils.py has random other helper functions for the experiment.
+- experiment_plots.py is just for generating plots for the slides.

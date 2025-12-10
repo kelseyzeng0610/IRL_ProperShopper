@@ -637,6 +637,7 @@ def getAction(agent, state, current_goal, basketMode, action_commands):
 
     return action, action_index, learningMode
 
+# this is what we record for demos
 def get_trajectory_recording_state(gameState, requiredItems):
     playerX, playerY = gameState['observation']['players'][0]['position']
     basket = hasBasket(gameState)

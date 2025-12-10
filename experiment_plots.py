@@ -98,7 +98,7 @@ def makeViolationMetricsPlot(aggregated_results, modelNames):
             height = bar.get_height()
             clipped = height < value
             if clipped:
-                bar.set_hatch('//')  # Indicate clipping with hatch
+                bar.set_hatch('//')
             text_color = 'red' if clipped else 'black'
             ax.text(bar.get_x() + bar.get_width()/2, height + 0.1, f"{value:.2f}", ha='center', va='bottom', color=text_color)
     
@@ -122,7 +122,7 @@ def makeEfficiencyPlot(aggregated_results, modelNames):
     ax.set_xlabel('Model Type')
     ax.set_title('Efficiency Metrics by Model Type')
     ax.set_xticks(x)
-    ax.set_xticklabels(modelTypes)
+    ax.set_xticklabels(modelTypes, rotation=45, ha='right')
     ax.legend(loc="upper right",)
     for bar in stepsBars:
         height = bar.get_height()
@@ -143,6 +143,7 @@ class ViolationType(Enum):
     PutItemOnShelf = 7
     TookMoreThanNeeded = 8
 
+# attempts to group violation messages into types which can be annoying since it has item names in the middle
 def getViolationTypeFromString(violationStr):
     if 'ran into a checkout counter' in violationStr:
         return ViolationType.RanIntoCheckout
@@ -190,9 +191,10 @@ def makeViolationDetailPlot(aggregated_results, modelNames):
 
     baselineViolationsByType = getViolationBuckets(baselineDetails)
     irlViolationsByType = getViolationBuckets(irlDetails)
+    # irl violations had 10 samples, need to divide by 10
+    irlViolationsByType = {k: v / 10 for k, v in irlViolationsByType.items()}
     detIRLViolationsByType = getViolationBuckets(detIRLDetails)
 
-    # Get violation type labels
     violationTypes = [
         'Ran Into\nCheckout',
         'Ran Into\nShelf',
@@ -204,7 +206,6 @@ def makeViolationDetailPlot(aggregated_results, modelNames):
         'Took More\nThan Needed'
     ]
     
-    # Get counts for each violation type
     baselineCounts = [baselineViolationsByType[vt] for vt in ViolationType if vt != ViolationType.NONE]
     irlCounts = [irlViolationsByType[vt] for vt in ViolationType if vt != ViolationType.NONE]
     detIRLCounts = [detIRLViolationsByType[vt] for vt in ViolationType if vt != ViolationType.NONE]
@@ -224,7 +225,6 @@ def makeViolationDetailPlot(aggregated_results, modelNames):
     ax.set_xticklabels(violationTypes, rotation=45, ha='right')
     ax.legend(loc="upper right")
 
-    # Add value labels on bars
     for bars in [baselineBars, irlBars, detIRLBars]:
         for bar in bars:
             height = bar.get_height()

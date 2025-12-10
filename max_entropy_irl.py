@@ -42,6 +42,9 @@ class MaxEntropyIRL:
 
         return trajectory
 
+    # after the learning process is done and we have an inferred reward function we can sample trajectories however we want
+    # from testing greedy seems to work well, and epsilon helps in cases where it just bounces back and forth
+    # stochastic generation could work but we had issues with it choosing suboptimal actions too often - perhaps we need longer training time
     def greedy_trajectory(self, maxLength=None, epsilon=0.1, recordActions=False):
         currentState = self.initialState
         trajectory = [currentState]
@@ -60,13 +63,13 @@ class MaxEntropyIRL:
             
             # Penalize revisiting positions too many times
             for i, ns in enumerate(next_states):
-                pos_key = tuple(ns[:2])  # Only use x,y position
+                pos_key = tuple(ns[:2])
                 visit_count = visited_positions.get(pos_key, 0)
                 if visit_count > 0:
-                    # Add penalty that grows with visit count
+                    # if we visit the same x,y position many times make it lower reward
                     q_values[i] -= 0.5 * visit_count
             
-            # Epsilon-greedy: sometimes take random action to escape local optima
+            # take random action sometimes
             if np.random.random() < epsilon:
                 bestIdx = np.random.choice(len(next_states))
             else:
@@ -78,7 +81,6 @@ class MaxEntropyIRL:
             if recordActions:
                 actions.append(self.actions[bestIdx])
             
-            # Track visit count
             pos_key = tuple(nextState[:2])
             visited_positions[pos_key] = visited_positions.get(pos_key, 0) + 1
             
