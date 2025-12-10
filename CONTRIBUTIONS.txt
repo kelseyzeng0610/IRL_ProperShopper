@@ -4,4 +4,5 @@ Kelsey: HIRL segmentation, IRL task progression
 Michael: implemented max entropy class, implemented irl_agents_separate to train agents on segments, 
 wrote code for experiment / running generated trajectories in environment
 Rahul: Violation and Failure analysis
-Sanjana: Implemented IRL Baseline Agent
+Sanjana: Implemented IRL Baseline Agent, tried behavior cloning
+

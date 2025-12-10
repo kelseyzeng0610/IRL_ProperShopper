@@ -38,13 +38,13 @@ Additional detail about available processes:
 
 
 Some general info on the project layout that may be helpful for grading:
-- socket_agent_expert.py was used to generate expert demonstrations, and saves them to a pkl file for loading later. This is mostly just a copy of Michael's socket_agent_training.py from the last individual homework, with some tweaks so that we can save the sequences of states as our demos.
-- hirl.py and max_entropy_irl.py contain the main 2 components used in our pipeline. hirl.py contains the class we use to run segmentation, and max_entropy_irl.py has our implementation of an irl agent.
+- socket_agent_expert.py was used to generate expert demonstrations, and saves them to a pkl file for loading later. This is mostly just a copy of Michael's socket_agent_training.py from the last individual homework, with some tweaks so that we can save the sequences of states/actions as our demos.
+- hirl.py and max_entropy_irl.py contain the main 2 components used in our pipeline. hirl.py contains the class we use to run segmentation, and max_entropy_irl.py has our implementation of an irl agent. It learns with the max entropy approach and at generation time we use a greedy approach (we found better results that way).
 - irl_baseline.py uses the max entropy code, and implements a single irl agent for the full task, without segmentation. this is our baseline model that we hope to beat.
 - irl_agents_separate.py puts together the segmentation from hirl.py and the irl agents from max_entropy_irl.py, and trains the full pipeline.
-- experiment.py runs / trains all of the models and (depending on what flags are passed in) samples new trajectories for execution.
+- experiment.py runs / trains all of the models and (depending on what flags are passed in) samples new trajectories for execution and evaluation.
 - run-generated-irl-trajectory.py runs a file containing a list of actions in the environment. This is how we actually execute the agent's sampled actions in the store. Also records violations and other info about the run for later use.
 - experiment_results.py computes metrics from saved output files from running the experiment.
+- dp_trajectory_segmentation.py has code to help with segmenting trajectories by subgoals, since trajectories will not actually go through subgoal locations perfectly. More info on that subproblem in that file.
 - experiment_utils.py has random other helper functions for the experiment.
 - experiment_plots.py is just for generating plots for the slides.
-- dp_trajectory_segmentation.py has code to help with segmenting trajectories by subgoals, since trajectories will not actually go through subgoal locations perfectly.
