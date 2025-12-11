@@ -1,20 +1,24 @@
 In this file are instructions for how to run the different processes of our IRL proper shopper project.
 
-Before running, you should ensure that your virtual environment is up to date with a few new requirements we added. Run `pip install -r requirements.txt` to install the matplotlib package (necessary for viewing sample trajectories on a grid) and the sklearn package (necessary for running segmentation).
-You can still run the generated trajectory in the supermarket environment without matplotlib.
+Before running, you should ensure that your virtual environment is up to date with a few new requirements we added. Run `pip install -r requirements.txt` to install them. This includes:
+- matplotlib (necessary for viewing sample trajectories on a grid). You can still run the generated trajectory in the supermarket environment without matplotlib.
+- sklearn package (necessary for running segmentation).
+    - If for some reason there are issues getting sklearn installed or working, there is still a way you can run the trajectory generation process. In `irl_agents_separate.py`, comment out the hirl import, and on line 342 change `loadSubgoalsFromFile` to True and rerun this file. That allows you to load the segmenter output from file instead of running it.
 
-The main things you may want to run are in step 1 (training / trajectory generation process) or step 2 (executing a trajectory in the shopping environment). Additional detail is provided below but the short and simple version of how to run it is:
-1. For training / trajectory generation run `python irl_agents_separate.py` or `python irl_agents_separate.py --learn_mode` (for full re-training). Viewing this file is a natural entry point to our HIRL implementations.
+The main processes you may want to run are in step 1 (training / trajectory generation process) or step 2 (executing a trajectory in the shopping environment). Additional detail is provided below but the short and simple version of how to run it is:
+1. For trajectory generation run `python irl_agents_separate.py` or for full re-training run `python irl_agents_separate.py --learn_mode`. Viewing this file is a natural entry point to our HIRL implementations.
 2. For running a sampled trajectory according to the learned reward function run `python socket_env.py --player_speed=0.25 --file=start-state.txt` and `python run-generated-irl-trajectory.py`.
 
-Greater detail is given below on additional optional parameters or tweaks.
+
+
+Greater detail is given below on additional optional parameters or tweaks, but is not necessary.
 
 Additional detail about available processes:
 1. If you want to run a sample training process for our HIRL pipeline **from scratch** on a predefined shopping list, and then view a sample generated trajectory, you will want to run `python irl_agents_separate.py --learn_mode`.
     - If instead, you want to skip the training process (it can take several minutes) and run with our pre-trained theta values, you should run `python irl_agents_separate.py`, omitting the --learn_mode flag. If the flag is not present, the script will skip the learning process, and instead load the pretrained agents from file, and then sample a trajectory.
     - Running with the --learn_mode flag will load pre-generated expert demos from `trajectories.pkl` and run them through the segmentation process, then train an IRL agent for each segment of the task, and save the learned reward parameters.
     - It will then sample a new trajectory according to its learned theta values, and create a plot (this should automatically open on your machine before the process terminates, but it should also save to a file called `per_subgoal_agents_trajectory.png`). You will need matplotlib installed to view this.
-    - You may also notice that the line that calls `generateLearnedTrajectory` passes in a non-zero epsilon. You can switch to the deterministic mode by setting epsilon to 0 (line 332 in irl_agents_separate.py), as discussed in our presentation.
+    - You may also notice that the line that calls `generateLearnedTrajectory` passes in a non-zero epsilon by default. You can switch to the deterministic mode by setting epsilon to 0 (line 365 in irl_agents_separate.py), as discussed in our presentation.
 
 2. If you want to execute a sample trajectory from the HIRL pipeline in the actual shopping environment, you can run the following in two terminal tabs:
     - `python socket_env.py --player_speed=0.25 --file=start-state.txt` - note that we require two modifications, the first being changing the player's step size via the --player_speed flag (our model assumes a step size of 0.25 and thus will break if the step size is different in the environment) and a file containing the start state (all this does is change the shopping list and snap the agent's starting position to a value rounded to 0.25, so that all of our steps are in increments of 0.25)
