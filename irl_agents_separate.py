@@ -336,9 +336,21 @@ if __name__ == "__main__":
     args = parser.parse_args()
     learnMode = args.learn_mode
 
+
     expertTrajectories = getExpertTrajectoriesWithNoise("trajectories.pkl")
-    subgoals, segments_by_subgoal = getSubgoals(expertTrajectories)
-    print("Subgoals:\n", subgoals)
+    
+    loadSubgoalsFromFile = False
+    
+    if loadSubgoalsFromFile:
+        with open("subgoals.pkl", "rb") as f:
+            subgoals, segments_by_subgoal = pickle.load(f)
+            print("Loaded subgoals from file:\n", subgoals)
+    else:
+        subgoals, segments_by_subgoal = getSubgoals(expertTrajectories)
+        print("Subgoals:\n", subgoals)
+        with open("subgoals.pkl", "wb") as f:
+            pickle.dump((subgoals, segments_by_subgoal), f)
+
 
     shoppingList = ['sausage', 'milk', 'banana']
 
