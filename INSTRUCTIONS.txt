@@ -1,14 +1,13 @@
 In this file are instructions for how to run the different processes of our IRL proper shopper project.
 
+Before running, you should ensure that your virtual environment is up to date with a few new requirements we added. Run `pip install -r requirements.txt` to install the matplotlib package (necessary for viewing sample trajectories on a grid) and the sklearn package (necessary for running segmentation).
+You can still run the generated trajectory in the supermarket environment without matplotlib.
+
 The main things you may want to run are in step 1 (training / trajectory generation process) or step 2 (executing a trajectory in the shopping environment). Additional detail is provided below but the short and simple version of how to run it is:
 1. For training / trajectory generation run `python irl_agents_separate.py` or `python irl_agents_separate.py --learn_mode` (for full re-training). Viewing this file is a natural entry point to our HIRL implementations.
 2. For running a sampled trajectory according to the learned reward function run `python socket_env.py --player_speed=0.25 --file=start-state.txt` and `python run-generated-irl-trajectory.py`.
 
 Greater detail is given below on additional optional parameters or tweaks.
-
-Note: you may have to rerun `pip install -r requirements.txt` if your virtual env is missing packages.
-Before running any of the training or experiment steps, you should ensure that matplotlib is installed and working, or else visualizations of generated trajectories will not work (they can still be run in the propershopper environment, though).
-
 
 Additional detail about available processes:
 1. If you want to run a sample training process for our HIRL pipeline **from scratch** on a predefined shopping list, and then view a sample generated trajectory, you will want to run `python irl_agents_separate.py --learn_mode`.
